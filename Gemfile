@@ -45,7 +45,7 @@ group :development do
   gem 'spring'
 
   gem 'rspec-rails'
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', require: false
   gem 'spring-commands-rspec'
   gem 'simplecov'
 end
