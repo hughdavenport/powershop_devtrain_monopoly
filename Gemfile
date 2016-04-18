@@ -46,6 +46,7 @@ group :development do
 
   gem 'rspec-rails'
   gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
   gem 'spring-commands-rspec'
   gem 'simplecov'
 end
