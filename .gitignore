@@ -18,3 +18,9 @@
 
 # Ignore simplecov
 /coverage
+
+# Ignore vim swp files
+.*.swp
+
+# Ignore bybug history
+/.byebug_history
