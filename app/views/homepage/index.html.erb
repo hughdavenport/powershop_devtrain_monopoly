@@ -1,2 +1,8 @@
 <h1>Homepage#index</h1>
 <p>Find me in app/views/homepage/index.html.erb</p>
+
+<% if @current_user %>
+  <p>Hi <%= @current_user.username %></p>
+<% end %>
+
+<%= link_to 'New Game', new_game_path %>

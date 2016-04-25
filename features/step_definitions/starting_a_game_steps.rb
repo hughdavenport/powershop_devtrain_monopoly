@@ -1,3 +1,12 @@
+# *VERY* basic login capability
+def loginas(user)
+  uri = URI.parse(current_url)
+  query = URI.decode_www_form(uri.query ? uri.query : '').to_h
+  query[:user] = user
+  uri.query = URI.encode_www_form(query)
+  visit uri.to_s
+end
+
 Given(/^I have a user$/) do
   # TODO create a user model?
   # add params: user: blah to everything that involves this user
