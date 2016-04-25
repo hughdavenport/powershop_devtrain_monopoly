@@ -24,3 +24,7 @@
 
 # Ignore bybug history
 /.byebug_history
+
+# Ignore my todo and notes files
+/todo
+/notes
