@@ -1,5 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "homepage/index.html.erb", type: :view do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before { render }
+  subject { rendered }
+
+  it { is_expected.to have_link('New Game', href: new_game_path) }
+
+  it { is_expected.to have_link('List Games', href: games_path) }
 end
