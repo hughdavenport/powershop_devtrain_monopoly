@@ -31,3 +31,8 @@ Given(/^I am waiting for (\d+) more player(?:s)$/) do |player_count|
   step 'I pick a piece'
   step 'I click on "Create"'
 end
+
+
+Then(/^I should see a new player form$/) do
+  expect(page).to have_current_path(new_game_player_path(game_id: 1))
+end

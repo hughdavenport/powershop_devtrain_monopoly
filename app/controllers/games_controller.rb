@@ -10,6 +10,7 @@ class GamesController < ApplicationController
   # GET /games/1
   # GET /games/1.json
   def show
+    redirect_to new_game_player_path(@game) if @game.players.count != @game.number_of_players
   end
 
   # GET /games/new
