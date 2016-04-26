@@ -1,3 +1,6 @@
+WAITING_FOR_PLAYERS_SELECTOR = "#waiting_for_players"
+WAITING_FOR_PLAYERS_REGEX    = /Waiting for (?<players>\d+) players/
+
 # *VERY* basic login capability
 def loginas(user)
   uri = URI.parse(current_url)
@@ -5,6 +8,10 @@ def loginas(user)
   query[:user] = user
   uri.query = URI.encode_www_form(query)
   visit uri.to_s
+end
+
+def waiting_for_players
+  find('WAITING_FOR_PLAYERS_SELECTOR').text.gsub(WAITING_FOR_PLAYERS_REGEX, '\\k<players>')
 end
 
 Given(/^I have a user$/) do
@@ -44,4 +51,8 @@ end
 
 Then(/^I should see a waiting for players page$/) do
   expect(page).to have_current_path(game_players_path(game_id: 1))
+end
+
+Then(/^I should be waiting for (\d+) more player(?:s)?$/) do |player_count|
+  expect(waiting_for_players).to eq player_count
 end
