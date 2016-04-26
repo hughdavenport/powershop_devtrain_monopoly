@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Players", type: :request do
-  let(:game_attributes) { skip("TODO") }
+  let(:game_attributes) { { number_of_players: 2 } }
   let(:game) { Game.create!(game_attributes) }
 
   describe "GET /games/1/players" do
