@@ -6,7 +6,7 @@
   <thead>
     <tr>
       <th>User</th>
-      <th>Game</th>
+      <th>Piece</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -15,7 +15,7 @@
     <% @players.each do |player| %>
       <tr>
         <td><%= player.user %></td>
-        <td><%= player.game %></td>
+        <td><%= player.piece %></td>
         <td><%= link_to 'Show', game_player_path(@game, player) %></td>
         <td><%= link_to 'Edit', edit_game_player_path(@game, player) %></td>
         <td><%= link_to 'Destroy', game_player_path(@game, player), method: :delete, data: { confirm: 'Are you sure?' } %></td>
