@@ -15,7 +15,7 @@ RSpec.describe "players/new", type: :view do
 
     assert_select "form[action=?][method=?]", game_players_path(@game), "post" do
 
-      assert_select "input#player_user_id[name=?]", "player[user_id]"
+      assert_select "select#player_piece[name=?]", "player[piece]"
     end
   end
 end

@@ -7,9 +7,11 @@ RSpec.describe "players/index", type: :view do
     ))
     assign(:players, [
       Player.create!(
+        :piece => :wheelbarrow,
         :game => @game
       ),
       Player.create!(
+        :piece => :battleship,
         :game => @game
       )
     ])
