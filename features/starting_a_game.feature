@@ -4,6 +4,7 @@ Feature: Starting a game
 
   Background:
     Given I have a user
+    And there is another user
 
   Scenario: Navigating to the new player page
     Given I see the home page
@@ -19,14 +20,12 @@ Feature: Starting a game
     And I should be waiting for 1 more player
 
   Scenario: Joining a waiting game
-    Given there is another user
-    And they are waiting for 1 more player
+    Given another user is waiting for 1 more player
     When I join their game
     Then I should see the game
 
   Scenario: Joining a large waiting game
-    Given there is another user
-    And they are waiting for 2 more players
+    Given another user is waiting for 2 more players
     When I join their game
     Then I should see a waiting for players page
     And I should be waiting for 1 more player
