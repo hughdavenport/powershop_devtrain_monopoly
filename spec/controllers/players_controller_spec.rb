@@ -32,7 +32,7 @@ RSpec.describe PlayersController, type: :controller do
   }
 
   let(:valid_game_attributes) {
-    skip("Add a hash of attributes valid for a game")
+    { number_of_players: 2 }
   }
 
   let(:game) {
@@ -62,7 +62,7 @@ RSpec.describe PlayersController, type: :controller do
 
   describe "GET #new" do
     it "assigns a new player as @player" do
-      get :new, {game: game}, valid_session
+      get :new, {game_id: game}, valid_session
       expect(assigns(:player)).to be_a_new(Player)
     end
   end
