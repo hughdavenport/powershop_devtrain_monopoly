@@ -18,12 +18,14 @@ Given(/^there is another user$/) do
 end
 
 Given(/^I have started a new game$/) do
-  step "I see the home page"
-  step "I click on \"New Game\""
+  step 'I see the home page'
+  step 'I click on "New Game"'
+  step 'I enter in 2 as number of players'
+  step 'I click on "Create Game"'
 end
 
 Given(/^I am waiting for more players$/) do
-  step "I have started a new game"
-  step "I pick a piece"
-  step "I click on \"Create\""
+  step 'I have started a new game'
+  step 'I pick a piece'
+  step 'I click on "Create"'
 end

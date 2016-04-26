@@ -8,6 +8,8 @@ Feature: Starting a game
   Scenario: Navigating to the new player page
     Given I see the home page
     When I click on "New Game"
+    And I enter in 2 as number of players
+    And I click on "Create Game"
     Then I should see a new player form
 
   Scenario: Creating a new player
