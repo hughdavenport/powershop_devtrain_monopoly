@@ -17,15 +17,17 @@ Given(/^there is another user$/) do
   # add params: user: blah to everything that involves this user
 end
 
-Given(/^I have started a new game$/) do
+Given(/^I have started a new game(?: with (\d+) player(?:s))?$/) do |player_count|
+  player_count = 2 unless player_count
+
   step 'I see the home page'
   step 'I click on "New Game"'
-  step 'I enter in 2 as number of players'
+  step 'I enter in '"#{player_count}"' as number of players'
   step 'I click on "Create Game"'
 end
 
-Given(/^I am waiting for more players$/) do
-  step 'I have started a new game'
+Given(/^I am waiting for (\d+) more player(?:s)$/) do |player_count|
+  step 'I have started a new game with '"#{player_count + 1}"' players'
   step 'I pick a piece'
   step 'I click on "Create"'
 end
