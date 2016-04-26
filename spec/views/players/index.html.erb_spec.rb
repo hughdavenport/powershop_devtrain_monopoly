@@ -2,12 +2,15 @@ require 'rails_helper'
 
 RSpec.describe "players/index", type: :view do
   before(:each) do
+    @game = assign(:game, Game.create!(
+      number_of_players: 2
+    ))
     assign(:players, [
       Player.create!(
-        :game => nil
+        :game => @game
       ),
       Player.create!(
-        :game => nil
+        :game => @game
       )
     ])
   end

@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   get 'homepage/index'
 
   resources :users
-  resources :players
   resources :pieces
-  resources :games
+  resources :games do
+    resources :players
+  end
 end

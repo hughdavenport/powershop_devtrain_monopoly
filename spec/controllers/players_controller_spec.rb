@@ -31,6 +31,14 @@ RSpec.describe PlayersController, type: :controller do
     skip("Add a hash of attributes invalid for your model")
   }
 
+  let(:valid_game_attributes) {
+    skip("Add a hash of attributes valid for a game")
+  }
+
+  let(:game) {
+    Game.create(valid_game_attributes)
+  }
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # PlayersController. Be sure to keep this updated too.
@@ -54,7 +62,7 @@ RSpec.describe PlayersController, type: :controller do
 
   describe "GET #new" do
     it "assigns a new player as @player" do
-      get :new, {}, valid_session
+      get :new, {game: game}, valid_session
       expect(assigns(:player)).to be_a_new(Player)
     end
   end
