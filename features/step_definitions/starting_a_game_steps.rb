@@ -41,3 +41,7 @@ end
 Then(/^I should see a new player form$/) do
   expect(page).to have_current_path(new_game_player_path(game_id: 1))
 end
+
+Then(/^I should see a waiting for players page$/) do
+  expect(page).to have_current_path(game_players_path(game_id: 1))
+end
