@@ -29,7 +29,12 @@ end
 Given(/^I am waiting for (\d+) more player(?:s)$/) do |player_count|
   step 'I have started a new game with '"#{player_count + 1}"' players'
   step 'I pick a piece'
-  step 'I click on "Create"'
+end
+
+
+When(/^I pick a piece$/) do
+  step 'I select wheelbarrow as piece'
+  step 'I click on "Create Player"'
 end
 
 

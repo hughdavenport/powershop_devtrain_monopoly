@@ -15,7 +15,6 @@ Feature: Starting a game
   Scenario: Creating a new player
     Given I have started a new game with 2 players
     When I pick a piece
-    And I click on "Create"
     Then I should see a waiting for players page
     And I should be waiting for 1 more player
 

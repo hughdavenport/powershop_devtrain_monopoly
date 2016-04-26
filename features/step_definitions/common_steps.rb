@@ -7,5 +7,9 @@ When(/^I click on "([^"]*)"$/) do |link|
 end
 
 When(/^I enter in (.*) as (.*)$/) do |value, field|
-    fill_in field.capitalize, :with => value
+  fill_in field.capitalize, :with => value
+end
+
+When(/^I select (.*) as (.*)$/) do |value, field|
+  select value, :from => field.capitalize
 end
