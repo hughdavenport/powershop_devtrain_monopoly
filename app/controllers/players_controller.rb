@@ -15,6 +15,7 @@ class PlayersController < ApplicationController
 
   # GET /games/1/players/new
   def new
+    redirect_to game_players_path if @game.players.exists? user: @current_user
     @player = @game.players.new
   end
 
@@ -26,11 +27,12 @@ class PlayersController < ApplicationController
   # POST /games/1/players.json
   def create
     @player = @game.players.new(player_params)
+    @player.user = @current_user  # TODO, service should do this
 
     respond_to do |format|
       if @player.save
-        format.html { redirect_to game_player_url(@game, @player), notice: 'Player was successfully created.' }
-        format.json { render :show, status: :created, location: @player }
+        format.html { redirect_to @game, notice: 'Player was successfully created.' }
+        format.json { render :show, status: :created, location: @game }
       else
         format.html { render :new }
         format.json { render json: @player.errors, status: :unprocessable_entity }

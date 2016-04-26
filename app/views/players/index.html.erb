@@ -14,7 +14,7 @@
   <tbody>
     <% @players.each do |player| %>
       <tr>
-        <td><%= player.user %></td>
+        <td><%= player.user.username if player.user %></td>
         <td><%= player.piece %></td>
         <td><%= link_to 'Show', game_player_path(@game, player) %></td>
         <td><%= link_to 'Edit', edit_game_player_path(@game, player) %></td>
