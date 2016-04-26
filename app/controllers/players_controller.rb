@@ -3,13 +3,11 @@ class PlayersController < ApplicationController
   before_action :set_player, only: [:show, :edit, :update, :destroy]
 
   # GET /games/1/players
-  # GET /games/1/players.json
   def index
     @players = @game.players.all
   end
 
   # GET /games/1/players/1
-  # GET /games/1/players/1.json
   def show
   end
 
@@ -24,44 +22,30 @@ class PlayersController < ApplicationController
   end
 
   # POST /games/1/players
-  # POST /games/1/players.json
   def create
     @player = @game.players.new(player_params)
     @player.user = @current_user  # TODO, service should do this
 
-    respond_to do |format|
-      if @player.save
-        format.html { redirect_to @game, notice: 'Player was successfully created.' }
-        format.json { render :show, status: :created, location: @game }
-      else
-        format.html { render :new }
-        format.json { render json: @player.errors, status: :unprocessable_entity }
-      end
+    if @player.save
+      redirect_to @game, notice: 'Player was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /games/1/players/1
-  # PATCH/PUT /games/1/players/1.json
   def update
-    respond_to do |format|
-      if @player.update(player_params)
-        format.html { redirect_to game_player_url(@game, @player), notice: 'Player was successfully updated.' }
-        format.json { render :show, status: :ok, location: game_player_url(@game, @player) }
-      else
-        format.html { render :edit }
-        format.json { render json: @player.errors, status: :unprocessable_entity }
-      end
+    if @player.update(player_params)
+      redirect_to game_player_url(@game, @player), notice: 'Player was successfully updated.'
+    else
+      render :edit
     end
   end
 
   # DELETE /games/1/players/1
-  # DELETE /games/1/players/1.json
   def destroy
     @player.destroy
-    respond_to do |format|
-      format.html { redirect_to game_players_url(@game), notice: 'Player was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to game_players_url(@game), notice: 'Player was successfully destroyed.'
   end
 
   private
