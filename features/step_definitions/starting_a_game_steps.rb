@@ -22,9 +22,18 @@ Given(/^(I|another user) (?:am|is) waiting for (\d+) more (?:player|players)$/) 
 end
 
 
-When(/^I pick a piece$/) do
-  step 'I select wheelbarrow as piece'
+When(/^(I|another user) (?:pick|picks) a piece$/) do |user|
+  # Choose the top piece
   step 'I click on "Create Player"'
+end
+
+When(/^(I|another user) (?:join|joins) the game$/) do |user|
+  # First step will login as user
+  step "#{user} sees the home page"
+  step 'I click on "List Games"'
+  step 'I click on "Show"'
+  step 'I should see a new player form'
+  step 'I pick a piece'
 end
 
 
@@ -34,6 +43,10 @@ end
 
 Then(/^I should see a waiting for players page$/) do
   expect(page).to have_current_path(game_players_path(game_id: 1), only_path: true)
+end
+
+Then(/^I should see the game$/) do
+  expect(page).to have_current_path(game_path(id: 1), only_path: true)
 end
 
 Then(/^I should be waiting for (\d+) more player(?:s)?$/) do |player_count|

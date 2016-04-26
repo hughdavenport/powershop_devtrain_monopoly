@@ -3,4 +3,6 @@ class Player < ActiveRecord::Base
   belongs_to :game
 
   enum piece: [:wheelbarrow, :battleship, :racecar, :thimble, :boot, :dog, :hat]
+
+  validates :piece, uniqueness: { scope: :game }
 end
