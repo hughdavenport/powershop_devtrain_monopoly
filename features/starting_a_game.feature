@@ -39,8 +39,7 @@ Feature: Starting a game
 
   Scenario: Waiting for multiple players
     Given I am waiting for 2 more players
-    And there is another user
-    And they join my game
+    And another user joins the game
     When I go to the game
     Then I should see a waiting for players page
     And I should be waiting for 1 more player
