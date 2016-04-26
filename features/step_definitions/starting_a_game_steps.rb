@@ -8,6 +8,10 @@ def waiting_for_players
   find(WAITING_FOR_PLAYERS_SELECTOR).text.gsub(WAITING_FOR_PLAYERS_REGEX, '\\k<players>')
 end
 
+def players_in_game
+  find(PLAYERS_IN_GAME_SELECTOR).text.gsub(PLAYERS_IN_GAME_REGEX, '\\k<players>')
+end
+
 Given(/^(I|another user) (?:have|has) started a new game(?: with (\d+) (?:player|players))$/) do |user, player_count|
   player_count = 2 unless player_count
 
