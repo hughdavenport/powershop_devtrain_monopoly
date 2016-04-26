@@ -1,5 +1,5 @@
 WAITING_FOR_PLAYERS_SELECTOR = "#waiting_for_players"
-WAITING_FOR_PLAYERS_REGEX    = /Waiting for (?<players>\d+) players/
+WAITING_FOR_PLAYERS_REGEX    = /Waiting for (?<players>\d+) player(?:s)?/i
 
 # *VERY* basic login capability
 def loginas(user)
@@ -11,7 +11,7 @@ def loginas(user)
 end
 
 def waiting_for_players
-  find('WAITING_FOR_PLAYERS_SELECTOR').text.gsub(WAITING_FOR_PLAYERS_REGEX, '\\k<players>')
+  find(WAITING_FOR_PLAYERS_SELECTOR).text.gsub(WAITING_FOR_PLAYERS_REGEX, '\\k<players>')
 end
 
 Given(/^I have a user$/) do
