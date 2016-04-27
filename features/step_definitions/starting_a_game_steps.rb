@@ -1,8 +1,8 @@
 WAITING_FOR_PLAYERS_SELECTOR = "#waiting_for_players"
-WAITING_FOR_PLAYERS_REGEX    = /Waiting for (?<players>\d+) (?:player|players)/i
+WAITING_FOR_PLAYERS_REGEX    = /^Waiting for (?<players>\d+) (?:player|players)$/i
 
 PLAYERS_IN_GAME_SELECTOR     = "#players_in_game"
-PLAYERS_IN_GAME_REGEX        = /There are (?<players>\d+) (?:player|players) in the game/i
+PLAYERS_IN_GAME_REGEX        = /^There are (?<players>\d+) (?:player|players) in the game$/i
 
 def waiting_for_players
   find(WAITING_FOR_PLAYERS_SELECTOR).text.gsub(WAITING_FOR_PLAYERS_REGEX, '\\k<players>')
@@ -30,6 +30,7 @@ end
 
 
 When(/^(I|another user) (?:pick|picks) a piece$/) do |user|
+  step 'I click on "New Player"'
   # Choose the top piece
   step 'I click on "Create Player"'
 end
@@ -44,14 +45,9 @@ end
 When(/^(I|another user) (?:join|joins) the game$/) do |user|
   # First step will login as user
   step "#{user} goes to the game"
-  step 'I should see a new player form'
   step 'I pick a piece'
 end
 
-
-Then(/^I should see a new player form$/) do
-  expect(page).to have_current_path(new_game_player_path(game_id: 1), only_path: true)
-end
 
 Then(/^I should see a waiting for players page$/) do
   expect(page).to have_current_path(game_players_path(game_id: 1), only_path: true)
@@ -61,7 +57,7 @@ Then(/^I should see the game$/) do
   expect(page).to have_current_path(game_path(id: 1), only_path: true)
 end
 
-Then(/^I should be waiting for (\d+) more (?:player|players)$/) do |player_count|
+Then(/^I should be waiting for (\d+) (?:more )?(?:player|players)$/) do |player_count|
   expect(waiting_for_players).to eq player_count
 end
 

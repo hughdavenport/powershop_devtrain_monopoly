@@ -9,7 +9,7 @@ class GamesController < ApplicationController
 
   # GET /games/1
   def show
-    redirect_to new_game_player_path(@game) if @game.players.count != @game.number_of_players
+    redirect_to game_players_path(@game) if @game.players.count != @game.number_of_players
   end
 
   # GET /games/new

@@ -14,7 +14,7 @@ class PlayersController < ApplicationController
 
   # GET /games/1/players/new
   def new
-    redirect_to game_players_path if @game.players.exists? user: @current_user
+    redirect_to game_players_path, notice: 'You are already playing' if @game.players.exists? user: @current_user
     @player = @game.players.new
   end
 

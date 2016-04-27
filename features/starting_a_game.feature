@@ -11,7 +11,7 @@ Feature: Starting a game
     When I click on "New Game"
     And I enter in 2 as number of players
     And I click on "Create Game"
-    Then I should see a new player form
+    Then I should be waiting for 2 players
 
   Scenario: Creating a new player
     Given I have started a new game with 2 players
