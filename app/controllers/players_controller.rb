@@ -24,13 +24,12 @@ class PlayersController < ApplicationController
 
   # POST /games/1/players
   def create
-    @player = @game.players.new(player_params)
-    @player.user = @current_user  # TODO, service should do this
+    service = AddPlayerToGame.new(game: @game, user: @current_user, piece: player_params[:piece])
 
-    if @player.save
+    if service.call
       redirect_to @game, notice: 'Player was successfully created.'
     else
-      render :new
+      render :new, :errors => service.errors
     end
   end
 
