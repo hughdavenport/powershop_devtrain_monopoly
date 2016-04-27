@@ -1,8 +1,16 @@
 <h1>Homepage#index</h1>
 <p>Find me in app/views/homepage/index.html.erb</p>
 
+<%= flash[:danger] %>
+
 <% if @current_user %>
   <p>Hi <%= @current_user.username %></p>
+  <%= link_to 'Logout', root_url(user: nil) %>
+<% else %>
+  <%= form_tag(root_url, method: :get) do %>
+    <%= text_field_tag :user %>
+    <%= submit_tag 'Login' %>
+  <% end %>
 <% end %>
 
 <%= link_to 'New Game', new_game_path %>

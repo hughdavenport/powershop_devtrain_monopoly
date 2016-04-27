@@ -16,4 +16,11 @@ class ApplicationController < ActionController::Base
       options[:user] = params[:user] if params[:user]
     end
   end
+
+  def logged_in
+    unless @current_user
+      flash[:danger] = t("Please log in")
+      redirect_to :root
+    end
+  end
 end

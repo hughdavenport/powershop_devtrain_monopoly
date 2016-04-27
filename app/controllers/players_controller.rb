@@ -1,6 +1,7 @@
 class PlayersController < ApplicationController
   before_action :set_game
   before_action :set_player, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in
 
   # GET /games/1/players
   def index
