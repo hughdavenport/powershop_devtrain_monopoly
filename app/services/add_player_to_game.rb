@@ -1,7 +1,7 @@
 class AddPlayerToGame
   attr_reader :game, :player
 
-  def initialize(game: game, user: user, piece: piece)
+  def initialize(game:, user:, piece:)
     self.game = game
     self.user = user
     self.piece = piece
