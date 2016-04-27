@@ -39,6 +39,12 @@ RSpec.describe PlayersController, type: :controller do
     Game.create(valid_game_attributes)
   }
 
+  let(:username) { "testing" }
+
+  before(:each) {
+    User.create!(username: username)
+  }
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # PlayersController. Be sure to keep this updated too.
@@ -62,7 +68,7 @@ RSpec.describe PlayersController, type: :controller do
 
   describe "GET #new" do
     it "assigns a new player as @player" do
-      get :new, {game_id: game}, valid_session
+      get :new, {game_id: game, user: username}, valid_session
       expect(assigns(:player)).to be_a_new(Player)
     end
   end

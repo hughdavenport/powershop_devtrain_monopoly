@@ -36,6 +36,12 @@ RSpec.describe GamesController, type: :controller do
   # GamesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  let(:username) { "testing" }
+
+  before(:each) {
+    User.create!(username: username)
+  }
+
   describe "GET #index" do
     it "assigns all games as @games" do
       game = Game.create! valid_attributes
@@ -54,7 +60,7 @@ RSpec.describe GamesController, type: :controller do
 
   describe "GET #new" do
     it "assigns a new game as @game" do
-      get :new, {}, valid_session
+      get :new, {:user => username}, valid_session
       expect(assigns(:game)).to be_a_new(Game)
     end
   end
