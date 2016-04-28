@@ -36,7 +36,7 @@ class PlayersController < ApplicationController
   # PATCH/PUT /games/1/players/1
   def update
     if @player.update(player_params)
-      redirect_to game_player_url(@game, @player), notice: 'Player was successfully updated.'
+      redirect_to @game, notice: 'Player was successfully updated.'
     else
       render :edit
     end

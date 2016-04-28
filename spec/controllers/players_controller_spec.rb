@@ -24,11 +24,12 @@ RSpec.describe PlayersController, type: :controller do
   # Player. As you add validations to Player, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { piece: :boot }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { piece: :invalid }
+    skip("Can't test invalid enums, see bug https://github.com/rails/rails/issues/13971")
   }
 
   let(:valid_game_attributes) {
@@ -52,16 +53,16 @@ RSpec.describe PlayersController, type: :controller do
 
   describe "GET #index" do
     it "assigns all players as @players" do
-      player = Player.create! valid_attributes
-      get :index, {}, valid_session
+      player = game.players.create! valid_attributes
+      get :index, {game_id: game, user: username}, valid_session
       expect(assigns(:players)).to eq([player])
     end
   end
 
   describe "GET #show" do
     it "assigns the requested player as @player" do
-      player = Player.create! valid_attributes
-      get :show, {:id => player.to_param}, valid_session
+      player = game.players.create! valid_attributes
+      get :show, {game_id: game, :id => player.to_param, user: username}, valid_session
       expect(assigns(:player)).to eq(player)
     end
   end
@@ -75,8 +76,8 @@ RSpec.describe PlayersController, type: :controller do
 
   describe "GET #edit" do
     it "assigns the requested player as @player" do
-      player = Player.create! valid_attributes
-      get :edit, {:id => player.to_param}, valid_session
+      player = game.players.create! valid_attributes
+      get :edit, {game_id: game, :id => player.to_param, user: username}, valid_session
       expect(assigns(:player)).to eq(player)
     end
   end
@@ -85,30 +86,24 @@ RSpec.describe PlayersController, type: :controller do
     context "with valid params" do
       it "creates a new Player" do
         expect {
-          post :create, {:player => valid_attributes}, valid_session
+          post :create, {game_id: game, :player => valid_attributes, user: username}, valid_session
         }.to change(Player, :count).by(1)
       end
 
-      it "assigns a newly created player as @player" do
-        post :create, {:player => valid_attributes}, valid_session
-        expect(assigns(:player)).to be_a(Player)
-        expect(assigns(:player)).to be_persisted
-      end
-
-      it "redirects to the created player" do
-        post :create, {:player => valid_attributes}, valid_session
-        expect(response).to redirect_to(Player.last)
+      it "redirects to the game" do
+        post :create, {game_id: game, :player => valid_attributes, user: username}, valid_session
+        expect(response).to redirect_to(game)
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved player as @player" do
-        post :create, {:player => invalid_attributes}, valid_session
+        post :create, {game_id: game, :player => invalid_attributes, user: username}, valid_session
         expect(assigns(:player)).to be_a_new(Player)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:player => invalid_attributes}, valid_session
+        post :create, {game_id: game, :player => invalid_attributes, user: username}, valid_session
         expect(response).to render_template("new")
       end
     end
@@ -117,39 +112,39 @@ RSpec.describe PlayersController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { piece: :hat }
       }
 
       it "updates the requested player" do
-        player = Player.create! valid_attributes
-        put :update, {:id => player.to_param, :player => new_attributes}, valid_session
+        player = game.players.create! valid_attributes
+        put :update, {game_id: game, :id => player.to_param, :player => new_attributes, user: username}, valid_session
         player.reload
-        skip("Add assertions for updated state")
+        expect(player.piece.to_sym).to eq new_attributes[:piece]
       end
 
       it "assigns the requested player as @player" do
-        player = Player.create! valid_attributes
-        put :update, {:id => player.to_param, :player => valid_attributes}, valid_session
+        player = game.players.create! valid_attributes
+        put :update, {game_id: game, :id => player.to_param, :player => valid_attributes, user: username}, valid_session
         expect(assigns(:player)).to eq(player)
       end
 
-      it "redirects to the player" do
-        player = Player.create! valid_attributes
-        put :update, {:id => player.to_param, :player => valid_attributes}, valid_session
-        expect(response).to redirect_to(player)
+      it "redirects to the game" do
+        player = game.players.create! valid_attributes
+        put :update, {game_id: game, :id => player.to_param, :player => valid_attributes, user: username}, valid_session
+        expect(response).to redirect_to(game)
       end
     end
 
     context "with invalid params" do
       it "assigns the player as @player" do
-        player = Player.create! valid_attributes
-        put :update, {:id => player.to_param, :player => invalid_attributes}, valid_session
+        player = game.players.create! valid_attributes
+        put :update, {game_id: game, :id => player.to_param, :player => invalid_attributes, user: username}, valid_session
         expect(assigns(:player)).to eq(player)
       end
 
       it "re-renders the 'edit' template" do
-        player = Player.create! valid_attributes
-        put :update, {:id => player.to_param, :player => invalid_attributes}, valid_session
+        player = game.players.create! valid_attributes
+        put :update, {game_id: game, :id => player.to_param, :player => invalid_attributes, user: username}, valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -157,16 +152,16 @@ RSpec.describe PlayersController, type: :controller do
 
   describe "DELETE #destroy" do
     it "destroys the requested player" do
-      player = Player.create! valid_attributes
+      player = game.players.create! valid_attributes
       expect {
-        delete :destroy, {:id => player.to_param}, valid_session
+        delete :destroy, {game_id: game, :id => player.to_param, user: username}, valid_session
       }.to change(Player, :count).by(-1)
     end
 
     it "redirects to the players list" do
-      player = Player.create! valid_attributes
-      delete :destroy, {:id => player.to_param}, valid_session
-      expect(response).to redirect_to(players_url)
+      player = game.players.create! valid_attributes
+      delete :destroy, {game_id: game, :id => player.to_param, user: username}, valid_session
+      expect(response).to redirect_to(game_players_url(game))
     end
   end
 

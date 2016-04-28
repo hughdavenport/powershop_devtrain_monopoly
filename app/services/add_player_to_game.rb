@@ -9,7 +9,8 @@ class AddPlayerToGame
 
   def call
     game.with_lock do
-      self.player = game.players.create!(user: user, piece: piece)
+      self.player = game.players.create(user: user, piece: piece)
+      self.player.save
     end
   end
 
