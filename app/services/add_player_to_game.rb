@@ -9,13 +9,16 @@ class AddPlayerToGame
 
   def call
     game.with_lock do
-      self.player = game.players.create(user: user, piece: piece)
-      self.player.save
+      self.player = game.players.new(user: user, piece: piece)
+      game.valid? && player.save
     end
   end
 
   def errors
-    player.errors if player
+    player.errors.tap do |errors|
+      game.errors.delete(:players)
+      game.errors.each { |attr, error| errors.add(attr, error) }
+    end
   end
 
   private

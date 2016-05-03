@@ -29,7 +29,7 @@ class PlayersController < ApplicationController
     if service.call
       redirect_to @game, notice: 'Player was successfully created.'
     else
-      render :new, :errors => service.errors
+      redirect_to @game, :alert => {errors: service.errors.full_messages}
     end
   end
 

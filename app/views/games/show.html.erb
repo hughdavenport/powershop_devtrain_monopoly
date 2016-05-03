@@ -1,4 +1,17 @@
 <p id="notice"><%= notice %></p>
+<% if alert %>
+  <% if alert["errors"] && alert["errors"].any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(alert["errors"].count, "error") %> prohibited this game from being saved:</h2>
+
+      <ul>
+      <% alert["errors"].each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>
 
 <p id="players_in_game"><%= t('There are '"#{pluralize(@game.players.count, 'player')}"' in the game') %></p>
 <%= link_to 'Edit', edit_game_path(@game) %> |

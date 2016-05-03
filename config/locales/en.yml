@@ -21,3 +21,7 @@
 
 en:
   hello: "Hello world"
+  activerecord:
+    errors:
+      messages:
+        game_is_full: "The game is full"
