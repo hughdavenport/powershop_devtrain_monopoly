@@ -5,7 +5,7 @@ ANOTHER_USER = "anotheruser"
 def loginas(user)
   uri = URI.parse(current_url)
   query = URI.decode_www_form(uri.query ? uri.query : '').to_h
-  query[:user] = user
+  query[:username] = user
   uri.query = URI.encode_www_form(query)
   visit uri.to_s
 end
