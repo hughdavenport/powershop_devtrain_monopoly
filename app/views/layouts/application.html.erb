@@ -9,7 +9,7 @@
 <body>
 
 <%= form_tag(nil, method: :get) do %>
-  <%= select_tag(:user, options_from_collection_for_select(User.all, :username, :username, (@current_user.username if @current_user))) %>
+  <%= select_tag(:username, options_from_collection_for_select(User.all, :username, :username, (@current_user.username if @current_user))) %>
   <%= submit_tag 'Change User' %>
 <% end %>
 <%= yield %>

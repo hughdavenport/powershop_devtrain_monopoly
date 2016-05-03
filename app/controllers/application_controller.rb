@@ -8,12 +8,12 @@ class ApplicationController < ActionController::Base
   private
 
   def set_current_user
-    @current_user = User.find_by_username(params[:user]) if params[:user]
+    @current_user = User.find_by_username(params[:username]) if params[:username]
   end
 
   def default_url_options(options = {})
     options.tap do |options|
-      options[:user] = params[:user] if params[:user]
+      options[:username] = params[:username] if params[:username]
     end
   end
 
