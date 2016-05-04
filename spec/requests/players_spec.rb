@@ -9,7 +9,7 @@ RSpec.describe "Players", type: :request do
 
   describe "GET /games/1/players" do
     it "works! (now write some real specs)" do
-      get game_players_path(game), user: username
+      get game_players_path(game), username: username
       expect(response).to have_http_status(200)
     end
   end
