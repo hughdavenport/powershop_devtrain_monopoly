@@ -24,11 +24,17 @@ RSpec.describe UsersController, type: :controller do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { username: "testing" }
   }
 
+  let(:already_taken_username) { "alreadytaken" }
+
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { username: already_taken_username }
+  }
+
+  before {
+    User.create!(invalid_attributes) # So we have a duplicate
   }
 
   # This should return the minimal set of values that should be in the session
@@ -40,7 +46,7 @@ RSpec.describe UsersController, type: :controller do
     it "assigns all users as @users" do
       user = User.create! valid_attributes
       get :index, {}, valid_session
-      expect(assigns(:users)).to eq([user])
+      expect(assigns(:users)).to include(user)
     end
   end
 
