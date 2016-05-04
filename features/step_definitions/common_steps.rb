@@ -36,3 +36,8 @@ end
 When(/^I select (.*) as (.*)$/) do |value, field|
   select value, :from => field.capitalize
 end
+
+
+Then(/^I should see the content (.*)$/) do |content|
+  expect(page).to have_content(content)
+end

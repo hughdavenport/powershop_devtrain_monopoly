@@ -14,5 +14,6 @@
 <% end %>
 
 <p id="players_in_game"><%= t('There are '"#{pluralize(@game.players.count, 'player')}"' in the game') %></p>
+<%= link_to 'Players', game_players_path(@game) %> |
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back', games_path %>
