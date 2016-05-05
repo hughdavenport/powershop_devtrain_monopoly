@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160505033024) do
+ActiveRecord::Schema.define(version: 20160505042619) do
 
   create_table "dice_rolls", force: :cascade do |t|
     t.integer  "amount"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20160505033024) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "piece"
+    t.integer  "balance"
   end
 
   add_index "players", ["game_id"], name: "index_players_on_game_id"

@@ -5,7 +5,7 @@ PLAYERS_IN_GAME_SELECTOR     = "#players_in_game"
 PLAYERS_IN_GAME_REGEX        = /^There are (?<players>\d+) (?:player|players) in the game$/i
 
 BALANCE_SELECTOR             = "#balance"
-BALANCE_REGEX                = /^Your balance is \$(?<amount>\d+)$/
+BALANCE_REGEX                = /^Your balance is \$(?<amount>\d+)$/i
 
 def waiting_for_players
   find(WAITING_FOR_PLAYERS_SELECTOR).text.gsub(WAITING_FOR_PLAYERS_REGEX, '\\k<players>')
@@ -16,7 +16,7 @@ def players_in_game
 end
 
 def balance
-  find(BALANCE_SELECTOR).text.gsub(BALANCE_REGEX, '\\k<amount>').to_i
+  find(BALANCE_SELECTOR).text.gsub(BALANCE_REGEX, '\\k<amount>')
 end
 
 Given(/^(I|another user) (?:have|has) started a new game(?: with (\d+) (?:player|players))$/) do |user, player_count|
