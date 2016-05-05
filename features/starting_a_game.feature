@@ -36,6 +36,8 @@ Feature: Starting a game
     When I go to the game
     Then I should see the game
     And there should be 2 players in the game
+    And I should have $1500 balance
+    And another user should have $1500 balance
 
   Scenario: Waiting for multiple players
     Given I am waiting for 2 more players
