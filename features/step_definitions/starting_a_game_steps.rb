@@ -35,6 +35,13 @@ Given(/^(I|another user) (?:am|is) waiting for (\d+) more (?:player|players)$/) 
   step "I pick a piece"
 end
 
+Given(/^I am in a game(?: with (\d+) players)?$/) do |player_count|
+  player_count = player_count ? player_count.to_i : 2
+  step "I am waiting for #{player_count - 1} more players"
+  (player_count - 1).times { step 'another user joins the game' }
+  step 'I go to the game'
+end
+
 
 When(/^(I|another user) (?:pick|picks) a piece$/) do |user|
   step 'I click on "New Player"'
