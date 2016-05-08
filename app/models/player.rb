@@ -1,8 +1,10 @@
 class Player < ActiveRecord::Base
-  after_initialize :default_values
+  after_initialize :set_default_values
 
   belongs_to :user
   belongs_to :game
+
+  has_many :dice_rolls, dependent: :destroy
 
   enum piece: [:wheelbarrow, :battleship, :racecar, :thimble, :boot, :dog, :hat]
 
@@ -11,7 +13,8 @@ class Player < ActiveRecord::Base
 
   private
 
-  def default_values
+  # Maybe throw this in the service
+  def set_default_values
     self.balance ||= 1500
   end
 end

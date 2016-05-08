@@ -14,7 +14,14 @@
 <% end %>
 
 <p id="players_in_game"><%= t('There are '"#{pluralize(@game.players.count, 'player')}"' in the game') %></p>
+<p id="current_player"><%= t('Welcome '"#{@current_user.username}") %></p>
+<p id="piece"><%= t('Your piece is '"#{current_game_player.piece}") %></p>
 <p id="balance"><%= t('Your balance is $'"#{current_game_player.balance}") %></p>
+
+<%= last_dice_roll_p %>
+
+<%= render 'dice_rolls/form' %>
+
 <%= link_to 'Players', game_players_path(@game) %> |
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back', games_path %>

@@ -11,13 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160505042619) do
+ActiveRecord::Schema.define(version: 20160508221828) do
 
   create_table "dice_rolls", force: :cascade do |t|
     t.integer  "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "player_id"
   end
+
+  add_index "dice_rolls", ["player_id"], name: "index_dice_rolls_on_player_id"
 
   create_table "games", force: :cascade do |t|
     t.datetime "created_at",        null: false

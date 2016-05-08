@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   resources :users
   resources :games do
-    resources :players
+    resources :players do
+      resources :dice_rolls, only: [:create]
+    end
   end
 end
