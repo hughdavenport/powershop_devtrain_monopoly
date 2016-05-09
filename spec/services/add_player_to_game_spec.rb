@@ -84,8 +84,7 @@ RSpec.describe AddPlayerToGame, type: :service do
     end
   end
 
-  skip "Can't test invalid enums, see bug https://github.com/rails/rails/issues/13971" do
-  #context "when I have an invalid piece" do
+  context "when I have an invalid piece" do
     let(:piece) { "invalid" }
 
     describe "adding a player" do
