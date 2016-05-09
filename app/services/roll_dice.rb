@@ -1,5 +1,5 @@
 class RollDice
-  attr_reader :game, :dice_roll
+  attr_reader :game, :event
 
   def initialize(game:)
     self.game = game
@@ -7,19 +7,16 @@ class RollDice
 
   def call
     game.with_lock do
-      self.dice_roll = game.dice_rolls.new()
-      game.valid? && dice_roll.save
+      self.event = DiceRoll.new
+      game.events << event if event.can_apply?(game.state)
     end
   end
 
   def errors
-    dice_roll.errors.tap do |errors|
-      game.errors.delete(:dice_rolls)
-      game.errors.each { |attr, error| errors.add(attr, error) }
-    end
+    event.errors(game.state)
   end
 
   private
 
-  attr_writer :game, :dice_roll
+  attr_writer :game, :event
 end

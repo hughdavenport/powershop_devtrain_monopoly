@@ -1,4 +1,4 @@
-class Events::DiceRollsController < ApplicationController
+class DiceRollsController < ApplicationController
   before_action :set_game
   before_action :logged_in
   before_action :current_player
