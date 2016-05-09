@@ -16,19 +16,14 @@ RSpec.describe AddPlayerToGame, type: :service do
         expect(service.call).to be_truthy
       end
 
-      it "adds a player" do
-        expect { service.call }.to change(Player, :count).by(1)
-      end
-
-      it "adds the player to the correct game" do
-        service.call
-        expect(Player.last.game).to eql game
+      it "adds a game event" do
+        expect { service.call }.to change(game.events, :count).by(1)
       end
 
       it "adds the player with the correct values" do
         service.call
-        expect(Player.last.user).to eql user
-        expect(Player.last.piece).to eql piece
+        expect(PlayerJoined.last.user).to eql user.id
+        expect(PlayerJoined.last.piece).to eql piece
       end
 
       it "has no errors" do
@@ -39,7 +34,7 @@ RSpec.describe AddPlayerToGame, type: :service do
   end
 
   context "when I have a game waiting on one more player" do
-    before { AddPlayerToGame.new(game: game, user: firstuser, piece: firstpiece).call }
+    before { AddPlayerToGame.new(game: game, user: firstuser, piece: firstpiece).call[-1].apply(game.state) }
 
     let(:firstuser) { User.create!(username: "firstuser") }
 
@@ -50,8 +45,8 @@ RSpec.describe AddPlayerToGame, type: :service do
         expect(service.call).to be_falsey
       end
 
-      it "doesn't add another player" do
-        expect { service.call }.not_to change(Player, :count)
+      it "doesn't add another game event" do
+        expect { service.call }.not_to change(game.events, :count)
       end
 
       it "has errors" do
@@ -67,19 +62,19 @@ RSpec.describe AddPlayerToGame, type: :service do
         expect(service.call).to be_truthy
       end
 
-      it "adds a player" do
-        expect { service.call }.to change(Player, :count).by(1)
+      it "adds a game event" do
+        expect { service.call }.to change(game.events, :count).by(1)
       end
 
       it "adds the player to the correct game" do
         service.call
-        expect(Player.last.game).to eql game
+        expect(PlayerJoined.last.game).to eq game
       end
 
       it "adds the player with the correct values" do
         service.call
-        expect(Player.last.user).to eql user
-        expect(Player.last.piece).to eql piece
+        expect(PlayerJoined.last.user).to eq user.id
+        expect(PlayerJoined.last.piece).to eql piece
       end
 
       it "has no errors" do
@@ -98,8 +93,8 @@ RSpec.describe AddPlayerToGame, type: :service do
         expect(service.call).to be_falsey
       end
 
-      it "doesn't add another player" do
-        expect { service.call }.not_to change(Player, :count)
+      it "doesn't add another game event" do
+        expect { service.call }.not_to change(game.events, :count)
       end
 
       it "has errors" do
@@ -110,8 +105,8 @@ RSpec.describe AddPlayerToGame, type: :service do
   end
 
   context "when I have a game that is full" do
-    before { AddPlayerToGame.new(game: game, user: firstuser, piece: firstpiece).call }
-    before { AddPlayerToGame.new(game: game, user: seconduser, piece: secondpiece).call }
+    before { AddPlayerToGame.new(game: game, user: firstuser, piece: firstpiece).call[-1].apply(game.state) }
+    before { AddPlayerToGame.new(game: game, user: seconduser, piece: secondpiece).call[-1].apply(game.state) }
 
     let(:firstuser) { User.create!(username: "firstuser") }
     let(:firstpiece) { "dog" }
@@ -123,8 +118,8 @@ RSpec.describe AddPlayerToGame, type: :service do
         expect(service.call).to be_falsey
       end
 
-      it "doesn't add another player" do
-        expect { service.call }.not_to change(Player, :count)
+      it "doesn't add another game event" do
+        expect { service.call }.not_to change(game.events, :count)
       end
 
       it "has errors" do

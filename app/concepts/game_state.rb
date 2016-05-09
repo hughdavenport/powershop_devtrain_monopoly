@@ -5,7 +5,7 @@ class GameState
   PIECES = [:wheelbarrow, :battleship, :racecar, :thumble, :boot, :dog, :hat]
 
   def self.create(game)
-    game.events.inject(GameState.new(game: game)) { |state, event| state = event.apply(state) }
+    game.events.inject(GameState.new(game: game)) { |state, event| event.apply(state) }
   end
 
   def initialize(game:)
