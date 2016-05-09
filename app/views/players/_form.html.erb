@@ -1,21 +1,9 @@
-<%= form_for([@game, @player]) do |f| %>
-  <% if @player.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@player.errors.count, "error") %> prohibited this player from being saved:</h2>
-
-      <ul>
-      <% @player.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<%= form_tag(game_players_path(@game)) do |f| %>
   <div class="field">
-    <%= f.label :piece %><br>
-    <%= f.select :piece, (Player.pieces.keys - @game_state.players.values.map { |player| player[:piece] }) %>
+    <%= label_tag :piece %><br>
+    <%= select_tag :piece, options_for_select(@game_state.pieces_left) %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= submit_tag 'Create Player' %>
   </div>
 <% end %>

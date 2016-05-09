@@ -6,7 +6,7 @@ class PlayersController < ApplicationController
 
   # GET /games/1/players
   def index
-    @players = @game.players.all
+    @players = @game_state.players
   end
 
   # GET /games/1/players/1
@@ -16,7 +16,6 @@ class PlayersController < ApplicationController
   # GET /games/1/players/new
   def new
     redirect_to game_players_path, notice: 'You are already playing' if @game_state.players.include? @current_user.id
-    @player = @game.players.new
   end
 
   # GET /games/1/players/1/edit
@@ -25,7 +24,7 @@ class PlayersController < ApplicationController
 
   # POST /games/1/players
   def create
-    service = AddPlayerToGame.new(game: @game, user: @current_user, piece: player_params[:piece])
+    service = AddPlayerToGame.new(game: @game, user: @current_user, piece: player_piece)
 
     if service.call
       redirect_to @game, notice: 'Player was successfully created.'
@@ -63,8 +62,7 @@ class PlayersController < ApplicationController
       @player = Player.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def player_params
-      params.require(:player).permit(:piece)
+    def player_piece
+      params[:piece]
     end
 end
