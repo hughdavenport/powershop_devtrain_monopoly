@@ -1,11 +1,11 @@
 class DiceRollsController < ApplicationController
   before_action :set_game
-  before_action :set_player
   before_action :logged_in
+  before_action :current_player
 
-  # POST /games/1/players/1/dice_rolls
+  # POST /games/1/dice_rolls
   def create
-    service = RollDice.new(game: @game, player: @player)
+    service = RollDice.new(game: @game)
 
     if service.call
       redirect_to @game, notice: 'Dice rolled'
@@ -18,9 +18,5 @@ class DiceRollsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_game
       @game = Game.find(params[:game_id])
-    end
-
-    def set_player
-      @player = Player.find(params[:player_id])
     end
 end

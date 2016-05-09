@@ -4,8 +4,6 @@ class Player < ActiveRecord::Base
   belongs_to :user
   belongs_to :game
 
-  has_many :dice_rolls, dependent: :destroy
-
   enum piece: [:wheelbarrow, :battleship, :racecar, :thimble, :boot, :dog, :hat]
 
   validates :piece, uniqueness: { scope: :game }

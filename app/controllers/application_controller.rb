@@ -23,4 +23,8 @@ class ApplicationController < ActionController::Base
       redirect_to :root
     end
   end
+
+  def current_player
+    true # TODO do
+  end
 end

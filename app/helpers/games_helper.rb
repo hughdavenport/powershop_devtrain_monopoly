@@ -8,7 +8,7 @@ module GamesHelper
   end
 
   def last_dice_roll
-    current_game_player.dice_rolls.last
+    @game.dice_rolls.last
   end
 
   def last_dice_roll_p

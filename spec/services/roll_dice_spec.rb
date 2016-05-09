@@ -4,12 +4,7 @@ RSpec.describe RollDice, type: :service do
   let(:game_params) { { number_of_players: 2 } }
   let(:game) { Game.create!(game_params) }
 
-  let(:user) { User.create!(username: "user") }
-  let(:piece) { "wheelbarrow" }
-
-  let(:player) { game.players.create!(user: user, piece: piece) }
-
-  subject(:service) { RollDice.new(game: game, player: player) }
+  subject(:service) { RollDice.new(game: game) }
 
   context "when it is my turn" do
     # TODO how do we set up my turn?, override what game does
@@ -26,11 +21,6 @@ RSpec.describe RollDice, type: :service do
       it "adds the dice roll to the correct game" do
         service.call
         expect(DiceRoll.last.game).to eql game
-      end
-
-      it "adds the dice roll to the correct player" do
-        service.call
-        expect(DiceRoll.last.player).to eql player
       end
 
       it "has a valid dice roll" do

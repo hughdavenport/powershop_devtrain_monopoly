@@ -1,7 +1,6 @@
-class DiceRoll < ActiveRecord::Base
+class DiceRoll < Event
   after_initialize :default_values
-  belongs_to :player
-  has_one :game, through: :player
+  store_accessor :data, :amount
 
   private
 
