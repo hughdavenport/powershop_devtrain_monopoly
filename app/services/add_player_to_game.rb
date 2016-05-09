@@ -1,5 +1,5 @@
 class AddPlayerToGame
-  attr_reader :game, :player
+  attr_reader :game, :event
 
   def initialize(game:, user:, piece:)
     self.game = game
@@ -9,20 +9,21 @@ class AddPlayerToGame
 
   def call
     game.with_lock do
-      self.player = game.players.new(user: user, piece: piece)
-      game.valid? && player.save
+      self.event = PlayerJoined.new(user: user.id, piece: piece)
+      game.events << event
     end
   end
 
   def errors
-    player.errors.tap do |errors|
-      game.errors.delete(:players)
-      game.errors.each { |attr, error| errors.add(attr, error) }
-    end
+    event.errors
   end
 
   private
 
+  def gamestate
+    game.state
+  end
+
   attr_accessor :user, :piece
-  attr_writer :game, :player
+  attr_writer :game, :event
 end

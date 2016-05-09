@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :piece %><br>
-    <%= f.select :piece, (Player.pieces.keys - @game.players.map { |player| player.piece }) %>
+    <%= f.select :piece, (Player.pieces.keys - @game_state.players.values.map { |player| player[:piece] }) %>
   </div>
   <div class="actions">
     <%= f.submit %>

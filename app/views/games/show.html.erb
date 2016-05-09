@@ -13,10 +13,13 @@
   <% end %>
 <% end %>
 
-<p id="players_in_game"><%= t('There are '"#{pluralize(@game.players.count, 'player')}"' in the game') %></p>
+<%= render 'players/index' %>
+<p id="players_in_game"><%= t('There are '"#{pluralize(@game_state.players.count, 'player')}"' in the game') %></p>
+<% if current_game_player %>
 <p id="current_player"><%= t('Welcome '"#{@current_user.username}") %></p>
-<p id="piece"><%= t('Your piece is '"#{current_game_player.piece}") %></p>
-<p id="balance"><%= t('Your balance is $'"#{current_game_player.balance}") %></p>
+<p id="piece"><%= t('Your piece is '"#{current_game_player[:piece]}") %></p>
+<p id="balance"><%= t('Your balance is $'"#{current_game_player[:money]}") %></p>
+<% end %>
 
 <%= last_dice_roll_p %>
 

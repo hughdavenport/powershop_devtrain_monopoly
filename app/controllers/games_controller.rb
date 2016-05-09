@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   before_action :set_game, only: [:show, :edit, :update, :destroy]
+  before_action :set_game_state, only: [:show, :edit, :update, :destroy]
   before_action :logged_in
 
   # GET /games
@@ -9,7 +10,7 @@ class GamesController < ApplicationController
 
   # GET /games/1
   def show
-    redirect_to game_players_path(@game) if @game.players.count != @game.number_of_players
+    redirect_to game_players_path(@game) if @game_state.players.count != @game.number_of_players
   end
 
   # GET /games/new
@@ -51,6 +52,10 @@ class GamesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_game
       @game = Game.find(params[:id])
+    end
+
+    def set_game_state
+      @game_state = @game.state
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
