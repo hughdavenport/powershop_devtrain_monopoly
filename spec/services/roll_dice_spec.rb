@@ -15,19 +15,19 @@ RSpec.describe RollDice, type: :service do
       end
 
       it "adds a dice roll" do
-        expect { service.call }.to change(DiceRoll, :count).by(1)
+        expect { service.call }.to change(Events::DiceRoll, :count).by(1)
       end
 
       it "adds the dice roll to the correct game" do
         service.call
-        expect(DiceRoll.last.game).to eql game
+        expect(Events::DiceRoll.last.game).to eql game
       end
 
       it "has a valid dice roll" do
         service.call
-        expect(DiceRoll.last.amount).to be_present
-        expect(DiceRoll.last.amount).to be < 7
-        expect(DiceRoll.last.amount).to be > 0
+        expect(Events::DiceRoll.last.amount).to be_present
+        expect(Events::DiceRoll.last.amount).to be < 7
+        expect(Events::DiceRoll.last.amount).to be > 0
       end
 
       it "has no errors" do
