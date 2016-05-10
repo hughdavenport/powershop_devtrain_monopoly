@@ -2,9 +2,9 @@ class PlayerJoined < Event
   store_accessor :data, :piece
   store_accessor :data, :user
 
-  def apply(gamestate)
-    gamestate.tap do |gamestate|
-      gamestate.players[user] = {
+  def apply(game_state)
+    game_state.tap do |game_state|
+      game_state.players[user] = {
         piece: piece,
         money: 1500,
       }

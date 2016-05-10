@@ -2,8 +2,8 @@ class DiceRoll < Event
   after_initialize :default_values
   store_accessor :data, :amount
 
-  def apply(gamestate)
-    gamestate.tap do |gamestate|
+  def apply(game_state)
+    game_state.tap do |game_state|
       # TODO apply this...
     end
   end
