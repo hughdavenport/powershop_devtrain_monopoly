@@ -1,6 +1,6 @@
 module GamesHelper
   def current_game_player
-    @game_state.players[@current_user.id]
+    @game_state.player(@current_user.id)
   end
 
   def current_users_turn?

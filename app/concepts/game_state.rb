@@ -1,6 +1,7 @@
 class GameState
   attr_accessor :players
   attr_accessor :game
+  attr_accessor :current_player
 
   PIECES = [:wheelbarrow, :battleship, :racecar, :thumble, :boot, :dog, :hat]
 
@@ -10,7 +11,7 @@ class GameState
 
   def initialize(game:)
     self.game = game
-    self.players = {}
+    self.players = []
   end
 
   def started?
@@ -18,6 +19,10 @@ class GameState
   end
 
   def pieces_left
-    PIECES - players.values.map { |player| player[:piece].to_sym }
+    PIECES - players.map { |player| player[:piece].to_sym }
+  end
+
+  def player(user)
+    players.first { |player| player[:user] == user }
   end
 end

@@ -4,10 +4,12 @@ class PlayerJoined < Event
 
   def apply(game_state)
     game_state.tap do |game_state|
-      game_state.players[user] = {
+      game_state.players << {
+        user: user,
         piece: piece,
         money: 1500,
       }
+      game_state.current_player = 0 if game_state.current_player.nil?
     end
   end
 
@@ -31,10 +33,10 @@ class PlayerJoined < Event
   end
 
   def piece_already_taken?(game_state = game.state)
-    !game_state.players.select { |user_id, data| data[:piece] == piece }.empty?
+    !game_state.players.select { |data| data[:piece] == piece }.empty?
   end
 
   def user_already_joined?(game_state = game.state)
-    game_state.players.include?(user)
+    !game_state.players.select { |data| data[:user] == user }.empty?
   end
 end

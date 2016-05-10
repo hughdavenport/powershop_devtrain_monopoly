@@ -16,9 +16,12 @@
 <%= render 'players/index' %>
 <p id="players_in_game"><%= t('There are '"#{pluralize(@game_state.players.count, 'player')}"' in the game') %></p>
 <% if current_game_player %>
-<p id="current_player"><%= t('Welcome '"#{@current_user.username}") %></p>
-<p id="piece"><%= t('Your piece is '"#{current_game_player[:piece]}") %></p>
-<p id="balance"><%= t('Your balance is $'"#{current_game_player[:money]}") %></p>
+  <p id="welcome"><%= t('Welcome '"#{@current_user.username}") %></p>
+  <% if @game_state.players[@game_state.current_player] == current_game_player %>
+    <p id="current_player"><%= t('You are the current player') %></p>
+  <% end %>
+  <p id="piece"><%= t('Your piece is '"#{current_game_player[:piece]}") %></p>
+  <p id="balance"><%= t('Your balance is $'"#{current_game_player[:money]}") %></p>
 <% end %>
 
 <%= last_dice_roll_p %>

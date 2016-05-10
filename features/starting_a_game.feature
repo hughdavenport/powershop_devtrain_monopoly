@@ -23,6 +23,10 @@ Feature: Starting a game
     Given another user is waiting for 1 more player
     When I join the game
     Then I should see the game
+    And there should be 2 players in the game
+    And I should have $1500 balance
+    And another user should have $1500 balance
+    And another user should be the current player
 
   Scenario: Joining a large waiting game
     Given another user is waiting for 2 more players
@@ -38,6 +42,7 @@ Feature: Starting a game
     And there should be 2 players in the game
     And I should have $1500 balance
     And another user should have $1500 balance
+    And I should be the current player
 
   Scenario: Waiting for multiple players
     Given I am waiting for 2 more players

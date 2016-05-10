@@ -7,6 +7,8 @@ PLAYERS_IN_GAME_REGEX        = /^There are (?<players>\d+) (?:player|players) in
 BALANCE_SELECTOR             = "#balance"
 BALANCE_REGEX                = /^Your balance is \$(?<amount>\d+)$/i
 
+CURRENT_PLAYER_SELECTOR      = "#current_player"
+
 def waiting_for_players
   find(WAITING_FOR_PLAYERS_SELECTOR).text.gsub(WAITING_FOR_PLAYERS_REGEX, '\\k<players>')
 end
@@ -83,4 +85,10 @@ Then(/^(I|another user) should have \$(\d+) balance$/) do |user, amount|
   # First step will login as user
   step "#{user} goes to the game"
   expect(balance).to eq amount
+end
+
+Then(/^(I|another user) should be the current player$/) do |user|
+  # First step will login as user
+  step "#{user} goes to the game"
+  expect(page).to have_selector(CURRENT_PLAYER_SELECTOR)
 end
