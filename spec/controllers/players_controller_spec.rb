@@ -19,29 +19,41 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe PlayersController, type: :controller do
-
-  # This should return the minimal set of attributes required to create a valid
-  # Player. As you add validations to Player, be sure to
-  # adjust the attributes here as well.
-  let(:valid_piece) { :boot }
-
-  let(:invalid_piece) { :invalid }
-
-  let(:valid_game_attributes) {
-    { number_of_players: 2 }
-  }
-
-  let(:game) {
-    Game.create(valid_game_attributes)
-  }
-
+  # Inputs
+  let(:piece) { "piece" }
+  let(:game_id) { "1" }
   let(:username) { "testing" }
 
-  before {
-    @user = User.create!(username: username)
-  }
+  # Mock out models that controller always uses
+  before do
+    game_model
+    user_model
+  end
 
-  let(:add_player_to_game_service) { AddPlayerToGame.new(game: game, user: @user, piece: piece) }
+  let(:game_model) do
+    class_double("Game").as_stubbed_const.tap do |game_model|
+      expect(game_model).to receive(:find).with(game_id).and_return(game)
+    end
+  end
+
+  # Used by application controller
+  let(:user_model) do
+    class_double("User").as_stubbed_const.tap do |user_model|
+      expect(user_model).to receive(:find_by_username).with(username).and_return(user)
+    end
+  end
+
+
+  # These are returned by the stubbed models
+  let(:game) do
+    double("Game").tap do |game|
+      expect(game).to receive(:state).and_return(game_state)
+    end
+  end
+
+  let(:game_state) { double("GameState") }
+  let(:user) { double("User") }
+
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -49,45 +61,106 @@ RSpec.describe PlayersController, type: :controller do
   let(:valid_session) { {} }
 
   describe "GET #index" do
-    let(:piece) { valid_piece }
+    before do
+      expect(game_state).to receive(:players).and_return(players)
+    end
+
+    let(:players) { "testing" }
 
     it "assigns all players as @players" do
-      add_player_to_game_service.call
-      get :index, {game_id: game, username: username}, valid_session
-      expect(assigns(:players).size).to eq 1
+      get :index, {game_id: game_id, username: username}, valid_session
+      expect(assigns(:players)).to eq players
     end
   end
 
   describe "GET #new" do
-    it "works" do
-      get :new, {game_id: game, username: username}, valid_session
-      expect(true)
+    let(:user_id) { 1 }
+
+    before do
+      expect(game_state).to receive(:players).and_return(players)
+      expect(user).to receive(:id).and_return(user_id)
+    end
+
+    context "already playing" do
+      let(:players) { [ user_id ] }
+
+      it "redirects to the players list" do
+        get :new, {game_id: game_id, username: username}, valid_session
+        expect(response).to redirect_to game_players_path
+      end
+
+      it "has a notice" do
+        get :new, {game_id: game_id, username: username}, valid_session
+        expect(flash[:notice]).to eq "You are already playing"
+      end
+    end
+
+    context "not already playing in current game" do
+      let(:players) { [] }
+
+      it "renders the new template" do
+        get :new, {game_id: game_id, username: username}, valid_session
+        expect(response).to render_template(:new)
+      end
     end
   end
 
   describe "POST #create" do
+    # Mock out service that is going to be called
+    before do
+      add_player_to_game_service
+      # Set up redirect to
+      allow(game).to receive(:to_model).and_return(game)
+      allow(game).to receive(:model_name).and_return(game)
+      allow(game).to receive(:persisted?).and_return(true)
+      allow(game).to receive(:singular_route_key).and_return("game")
+    end
+
+    let(:add_player_to_game_service) do
+      class_double("AddPlayerToGame").as_stubbed_const.tap do |add_player_to_game_service|
+        expect(add_player_to_game_service).to receive(:new).with(game: game, user: user, piece: piece).and_return(service)
+      end
+    end
+
+    let(:service) do
+      double("AddPlayerToGame").tap do |service|
+        expect(service).to receive(:call).and_return(return_value)
+      end
+    end
+
     context "with valid params" do
-      it "creates a new player joined event" do
-        expect {
-          post :create, {game_id: game, :piece => valid_piece, username: username}, valid_session
-        }.to change(game.events, :count).by(1)
+      let(:return_value) { true }
+
+      it "has a success notice" do
+        post :create, {game_id: game_id, :piece => piece, username: username}, valid_session
+        expect(flash[:notice]).to eq "Player was successfully created."
       end
 
       it "redirects to the game" do
-        post :create, {game_id: game, :piece => valid_piece, username: username}, valid_session
+        post :create, {game_id: game_id, :piece => piece, username: username}, valid_session
         expect(response).to redirect_to(game)
       end
     end
 
     context "with invalid params" do
-      it "doesn't create any event" do
-        expect {
-        post :create, {game_id: game, :piece => invalid_piece, username: username}, valid_session
-        }.not_to change(game.events, :count)
+      let(:return_value) { false }
+      let(:errors) do
+        double("errors").tap do |errors|
+          expect(errors).to receive(:full_messages).and_return(errors)
+        end
+      end
+
+      before do
+        expect(service).to receive(:errors).and_return(errors)
+      end
+
+      it "has errors" do
+        post :create, {game_id: game_id, :piece => piece, username: username}, valid_session
+        expect(flash[:alert]).to eq errors: errors
       end
 
       it "redirects to the game" do
-        post :create, {game_id: game, :piece => invalid_piece, username: username}, valid_session
+        post :create, {game_id: game_id, :piece => piece, username: username}, valid_session
         expect(response).to redirect_to(game)
       end
     end
