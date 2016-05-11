@@ -23,14 +23,9 @@ RSpec.describe PlayersController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Player. As you add validations to Player, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    { piece: :boot }
-  }
+  let(:valid_piece) { :boot }
 
-  let(:invalid_attributes) {
-    { piece: :invalid }
-    skip("Can't test invalid enums, see bug https://github.com/rails/rails/issues/13971")
-  }
+  let(:invalid_piece) { :invalid }
 
   let(:valid_game_attributes) {
     { number_of_players: 2 }
@@ -42,9 +37,11 @@ RSpec.describe PlayersController, type: :controller do
 
   let(:username) { "testing" }
 
-  before(:each) {
-    User.create!(username: username)
+  before {
+    @user = User.create!(username: username)
   }
+
+  let(:add_player_to_game_service) { AddPlayerToGame.new(game: game, user: @user, piece: piece) }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -52,116 +49,47 @@ RSpec.describe PlayersController, type: :controller do
   let(:valid_session) { {} }
 
   describe "GET #index" do
-    it "assigns all players as @players" do
-      player = game.players.create! valid_attributes
-      get :index, {game_id: game, username: username}, valid_session
-      expect(assigns(:players)).to eq([player])
-    end
-  end
+    let(:piece) { valid_piece }
 
-  describe "GET #show" do
-    it "assigns the requested player as @player" do
-      player = game.players.create! valid_attributes
-      get :show, {game_id: game, :id => player.to_param, username: username}, valid_session
-      expect(assigns(:player)).to eq(player)
+    it "assigns all players as @players" do
+      add_player_to_game_service.call
+      get :index, {game_id: game, username: username}, valid_session
+      expect(assigns(:players).size).to eq 1
     end
   end
 
   describe "GET #new" do
-    it "assigns a new player as @player" do
+    it "works" do
       get :new, {game_id: game, username: username}, valid_session
-      expect(assigns(:player)).to be_a_new(Player)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested player as @player" do
-      player = game.players.create! valid_attributes
-      get :edit, {game_id: game, :id => player.to_param, username: username}, valid_session
-      expect(assigns(:player)).to eq(player)
+      expect(true)
     end
   end
 
   describe "POST #create" do
     context "with valid params" do
-      it "creates a new Player" do
+      it "creates a new player joined event" do
         expect {
-          post :create, {game_id: game, :player => valid_attributes, username: username}, valid_session
-        }.to change(Player, :count).by(1)
+          post :create, {game_id: game, :piece => valid_piece, username: username}, valid_session
+        }.to change(game.events, :count).by(1)
       end
 
       it "redirects to the game" do
-        post :create, {game_id: game, :player => valid_attributes, username: username}, valid_session
+        post :create, {game_id: game, :piece => valid_piece, username: username}, valid_session
         expect(response).to redirect_to(game)
       end
     end
 
     context "with invalid params" do
-      it "assigns a newly created but unsaved player as @player" do
-        post :create, {game_id: game, :player => invalid_attributes, username: username}, valid_session
-        expect(assigns(:player)).to be_a_new(Player)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {game_id: game, :player => invalid_attributes, username: username}, valid_session
-        expect(response).to render_template("new")
-      end
-    end
-  end
-
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        { piece: :hat }
-      }
-
-      it "updates the requested player" do
-        player = game.players.create! valid_attributes
-        put :update, {game_id: game, :id => player.to_param, :player => new_attributes, username: username}, valid_session
-        player.reload
-        expect(player.piece.to_sym).to eq new_attributes[:piece]
-      end
-
-      it "assigns the requested player as @player" do
-        player = game.players.create! valid_attributes
-        put :update, {game_id: game, :id => player.to_param, :player => valid_attributes, username: username}, valid_session
-        expect(assigns(:player)).to eq(player)
+      it "doesn't create any event" do
+        expect {
+        post :create, {game_id: game, :piece => invalid_piece, username: username}, valid_session
+        }.not_to change(game.events, :count)
       end
 
       it "redirects to the game" do
-        player = game.players.create! valid_attributes
-        put :update, {game_id: game, :id => player.to_param, :player => valid_attributes, username: username}, valid_session
+        post :create, {game_id: game, :piece => invalid_piece, username: username}, valid_session
         expect(response).to redirect_to(game)
       end
-    end
-
-    context "with invalid params" do
-      it "assigns the player as @player" do
-        player = game.players.create! valid_attributes
-        put :update, {game_id: game, :id => player.to_param, :player => invalid_attributes, username: username}, valid_session
-        expect(assigns(:player)).to eq(player)
-      end
-
-      it "re-renders the 'edit' template" do
-        player = game.players.create! valid_attributes
-        put :update, {game_id: game, :id => player.to_param, :player => invalid_attributes, username: username}, valid_session
-        expect(response).to render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "destroys the requested player" do
-      player = game.players.create! valid_attributes
-      expect {
-        delete :destroy, {game_id: game, :id => player.to_param, username: username}, valid_session
-      }.to change(Player, :count).by(-1)
-    end
-
-    it "redirects to the players list" do
-      player = game.players.create! valid_attributes
-      delete :destroy, {game_id: game, :id => player.to_param, username: username}, valid_session
-      expect(response).to redirect_to(game_players_url(game))
     end
   end
 
