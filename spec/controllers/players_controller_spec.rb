@@ -27,13 +27,7 @@ RSpec.describe PlayersController, type: :controller do
 
 
   # These are returned by the stubbed models
-  let(:game) do
-    double("Game").tap do |game|
-      expect(game).to receive(:state).and_return(game_state)
-    end
-  end
-
-  let(:game_state) { double("GameState") }
+  let(:game) { double("Game") }
   let(:user) { double("User") }
 
 
@@ -44,7 +38,13 @@ RSpec.describe PlayersController, type: :controller do
 
   describe "GET #index" do
     before do
-      expect(game_state).to receive(:players).and_return(players)
+      expect(game).to receive(:state).and_return(game_state)
+    end
+
+    let(:game_state) do
+      double("GameState").tap do |game_state|
+        expect(game_state).to receive(:players).and_return(players)
+      end
     end
 
     let(:players) { "testing" }
@@ -59,8 +59,14 @@ RSpec.describe PlayersController, type: :controller do
     let(:user_id) { 1 }
 
     before do
-      expect(game_state).to receive(:players).and_return(players)
+      expect(game).to receive(:state).and_return(game_state)
       expect(user).to receive(:id).and_return(user_id)
+    end
+
+    let(:game_state) do
+      double("GameState").tap do |game_state|
+        expect(game_state).to receive(:players).and_return(players)
+      end
     end
 
     context "already playing" do

@@ -1,6 +1,6 @@
 class PlayersController < ApplicationController
   before_action :set_game
-  before_action :set_game_state
+  before_action :set_game_state, only: [:index, :new]
   before_action :logged_in
 
   # GET /games/1/players
