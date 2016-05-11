@@ -56,8 +56,6 @@ RSpec.describe PlayersController, type: :controller do
   end
 
   describe "GET #new" do
-    let(:user_id) { 1 }
-
     before do
       expect(game).to receive(:state).and_return(game_state)
       expect(user).to receive(:id).and_return(user_id)
@@ -68,6 +66,8 @@ RSpec.describe PlayersController, type: :controller do
         expect(game_state).to receive(:players).and_return(players)
       end
     end
+
+    let(:user_id) { 1 }
 
     context "already playing" do
       let(:players) { [ user_id ] }
@@ -132,14 +132,15 @@ RSpec.describe PlayersController, type: :controller do
 
     context "with invalid params" do
       let(:return_value) { false }
+
+      before do
+        expect(service).to receive(:errors).and_return(errors)
+      end
+
       let(:errors) do
         double("errors").tap do |errors|
           expect(errors).to receive(:full_messages).and_return(errors)
         end
-      end
-
-      before do
-        expect(service).to receive(:errors).and_return(errors)
       end
 
       it "has errors" do
