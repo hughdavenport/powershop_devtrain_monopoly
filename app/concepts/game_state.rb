@@ -2,7 +2,6 @@ class GameState
   attr_accessor :players
   attr_accessor :game
   attr_accessor :current_player
-  attr_accessor :board
 
   PIECES = [:wheelbarrow, :battleship, :racecar, :thumble, :boot, :dog, :hat]
 
@@ -13,7 +12,6 @@ class GameState
   def initialize(game:)
     self.game = game
     self.players = []
-    self.board = create_board
   end
 
   def started?
@@ -32,9 +30,7 @@ class GameState
     players.select { |player| player[:position] == location }
   end
 
-  private
-
-  def create_board
+  def board
     [
       :go,
       :old_kent_road,
