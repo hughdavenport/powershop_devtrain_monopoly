@@ -27,6 +27,8 @@ Feature: Starting a game
     And I should have $1500 balance
     And another user should have $1500 balance
     And another user should be the current player
+    And I should be on Go
+    And another user should be on Go
 
   Scenario: Joining a large waiting game
     Given another user is waiting for 2 more players
@@ -43,6 +45,8 @@ Feature: Starting a game
     And I should have $1500 balance
     And another user should have $1500 balance
     And I should be the current player
+    And I should be on Go
+    And another user should be on Go
 
   Scenario: Waiting for multiple players
     Given I am waiting for 2 more players

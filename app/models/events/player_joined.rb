@@ -8,6 +8,8 @@ class PlayerJoined < Event
         user: user,
         piece: piece,
         money: 1500,
+        location: 0,
+        jail: false,
       }
       game_state.current_player = 0 if game_state.current_player.nil?
     end

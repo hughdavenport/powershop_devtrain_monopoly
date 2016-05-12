@@ -22,6 +22,7 @@
   <% end %>
   <p id="piece"><%= t('Your piece is '"#{current_game_player[:piece]}") %></p>
   <p id="balance"><%= t('Your balance is $'"#{current_game_player[:money]}") %></p>
+  <p id="current_location"><%= t('You are at '"#{@game_state.board[current_game_player[:location]]}") %></p>
 <% end %>
 
 <%= last_dice_roll_p %>

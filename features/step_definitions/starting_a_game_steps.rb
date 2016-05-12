@@ -7,6 +7,9 @@ PLAYERS_IN_GAME_REGEX        = /^There are (?<players>\d+) (?:player|players) in
 BALANCE_SELECTOR             = "#balance"
 BALANCE_REGEX                = /^Your balance is \$(?<amount>\d+)$/i
 
+CURRENT_LOCATION_SELECTOR    = "#current_location"
+CURRENT_LOCATION_REGEX       = /^You are at (?<location>.*)$/i
+
 CURRENT_PLAYER_SELECTOR      = "#current_player"
 
 def waiting_for_players
@@ -19,6 +22,10 @@ end
 
 def balance
   find(BALANCE_SELECTOR).text.gsub(BALANCE_REGEX, '\\k<amount>')
+end
+
+def current_location
+  find(CURRENT_LOCATION_SELECTOR).text.gsub(CURRENT_LOCATION_REGEX, '\\k<location>')
 end
 
 Given(/^(I|another user) (?:have|has) started a new game(?: with (\d+) (?:player|players))$/) do |user, player_count|
@@ -91,4 +98,9 @@ Then(/^(I|another user) should be the current player$/) do |user|
   # First step will login as user
   step "#{user} goes to the game"
   expect(page).to have_selector(CURRENT_PLAYER_SELECTOR)
+end
+
+Then(/^(I|another user) should be on (.*)$/) do |user, location|
+  step "#{user} goes to the game"
+  expect(current_location.downcase).to eq location.downcase
 end
