@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: [:show, :edit, :update, :destroy]
-  before_action :set_game_state, only: [:show, :edit, :update, :destroy]
+  before_action :set_game, only: [:show, :destroy]
+  before_action :set_game_state, only: [:show]
   before_action :logged_in
 
   # GET /games
@@ -18,10 +18,6 @@ class GamesController < ApplicationController
     @game = Game.new
   end
 
-  # GET /games/1/edit
-  def edit
-  end
-
   # POST /games
   def create
     @game = Game.new(game_params)
@@ -32,16 +28,6 @@ class GamesController < ApplicationController
       render :new
     end
   end
-
-  # PATCH/PUT /games/1
-  def update
-    if @game.update(game_params)
-      redirect_to @game, notice: 'Game was successfully updated.'
-    else
-      render :edit
-    end
-  end
-
   # DELETE /games/1
   def destroy
     @game.destroy

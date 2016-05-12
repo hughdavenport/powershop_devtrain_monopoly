@@ -19,145 +19,167 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe GamesController, type: :controller do
+  # Inputs
+  let(:piece) { "piece" }
+  let(:game_id) { "1" }
+  let(:username) { "testing" }
+  let(:attributes) { { number_of_players: 2 } }
 
-  # This should return the minimal set of attributes required to create a valid
-  # Game. As you add validations to Game, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) {
-    { number_of_players: 2 }
-  }
+  # Mock out models that controller always uses
+  before do
+    game_model
+    user_model
+  end
 
-  let(:invalid_attributes) {
-    { number_of_players: 1 }
-  }
+  let(:game_model) { class_double("Game").as_stubbed_const }
+
+  # Used by application controller
+  let(:user_model) do
+    class_double("User").as_stubbed_const.tap do |user_model|
+      expect(user_model).to receive(:find_by_username).with(username).and_return(user)
+    end
+  end
+
+
+  # These are returned by the stubbed models
+  let(:user) { double("User") }
+
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # GamesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  let(:username) { "testing" }
-
-  before(:each) {
-    User.create!(username: username)
-  }
 
   describe "GET #index" do
+    before do
+      expect(game_model).to receive(:all).and_return(games)
+    end
+
+    let(:games) { "testing" }
+
+    before { get :index, {username: username}, valid_session }
+
     it "assigns all games as @games" do
-      game = Game.create! valid_attributes
-      get :index, {username: username}, valid_session
-      expect(assigns(:games)).to eq([game])
+      expect(assigns(:games)).to eq games
     end
   end
 
   describe "GET #show" do
-    it "assigns the requested game as @game" do
-      game = Game.create! valid_attributes
-      get :show, {:id => game.to_param, username: username}, valid_session
-      expect(assigns(:game)).to eq(game)
+    before do
+      expect(game_model).to receive(:find).with(game_id).and_return(game)
+    end
+
+    let(:game) do
+      double("Game").tap do |game|
+        expect(game).to receive(:state).and_return(game_state)
+        expect(game).to receive(:number_of_players).and_return(2)
+      end
+    end
+
+    let(:game_state) do
+      double("GameState").tap do |game_state|
+        expect(game_state).to receive(:players).and_return(players)
+      end
+    end
+
+    before { get :show, {:id => game_id, username: username}, valid_session }
+
+    context "when there are not enough players" do
+      let(:players) { [] }
+
+      it "redirects to the players list" do
+        expect(response).to redirect_to(game_players_path(game))
+      end
+    end
+
+    context "when there are the right number of players" do
+      let(:players) { [ 1, 2 ] }
+
+      it "assigns the requested game as @game" do
+        expect(assigns(:game)).to eq(game)
+      end
     end
   end
 
   describe "GET #new" do
-    it "assigns a new game as @game" do
-      get :new, {:username => username}, valid_session
-      expect(assigns(:game)).to be_a_new(Game)
+    before do
+      expect(game_model).to receive(:new).and_return(game)
     end
-  end
 
-  describe "GET #edit" do
-    it "assigns the requested game as @game" do
-      game = Game.create! valid_attributes
-      get :edit, {:id => game.to_param, username: username}, valid_session
-      expect(assigns(:game)).to eq(game)
+    let(:game) { double("Game") }
+
+    before { get :new, {:username => username}, valid_session }
+
+    it "assigns a new game as @game" do
+      expect(assigns(:game)).to eq game
     end
   end
 
   describe "POST #create" do
-    context "with valid params" do
-      it "creates a new Game" do
-        expect {
-          post :create, {:game => valid_attributes, username: username}, valid_session
-        }.to change(Game, :count).by(1)
+    before do
+      expect(game_model).to receive(:new).and_return(game)
+    end
+
+    let(:game) do
+      double("Game").tap do |game|
+        expect(game).to receive(:save).and_return(return_value)
+        # Set up redirect to
+        allow(game).to receive(:to_model).and_return(game)
+        allow(game).to receive(:model_name).and_return(game)
+        allow(game).to receive(:persisted?).and_return(true)
+        allow(game).to receive(:singular_route_key).and_return("game")
       end
+    end
+
+    before { post :create, {:game => attributes, username: username}, valid_session }
+
+    context "with valid params" do
+      let(:return_value) { true }
 
       it "assigns a newly created game as @game" do
-        post :create, {:game => valid_attributes, username: username}, valid_session
-        expect(assigns(:game)).to be_a(Game)
-        expect(assigns(:game)).to be_persisted
+        expect(assigns(:game)).to eq game
       end
 
       it "redirects to the created game" do
-        post :create, {:game => valid_attributes, username: username}, valid_session
-        expect(response).to redirect_to(Game.last)
+        expect(response).to redirect_to(game)
+      end
+
+      it "has a success notice" do
+        expect(flash[:notice]).to eq "Game was successfully created."
       end
     end
 
     context "with invalid params" do
+      let(:return_value) { false }
+
       it "assigns a newly created but unsaved game as @game" do
-        post :create, {:game => invalid_attributes, username: username}, valid_session
-        expect(assigns(:game)).to be_a_new(Game)
+        expect(assigns(:game)).to eq game
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:game => invalid_attributes, username: username}, valid_session
         expect(response).to render_template("new")
       end
     end
   end
 
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        { number_of_players: 6 }
-      }
-
-      it "updates the requested game" do
-        game = Game.create! valid_attributes
-        put :update, {:id => game.to_param, :game => new_attributes, username: username}, valid_session
-        game.reload
-        expect(game.number_of_players).to eq new_attributes[:number_of_players]
-      end
-
-      it "assigns the requested game as @game" do
-        game = Game.create! valid_attributes
-        put :update, {:id => game.to_param, :game => valid_attributes, username: username}, valid_session
-        expect(assigns(:game)).to eq(game)
-      end
-
-      it "redirects to the game" do
-        game = Game.create! valid_attributes
-        put :update, {:id => game.to_param, :game => valid_attributes, username: username}, valid_session
-        expect(response).to redirect_to(game)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the game as @game" do
-        game = Game.create! valid_attributes
-        put :update, {:id => game.to_param, :game => invalid_attributes, username: username}, valid_session
-        expect(assigns(:game)).to eq(game)
-      end
-
-      it "re-renders the 'edit' template" do
-        game = Game.create! valid_attributes
-        put :update, {:id => game.to_param, :game => invalid_attributes, username: username}, valid_session
-        expect(response).to render_template("edit")
-      end
-    end
-  end
-
   describe "DELETE #destroy" do
+    before do
+      expect(game_model).to receive(:find).with(game_id).and_return(game)
+    end
+
+    let(:game) do
+      double("Game").tap do |game|
+        expect(game).to receive(:destroy)
+      end
+    end
+
+    before { delete :destroy, {:id => game_id, username: username}, valid_session }
+
     it "destroys the requested game" do
-      game = Game.create! valid_attributes
-      expect {
-        delete :destroy, {:id => game.to_param, username: username}, valid_session
-      }.to change(Game, :count).by(-1)
     end
 
     it "redirects to the games list" do
-      game = Game.create! valid_attributes
-      delete :destroy, {:id => game.to_param, username: username}, valid_session
       expect(response).to redirect_to(games_url)
     end
   end

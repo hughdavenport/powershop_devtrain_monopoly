@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'homepage/index'
 
   resources :users
-  resources :games do
+  resources :games, only: [:index, :show, :new, :create, :destroy] do
     resources :players, only: [:index, :new, :create]
     resources :dice_rolls, only: [:create]
   end
