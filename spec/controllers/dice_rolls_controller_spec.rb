@@ -36,6 +36,14 @@ RSpec.describe DiceRollsController, type: :controller do
   let(:valid_session) { {} }
 
   describe "POST #create" do
+    context "when it is our turn" do
+      # need to mock out game state
+    end
+
+    context "when it is not out turn" do
+      # need to mock out game state, and check redirect and flash
+    end
+
     # Mock out service that is going to be called
     before do
       roll_dice_service
