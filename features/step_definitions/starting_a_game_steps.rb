@@ -100,7 +100,11 @@ Then(/^(I|another user) should be the current player$/) do |user|
   expect(page).to have_selector(CURRENT_PLAYER_SELECTOR)
 end
 
-Then(/^(I|another user) should be on (.*)$/) do |user, location|
+Then(/^(I|another user) should( not)? be on (.*)$/) do |user, negation, location|
   step "#{user} goes to the game"
-  expect(current_location.downcase).to eq location.downcase
+  if negation
+    expect(current_location.downcase).not_to eq location.downcase
+  else
+    expect(current_location.downcase).to eq location.downcase
+  end
 end

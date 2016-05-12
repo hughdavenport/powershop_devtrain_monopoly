@@ -55,3 +55,9 @@ Then(/^It should( not)? be my turn$/) do |negation|
     expect(page).to have_selector(CURRENT_PLAYER_SELECTOR)
   end
 end
+
+Then(/^I should move along the board$/) do
+  # Assume that we start on go, and only test movement from there
+  # TODO: change assumption!!
+  step 'I should not be on Go'
+end
