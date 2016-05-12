@@ -36,87 +36,114 @@ RSpec.describe DiceRollsController, type: :controller do
   let(:valid_session) { {} }
 
   describe "POST #create" do
-    context "when it is our turn" do
-      # need to mock out game state
-    end
-
-    context "when it is not out turn" do
-      # need to mock out game state, and check redirect and flash
-    end
-
-    # Mock out service that is going to be called
     before do
-      roll_dice_service
       # Set up redirect to
       allow(game).to receive(:to_model).and_return(game)
       allow(game).to receive(:model_name).and_return(game)
       allow(game).to receive(:persisted?).and_return(true)
       allow(game).to receive(:singular_route_key).and_return("game")
+      # Mock out state, used for checking whether it is our turn
+      allow(game).to receive(:state).and_return(game_state)
+      expect(user).to receive(:id)
     end
 
-    let(:roll_dice_service) do
-      class_double("RollDice").as_stubbed_const.tap do |roll_dice_service|
-        expect(roll_dice_service).to receive(:new).with(game: game, amount: amount).and_return(service)
+    let(:game_state) do
+      double("GameState").tap do |game_state|
+        expect(game_state).to receive(:players).and_return(players)
+        expect(game_state).to receive(:current_player).and_return(0)
       end
     end
 
-    let(:service) do
-      double("RollDice").tap do |service|
-        expect(service).to receive(:call).and_return(return_value)
-      end
-    end
+    let(:players) { [ "testing" ] }
 
-    let(:amount) { nil }
-
-    context "with valid game state" do
-      let(:return_value) { true }
-
-      before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
-
-      it "has a success notice" do
-        expect(flash[:notice]).to eq "Dice rolled"
+    context "when it is not out turn" do
+      before do
+        expect(game_state).to receive(:player)
       end
 
-      it "redirects to the game" do
+      before { post :create, {game_id: game_id, username: username}, valid_session }
+
+      it "should redirect" do
         expect(response).to redirect_to(game)
       end
+
+      it "should have a flash message" do
+        expect(flash[:danger]).to eq "Not your turn"
+      end
     end
 
-    context "with invalid game state" do
-      let(:return_value) { false }
-
+    context "when it is our turn" do
+      # Mock out service that is going to be called
       before do
-        expect(service).to receive(:errors).and_return(errors)
+        roll_dice_service
+        # Make sure game_state matches our thoughts that we are logged in
+        expect(game_state).to receive(:player).and_return(players[0])
       end
-      let(:errors) do
-        double("errors").tap do |errors|
-          expect(errors).to receive(:full_messages).and_return(errors)
+
+      let(:roll_dice_service) do
+        class_double("RollDice").as_stubbed_const.tap do |roll_dice_service|
+          expect(roll_dice_service).to receive(:new).with(game: game, amount: amount).and_return(service)
         end
       end
 
-      before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
-
-      it "has errors" do
-        expect(flash[:alert]).to eq errors: errors
+      let(:service) do
+        double("RollDice").tap do |service|
+          expect(service).to receive(:call).and_return(return_value)
+        end
       end
 
-      it "redirects to the game" do
-        expect(response).to redirect_to(game)
+      let(:amount) { nil }
+
+      context "with valid game state" do
+        let(:return_value) { true }
+
+        before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
+
+        it "has a success notice" do
+          expect(flash[:notice]).to eq "Dice rolled"
+        end
+
+        it "redirects to the game" do
+          expect(response).to redirect_to(game)
+        end
       end
-    end
 
-    context "passing in our own amount" do
-      let(:amount) { "10" }
-      let(:return_value) { true }
+      context "with invalid game state" do
+        let(:return_value) { false }
 
-      before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
+        before do
+          expect(service).to receive(:errors).and_return(errors)
+        end
+        let(:errors) do
+          double("errors").tap do |errors|
+            expect(errors).to receive(:full_messages).and_return(errors)
+          end
+        end
 
-      it "has a success notice" do
-        expect(flash[:notice]).to eq "Dice rolled"
+        before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
+
+        it "has errors" do
+          expect(flash[:alert]).to eq errors: errors
+        end
+
+        it "redirects to the game" do
+          expect(response).to redirect_to(game)
+        end
       end
 
-      it "redirects to the game" do
-        expect(response).to redirect_to(game)
+      context "passing in our own amount" do
+        let(:amount) { "10" }
+        let(:return_value) { true }
+
+        before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
+
+        it "has a success notice" do
+          expect(flash[:notice]).to eq "Dice rolled"
+        end
+
+        it "redirects to the game" do
+          expect(response).to redirect_to(game)
+        end
       end
     end
   end

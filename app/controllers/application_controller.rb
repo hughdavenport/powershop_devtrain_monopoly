@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
       redirect_to :root
     end
     unless @game.state.players[@game.state.current_player] == @game.state.player(@current_user.id)
-      flash[:danger] = t('Not your turn')
+      flash[:danger] = 'Not your turn'
       redirect_to @game
     end
   end
