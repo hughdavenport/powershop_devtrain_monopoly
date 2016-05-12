@@ -61,3 +61,8 @@ Then(/^I should move along the board$/) do
   # TODO: change assumption!!
   step 'I should not be on Go'
 end
+
+Then(/^I should be in jail$/) do
+  step 'I should be on Jail' # test the actual piece move
+  expect(page).to have_selector(IN_JAIL_SELECTOR)
+end
