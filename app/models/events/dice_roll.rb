@@ -6,16 +6,30 @@ class DiceRoll < Event
     game_state.tap do |game_state|
       game_state.players[game_state.current_player].tap do |player|
         player[:dice_rolls] << amount.to_i
-        if player[:dice_rolls].size == 2
-          rolled_a_double = player[:dice_rolls].uniq.size == 1
-          player[:doubles_in_a_row] += 1 if rolled_a_double
-          if player[:doubles_in_a_row] == 3
-            game_state.send_player_to_jail!(player)
-            break
+        if player[:in_jail]
+          if player[:dice_rolls].size == 2
+            if player[:dice_rolls].uniq.size == 1
+              game_state.break_out_of_jail!(player)
+              break
+            end
+            player[:pairs_rolled_while_in_jail] += 1
+            if player[:pairs_rolled_while_in_jail] == 3
+              # Add event to break out of jail...
+            end
           end
-          game_state.shift_player!(player)
-          # TODO: buy stuff...
-          game_state.end_turn!(player) unless rolled_a_double
+        else
+          # Normal movement
+          if player[:dice_rolls].size == 2
+            rolled_a_double = player[:dice_rolls].uniq.size == 1
+            player[:doubles_in_a_row] += 1 if rolled_a_double
+            if player[:doubles_in_a_row] == 3
+              game_state.send_player_to_jail!(player)
+              break
+            end
+            game_state.shift_player!(player)
+            # TODO: buy stuff...
+            game_state.end_turn!(player) unless rolled_a_double
+          end
         end
       end
     end

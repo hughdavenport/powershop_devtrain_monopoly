@@ -41,7 +41,15 @@ class GameState
     end_turn!(player)
   end
 
+  def break_out_of_jail!(player)
+    player[:in_jail] = false
+    end_turn!(player)
+  end
+
   def end_turn!(player)
+    player[:dice_rolls] = []
+    player[:doubles_in_a_row] = 0
+    player[:pairs_rolled_while_in_jail] = 0
     self.current_player = (current_player + 1) % players.size
   end
 
