@@ -1,12 +1,26 @@
-DICE_ROLL_SELECTOR = '#dice_roll'
-DICE_ROLL_REGEX    = /^You rolled a (?<dice_roll>\d+)$/i
+DICE_ROLL_SELECTOR         = '#dice_roll'
+DICE_ROLL_REGEX            = /^You rolled a (?<dice_roll>\d+)$/i
 
-CURRENT_PLAYER_SELECTOR = "#current_player"
+CURRENT_LOCATION_SELECTOR  = "#current_location"
+CURRENT_LOCATION_REGEX     = /^You are at (?<location>.*)$/i
 
-IN_JAIL_SELECTOR = "#in_jail"
+BALANCE_SELECTOR           = "#balance"
+BALANCE_REGEX              = /^Your balance is \$(?<amount>\d+)$/i
+
+CURRENT_PLAYER_SELECTOR    = "#current_player"
+
+IN_JAIL_SELECTOR           = "#in_jail"
 
 def dice_roll
   find(DICE_ROLL_SELECTOR).text.gsub(DICE_ROLL_REGEX, '\\k<dice_roll>')
+end
+
+def current_location
+  find(CURRENT_LOCATION_SELECTOR).text.gsub(CURRENT_LOCATION_REGEX, '\\k<location>')
+end
+
+def balance
+  find(BALANCE_SELECTOR).text.gsub(BALANCE_REGEX, '\\k<amount>')
 end
 
 Given(/^It is my turn$/) do
@@ -21,6 +35,14 @@ end
 Given(/^I am in jail$/) do
   step 'I go to the game'
   step 'I roll 3 doubles'
+end
+
+Given(/^I know my location$/) do
+  @location = current_location
+end
+
+Given(/^I know my balance$/) do
+  @balance = balance
 end
 
 
@@ -70,12 +92,10 @@ Then(/^It should( not)? be my turn$/) do |negation|
 end
 
 Then(/^I should( not)? move along the board$/) do |negation|
-  # Assume that we start on go, and only test movement from there
-  # TODO: change assumption!!
   if negation
-    step 'I should be on Go'
+    step "I should be on #{@location}"
   else
-    step 'I should not be on Go'
+    step "I should not be on #{@location}"
   end
 end
 
@@ -87,4 +107,30 @@ end
 Then(/^I should be visiting jail$/) do
   step 'I should be on Jail' # we should be on the jail square, but not "in" jail
   expect(page).not_to have_selector(IN_JAIL_SELECTOR)
+end
+
+Then(/^(I|another user) should( not)? be on (.*)$/) do |user, negation, location|
+  step "#{user} goes to the game"
+  if negation
+    expect(current_location.downcase).not_to eq location.downcase
+  else
+    expect(current_location.downcase).to eq location.downcase
+  end
+end
+
+Then(/^(I|another user) should have \$(\d+) balance$/) do |user, amount|
+  # First step will login as user
+  step "#{user} goes to the game"
+  expect(balance).to eq amount
+end
+
+Then(/^I should (lose|gain) \$(\d+)$/) do |direction, amount|
+  multiplier = (direction == "lose" ? -1 : 1)
+  expect(@balance + multiplier * amount).to eq balance
+end
+
+Then(/^(I|another user) should be the current player$/) do |user|
+  # First step will login as user
+  step "#{user} goes to the game"
+  expect(page).to have_selector(CURRENT_PLAYER_SELECTOR)
 end

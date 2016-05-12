@@ -4,28 +4,12 @@ WAITING_FOR_PLAYERS_REGEX    = /^Waiting for (?<players>\d+) (?:player|players)$
 PLAYERS_IN_GAME_SELECTOR     = "#players_in_game"
 PLAYERS_IN_GAME_REGEX        = /^There are (?<players>\d+) (?:player|players) in the game$/i
 
-BALANCE_SELECTOR             = "#balance"
-BALANCE_REGEX                = /^Your balance is \$(?<amount>\d+)$/i
-
-CURRENT_LOCATION_SELECTOR    = "#current_location"
-CURRENT_LOCATION_REGEX       = /^You are at (?<location>.*)$/i
-
-CURRENT_PLAYER_SELECTOR      = "#current_player"
-
 def waiting_for_players
   find(WAITING_FOR_PLAYERS_SELECTOR).text.gsub(WAITING_FOR_PLAYERS_REGEX, '\\k<players>')
 end
 
 def players_in_game
   find(PLAYERS_IN_GAME_SELECTOR).text.gsub(PLAYERS_IN_GAME_REGEX, '\\k<players>')
-end
-
-def balance
-  find(BALANCE_SELECTOR).text.gsub(BALANCE_REGEX, '\\k<amount>')
-end
-
-def current_location
-  find(CURRENT_LOCATION_SELECTOR).text.gsub(CURRENT_LOCATION_REGEX, '\\k<location>')
 end
 
 Given(/^(I|another user) (?:have|has) started a new game(?: with (\d+) (?:player|players))$/) do |user, player_count|
@@ -86,25 +70,4 @@ end
 
 Then(/^there should be (\d+) (?:player|players) in the game$/) do |player_count|
   expect(players_in_game).to eq player_count
-end
-
-Then(/^(I|another user) should have \$(\d+) balance$/) do |user, amount|
-  # First step will login as user
-  step "#{user} goes to the game"
-  expect(balance).to eq amount
-end
-
-Then(/^(I|another user) should be the current player$/) do |user|
-  # First step will login as user
-  step "#{user} goes to the game"
-  expect(page).to have_selector(CURRENT_PLAYER_SELECTOR)
-end
-
-Then(/^(I|another user) should( not)? be on (.*)$/) do |user, negation, location|
-  step "#{user} goes to the game"
-  if negation
-    expect(current_location.downcase).not_to eq location.downcase
-  else
-    expect(current_location.downcase).to eq location.downcase
-  end
 end
