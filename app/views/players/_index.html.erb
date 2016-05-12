@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <% if @game.number_of_players != @game_state.players.count %>
   <p id="waiting_for_players"><%= t('Waiting for '"#{pluralize(@game.number_of_players - @game_state.players.count, 'player')}") %></p>
 <% end %>
