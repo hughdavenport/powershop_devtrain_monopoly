@@ -10,7 +10,8 @@ RSpec.describe RollDice, type: :service do
   let(:seconduser) { User.create!(username: "seconduser") }
   let(:secondpiece) { "hat" }
 
-  subject(:service) { RollDice.new(game: game) }
+  subject(:service) { RollDice.new(game: game, amount: amount) }
+  let(:amount) { nil }
 
   context "when it is my turn" do
     # TODO how do we set up my turn?, override what game does
@@ -45,5 +46,32 @@ RSpec.describe RollDice, type: :service do
 
   context "when it is not my turn" do
     # TODO how to set up?, this should fail
+  end
+
+  context "when I supply a number (TESTING ONLY!!!)" do
+    let(:amount) { 10 } # testing value, just to make sure we can set it fine
+
+    it "succeeds" do
+      expect(service.call).to be_truthy
+    end
+
+    it "adds a dice roll" do
+      expect { service.call }.to change(DiceRoll, :count).by(1)
+    end
+
+    it "adds the dice roll to the correct game" do
+      service.call
+      expect(DiceRoll.last.game).to eql game
+    end
+
+    it "has a valid dice roll" do
+      service.call
+      expect(DiceRoll.last.amount).to eq amount
+    end
+
+    it "has no errors" do
+      service.call
+      expect(service.errors).not_to be_present
+    end
   end
 end

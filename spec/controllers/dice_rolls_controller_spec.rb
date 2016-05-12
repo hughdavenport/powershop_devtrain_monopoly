@@ -48,7 +48,7 @@ RSpec.describe DiceRollsController, type: :controller do
 
     let(:roll_dice_service) do
       class_double("RollDice").as_stubbed_const.tap do |roll_dice_service|
-        expect(roll_dice_service).to receive(:new).with(game: game).and_return(service)
+        expect(roll_dice_service).to receive(:new).with(game: game, amount: amount).and_return(service)
       end
     end
 
@@ -58,10 +58,12 @@ RSpec.describe DiceRollsController, type: :controller do
       end
     end
 
+    let(:amount) { nil }
+
     context "with valid game state" do
       let(:return_value) { true }
 
-      before { post :create, {game_id: game_id, username: username}, valid_session }
+      before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
 
       it "has a success notice" do
         expect(flash[:notice]).to eq "Dice rolled"
@@ -84,10 +86,25 @@ RSpec.describe DiceRollsController, type: :controller do
         end
       end
 
-      before { post :create, {game_id: game_id, username: username}, valid_session }
+      before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
 
       it "has errors" do
         expect(flash[:alert]).to eq errors: errors
+      end
+
+      it "redirects to the game" do
+        expect(response).to redirect_to(game)
+      end
+    end
+
+    context "passing in our own amount" do
+      let(:amount) { "10" }
+      let(:return_value) { true }
+
+      before { post :create, {game_id: game_id, amount: amount, username: username}, valid_session }
+
+      it "has a success notice" do
+        expect(flash[:notice]).to eq "Dice rolled"
       end
 
       it "redirects to the game" do
