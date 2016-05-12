@@ -22,7 +22,7 @@ class DiceRoll < Event
   private
 
   def default_values
-    self.amount ||= (Random.rand(6) + 1)
+    self.amount = (Random.rand(6) + 1) unless amount.present?
   end
 
   def users_current_turn?(game_state = game.state)

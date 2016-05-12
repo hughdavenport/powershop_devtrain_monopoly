@@ -1,13 +1,14 @@
 class RollDice
   attr_reader :game, :event
 
-  def initialize(game:)
+  def initialize(game:, amount:)
     self.game = game
+    self.amount = amount # Only controller can send this, test whether in test mode there
   end
 
   def call
     game.with_lock do
-      self.event = DiceRoll.new
+      self.event = DiceRoll.new(amount: amount)
       game.events << event if event.can_apply?(game.state)
     end
   end
@@ -19,4 +20,5 @@ class RollDice
   private
 
   attr_writer :game, :event
+  attr_accessor :amount
 end

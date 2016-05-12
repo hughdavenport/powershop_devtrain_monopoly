@@ -5,7 +5,7 @@ class DiceRollsController < ApplicationController
 
   # POST /games/1/dice_rolls
   def create
-    service = RollDice.new(game: @game)
+    service = RollDice.new(game: @game, amount: (params[:amount] if Rails.env.test? || Rails.env.development?))
 
     if service.call
       redirect_to @game, notice: 'Dice rolled'
