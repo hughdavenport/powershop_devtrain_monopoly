@@ -44,3 +44,11 @@ Feature: Playing a game
     And It is my turn
     When I roll a double
     Then I should be visiting jail
+
+  Scenario: Landing on Income Tax
+    Given It is my turn
+    When I roll a 1
+    And I roll a 3
+    Then I should be on Income Tax
+    # This only tests the -$200, not the -15%
+    And I should have $1300 balance
