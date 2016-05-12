@@ -4,7 +4,20 @@ class DiceRoll < Event
 
   def apply(game_state)
     game_state.tap do |game_state|
-      # TODO apply this...
+      game_state.players[game_state.current_player].tap do |player|
+        player[:dice_rolls] << amount.to_i
+        if player[:dice_rolls].size == 2
+          rolled_a_double = player[:dice_rolls].uniq.size == 1
+          player[:doubles_in_a_row] += 1 if rolled_a_double
+          if player[:doubles_in_a_row] == 3
+            game_state.send_player_to_jail!(player)
+            break
+          end
+          game_state.shift_player!(player)
+          # TODO: buy stuff...
+          game_state.end_turn!(player) unless rolled_a_double
+        end
+      end
     end
   end
 
@@ -26,6 +39,7 @@ class DiceRoll < Event
   end
 
   def users_current_turn?(game_state = game.state)
-    true # TODO decide on current turn
+    # This needs to check whether current_player can actuall roll, and change method name
+    true
   end
 end

@@ -36,5 +36,11 @@ Feature: Playing a game
   Scenario: While in jail
     Given I am in jail
     And It is my turn
-    When I roll two dice
-    Then I should not move along the board
+    When I roll two dice (not doubles)
+    Then I should be in jail
+
+  Scenario: Breaking out of jail with doubles
+    Given I am in jail
+    And It is my turn
+    When I roll a double
+    Then I should be visiting jail

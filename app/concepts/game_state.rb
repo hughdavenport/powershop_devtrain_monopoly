@@ -30,6 +30,21 @@ class GameState
     players.select { |player| player[:position] == location }
   end
 
+  def shift_player!(player)
+    player[:location] = (player[:location] + player[:dice_rolls].inject(:+)) % board.size
+    player[:dice_rolls] = []
+  end
+
+  def send_player_to_jail!(player)
+    player[:location] = board.index(:jail)
+    player[:in_jail] = true
+    end_turn!(player)
+  end
+
+  def end_turn!(player)
+    self.current_player = (current_player + 1) % players.size
+  end
+
   def board
     [
       :go,

@@ -25,6 +25,15 @@ class ApplicationController < ActionController::Base
   end
 
   def current_player
-    true # TODO do
+    logged_in
+    unless @game
+      flash[:danger] = t('Developer error')
+      # Shouldn't happen, controller shouldn't request this unless nested below a game
+      redirect_to :root
+    end
+    unless @game.state.players[@game.state.current_player] == @game.state.player(@current_user.id)
+      flash[:danger] = t('Not your turn')
+      redirect_to @game
+    end
   end
 end

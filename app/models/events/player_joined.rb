@@ -10,6 +10,8 @@ class PlayerJoined < Event
         money: 1500,
         location: 0,
         jail: false,
+        dice_rolls: [],
+        doubles_in_a_row: 0,
       }
       game_state.current_player = 0 if game_state.current_player.nil?
     end
