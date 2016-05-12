@@ -1,5 +1,7 @@
-DICE_ROLL_SELECTOR = '#diceroll'
+DICE_ROLL_SELECTOR = '#dice_roll'
 DICE_ROLL_REGEX    = /^You rolled a (?<dice_roll>\d+)$/i
+
+CURRENT_PLAYER_SELECTOR = "#current_player"
 
 def dice_roll
   find(DICE_ROLL_SELECTOR).text.gsub(DICE_ROLL_REGEX, '\\k<dice_roll>')
@@ -44,4 +46,12 @@ end
 
 Then(/^I should see a dice roll$/) do
   expect(page).to have_selector(DICE_ROLL_SELECTOR)
+end
+
+Then(/^It should( not)? be my turn$/) do |negation|
+  if negation
+    expect(page).not_to have_selector(CURRENT_PLAYER_SELECTOR)
+  else
+    expect(page).to have_selector(CURRENT_PLAYER_SELECTOR)
+  end
 end

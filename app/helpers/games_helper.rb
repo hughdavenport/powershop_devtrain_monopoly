@@ -12,7 +12,7 @@ module GamesHelper
   end
 
   def last_dice_roll_p
-    '<p id="diceroll">'.html_safe + "#{'You rolled a '"#{last_dice_roll.amount}"}" + '</p>'.html_safe if current_users_turn? && last_dice_roll
+    '<p id="dice_roll">'.html_safe + "#{'You rolled a '"#{last_dice_roll.amount}"}" + '</p>'.html_safe if current_users_turn? && last_dice_roll
   end
 
   def roll_dice_form
