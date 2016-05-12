@@ -23,7 +23,7 @@ class GameState
   end
 
   def player(user)
-    players.first { |player| player[:user] == user }
+    players.select { |player| player[:user] == user }.first
   end
 
   def players_at(location)
