@@ -11,6 +11,7 @@ Feature: Playing a game
     Given It is my turn
     When I roll the dice
     Then I should see a dice roll
+    And I should not move along the board
 
   Scenario: Moving along the board
     Given It is my turn
@@ -31,3 +32,9 @@ Feature: Playing a game
     Given It is my turn
     When I roll 3 doubles
     Then I should be in jail
+
+  Scenario: While in jail
+    Given I am in jail
+    And It is my turn
+    When I roll two dice
+    Then I should not move along the board
