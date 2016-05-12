@@ -61,13 +61,13 @@ RSpec.describe DiceRollsController, type: :controller do
     context "with valid game state" do
       let(:return_value) { true }
 
+      before { post :create, {game_id: game_id, username: username}, valid_session }
+
       it "has a success notice" do
-        post :create, {game_id: game_id, username: username}, valid_session
         expect(flash[:notice]).to eq "Dice rolled"
       end
 
       it "redirects to the game" do
-        post :create, {game_id: game_id, username: username}, valid_session
         expect(response).to redirect_to(game)
       end
     end
@@ -84,13 +84,13 @@ RSpec.describe DiceRollsController, type: :controller do
         end
       end
 
+      before { post :create, {game_id: game_id, username: username}, valid_session }
+
       it "has errors" do
-        post :create, {game_id: game_id, username: username}, valid_session
         expect(flash[:alert]).to eq errors: errors
       end
 
       it "redirects to the game" do
-        post :create, {game_id: game_id, username: username}, valid_session
         expect(response).to redirect_to(game)
       end
     end

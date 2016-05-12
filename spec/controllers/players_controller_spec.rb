@@ -49,8 +49,9 @@ RSpec.describe PlayersController, type: :controller do
 
     let(:players) { "testing" }
 
+    before { get :index, {game_id: game_id, username: username}, valid_session }
+
     it "assigns all players as @players" do
-      get :index, {game_id: game_id, username: username}, valid_session
       expect(assigns(:players)).to eq players
     end
   end
@@ -69,16 +70,16 @@ RSpec.describe PlayersController, type: :controller do
 
     let(:user_id) { 1 }
 
+    before { get :new, {game_id: game_id, username: username}, valid_session }
+
     context "already playing" do
       let(:players) { [ user_id ] }
 
       it "redirects to the players list" do
-        get :new, {game_id: game_id, username: username}, valid_session
         expect(response).to redirect_to game_players_path
       end
 
       it "has a notice" do
-        get :new, {game_id: game_id, username: username}, valid_session
         expect(flash[:notice]).to eq "You are already playing"
       end
     end
@@ -86,8 +87,11 @@ RSpec.describe PlayersController, type: :controller do
     context "not already playing in current game" do
       let(:players) { [] }
 
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+
       it "renders the new template" do
-        get :new, {game_id: game_id, username: username}, valid_session
         expect(response).to render_template(:new)
       end
     end
@@ -116,16 +120,17 @@ RSpec.describe PlayersController, type: :controller do
       end
     end
 
+
     context "with valid params" do
       let(:return_value) { true }
 
+      before { post :create, {game_id: game_id, :piece => piece, username: username}, valid_session }
+
       it "has a success notice" do
-        post :create, {game_id: game_id, :piece => piece, username: username}, valid_session
         expect(flash[:notice]).to eq "Player was successfully created."
       end
 
       it "redirects to the game" do
-        post :create, {game_id: game_id, :piece => piece, username: username}, valid_session
         expect(response).to redirect_to(game)
       end
     end
@@ -143,13 +148,13 @@ RSpec.describe PlayersController, type: :controller do
         end
       end
 
+      before { post :create, {game_id: game_id, :piece => piece, username: username}, valid_session }
+
       it "has errors" do
-        post :create, {game_id: game_id, :piece => piece, username: username}, valid_session
         expect(flash[:alert]).to eq errors: errors
       end
 
       it "redirects to the game" do
-        post :create, {game_id: game_id, :piece => piece, username: username}, valid_session
         expect(response).to redirect_to(game)
       end
     end
