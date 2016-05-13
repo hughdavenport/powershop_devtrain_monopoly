@@ -23,10 +23,7 @@ class DiceRoll < Event
           if player[:dice_rolls].size == 2
             rolled_a_double = player[:dice_rolls].uniq.size == 1
             player[:doubles_in_a_row] += 1 if rolled_a_double
-            if player[:doubles_in_a_row] == 3
-              game_state.send_player_to_jail!(player)
-              break
-            end
+            return GoToJail.new.apply(game_state) if player[:doubles_in_a_row] == 3
             old_location = player[:location]
             game_state.shift_player!(player)
             LandOnSquare.new.apply(game_state)
