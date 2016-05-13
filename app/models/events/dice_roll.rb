@@ -8,14 +8,9 @@ class DiceRoll < Event
         player[:dice_rolls] << amount.to_i
         if player[:in_jail]
           if player[:dice_rolls].size == 2
-            if player[:dice_rolls].uniq.size == 1
-              game_state.break_out_of_jail!(player)
-              break
-            end
+            return BreakOutOfJail.new.apply(game_state) if player[:dice_rolls].uniq.size == 1
             player[:pairs_rolled_while_in_jail] += 1
-            if player[:pairs_rolled_while_in_jail] == 3
-              # Add event to break out of jail...
-            end
+            return PayBond.new.apply(game_state) if player[:pairs_rolled_while_in_jail] == 3
             game_state.end_turn!(player)
           end
         else
