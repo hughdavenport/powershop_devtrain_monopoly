@@ -1,6 +1,6 @@
-Feature: Playing a game
+Feature: Rolling dice
   As a user
-  I want to play a game of monopoly
+  I should see progress when rolling dice
 
   Background:
     Given I have a user
@@ -45,19 +45,3 @@ Feature: Playing a game
     And It is my turn
     When I roll a double
     Then I should be visiting jail
-
-  Scenario: Landing on Income Tax
-    Given It is my turn
-    When I land on Income Tax
-    # This only tests the -$200, not the -15%
-    And I should lose $200
-
-  Scenario: Landing on Super Tax
-    Given It is my turn
-    When I land on Super Tax
-    Then I should lose $100
-
-  Scenario: Passing Go
-    Given It is my turn
-    When I pass Go
-    Then I should gain $200
