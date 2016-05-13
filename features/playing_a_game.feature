@@ -56,3 +56,8 @@ Feature: Playing a game
     Given It is my turn
     When I land on Super Tax
     Then I should lose $100
+
+  Scenario: Passing Go
+    Given It is my turn
+    When I pass Go
+    Then I should gain $200

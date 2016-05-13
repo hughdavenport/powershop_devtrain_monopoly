@@ -27,8 +27,10 @@ class DiceRoll < Event
               game_state.send_player_to_jail!(player)
               break
             end
+            old_location = player[:location]
             game_state.shift_player!(player)
             LandOnSquare.new.apply(game_state)
+            PassGo.new.apply(game_state) if player[:location] < old_location
             game_state.end_turn!(player) unless rolled_a_double
           end
         end

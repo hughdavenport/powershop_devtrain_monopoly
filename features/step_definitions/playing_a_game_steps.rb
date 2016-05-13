@@ -70,6 +70,15 @@ When(/^I land on (.*)$/) do |location|
   step "I roll a #{distance_to_move(location)}"
 end
 
+When(/^I pass (.*)$/) do |location|
+  if current_location.downcase == location.downcase
+    step 'I roll two dice (not doubles)'
+    step 'It is my turn'
+  end
+  step "I roll a #{distance_to_move(location)}"
+  step 'I roll a 1'
+end
+
 When(/^(I|another user) (?:roll|rolls) the dice$/) do |user|
   # First step logs in
   step "#{user} goes to the game"
