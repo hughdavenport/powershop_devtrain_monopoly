@@ -32,6 +32,7 @@ Feature: Rolling dice
     Given It is my turn
     When I roll 3 doubles
     Then I should be in jail
+    And It should not be my turn
 
   Scenario: While in jail
     Given I am in jail
@@ -45,3 +46,13 @@ Feature: Rolling dice
     And It is my turn
     When I roll a double
     Then I should be visiting jail
+    And I should lose $0
+    And It should not be my turn
+
+  Scenario: Paying bond
+    Given I am in jail for 2 turns
+    And It is my turn
+    When I roll two dice (not doubles)
+    Then I should be visiting jail
+    And I should lose $50
+    And It should not be my turn

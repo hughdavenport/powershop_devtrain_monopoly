@@ -51,6 +51,14 @@ Given(/^I am in jail$/) do
   step 'I roll 3 doubles'
 end
 
+Given(/^I am in jail for (\d+) turns$/) do |number|
+  step 'I am in jail'
+  number.to_i.times do
+    step 'It is my turn'
+    step 'I roll two dice (not doubles)'
+  end
+end
+
 Given(/^I know my location$/) do
   @location = current_location
 end
