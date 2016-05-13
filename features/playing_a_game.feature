@@ -49,8 +49,8 @@ Feature: Playing a game
     Then I should be visiting jail
 
   Scenario: Landing on Income Tax
-    Given It is my turn
-    And I am on Go
+    Given I am on Go
+    And It is my turn
     And I know my balance
     When I roll a 1
     And I roll a 3
@@ -59,8 +59,8 @@ Feature: Playing a game
     And I should lose $200
 
   Scenario: Landing on Super Tax
-    Given It is my turn
-    And I am on Bond Street
+    Given I am on Bond Street
+    And It is my turn
     And I know my balance
     When I roll a 3
     And I roll a 1
