@@ -4,6 +4,48 @@ class GameState
   attr_accessor :current_player
 
   PIECES = [:wheelbarrow, :battleship, :racecar, :thumble, :boot, :dog, :hat]
+  BOARD  = [
+    :go,
+    :old_kent_road,
+    :community_chest,
+    :whitechapel_road,
+    :income_tax,
+    :kings_cross_station,
+    :the_angel_islington,
+    :chance,
+    :euston_road,
+    :pentonville_road,
+    :jail,
+    :pall_mall,
+    :electric_company,
+    :whitehall,
+    :northumberland_avenue,
+    :marylbone_station,
+    :bow_street,
+    :community_chest,
+    :marlborough_street,
+    :vine_street,
+    :free_parking,
+    :strand,
+    :chance,
+    :fleet_street,
+    :trafalgar_square,
+    :fenchurch_street_station,
+    :leicester_square,
+    :coventry_street,
+    :water_works,
+    :piccadilly,
+    :go_to_jail,
+    :regent_street,
+    :oxford_street,
+    :community_chest,
+    :bond_street,
+    :liverpool_street_station,
+    :chance,
+    :park_lane,
+    :super_tax,
+    :mayfair
+    ]
 
   def self.create(game)
     game.events.inject(GameState.new(game: game)) { |state, event| event.apply(state) }
@@ -54,47 +96,6 @@ class GameState
   end
 
   def board
-    [
-      :go,
-      :old_kent_road,
-      :community_chest,
-      :whitechapel_road,
-      :income_tax,
-      :kings_cross_station,
-      :the_angel_islington,
-      :chance,
-      :euston_road,
-      :pentonville_road,
-      :jail,
-      :pall_mall,
-      :electric_company,
-      :whitehall,
-      :northumberland_avenue,
-      :marylbone_station,
-      :bow_street,
-      :community_chest,
-      :marlborough_street,
-      :vine_street,
-      :free_parking,
-      :strand,
-      :chance,
-      :fleet_street,
-      :trafalgar_square,
-      :fenchurch_street_station,
-      :leicester_square,
-      :coventry_street,
-      :water_works,
-      :piccadilly,
-      :go_to_jail,
-      :regent_street,
-      :oxford_street,
-      :community_chest,
-      :bond_street,
-      :liverpool_street_station,
-      :chance,
-      :park_lane,
-      :super_tax,
-      :mayfair
-    ]
+    BOARD
   end
 end

@@ -23,6 +23,17 @@ def balance
   find(BALANCE_SELECTOR).text.gsub(BALANCE_REGEX, '\\k<amount>')
 end
 
+def ambiguous_location?(location)
+  GameState::BOARD.index(location.downcase.gsub(" ", "_").to_sym) != GameState::BOARD.rindex(location.downcase.gsub(" ", "_").to_sym)
+end
+
+def distance_to_move(location)
+  current = GameState::BOARD.index(current_location.downcase.gsub(" ", "_").to_sym)
+  wanted = GameState::BOARD.index(location.downcase.gsub(" ", "_").to_sym)
+  wanted += GameState::BOARD.size if wanted < current
+  wanted - current
+end
+
 Given(/^It is my turn$/) do
   # The background should set this up
   step 'I go to the game'
@@ -49,8 +60,11 @@ Given(/^I know my balance$/) do
 end
 
 Given(/^I am on (.*)$/) do |location|
-  unless current_location.downcase == location
-    # Move
+  unless current_location.downcase == location.downcase
+    step 'It is my turn'
+    2.times { step 'I roll a 1' } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
+    step 'I roll a 0'
+    step "I roll a #{distance_to_move(location)}"
   end
 end
 
