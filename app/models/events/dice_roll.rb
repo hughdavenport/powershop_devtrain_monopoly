@@ -28,7 +28,7 @@ class DiceRoll < Event
               break
             end
             game_state.shift_player!(player)
-            # TODO: buy stuff...
+            LandOnSquare.new.apply(game_state)
             game_state.end_turn!(player) unless rolled_a_double
           end
         end

@@ -1,0 +1,11 @@
+class LandOnSquare < Event
+  def apply(game_state)
+    game_state.tap do |game_state|
+      game_state.players[game_state.current_player].tap do |player|
+        square = game_state.board[player[:location]]
+        details = game_state.details(square)
+        details[:event].new.apply(game_state) if details.include?(:event)
+      end
+    end
+  end
+end

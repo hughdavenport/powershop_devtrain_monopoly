@@ -148,7 +148,7 @@ end
 
 Then(/^I should (lose|gain) \$(\d+)$/) do |direction, amount|
   multiplier = (direction == "lose" ? -1 : 1)
-  expect(@balance + multiplier * amount).to eq balance
+  expect(@balance.to_i + multiplier * amount.to_i).to eq balance.to_i
 end
 
 Then(/^(I|another user) should be the current player$/) do |user|

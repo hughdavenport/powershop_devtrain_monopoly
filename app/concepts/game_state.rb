@@ -45,7 +45,59 @@ class GameState
     :park_lane,
     :super_tax,
     :mayfair
-    ]
+  ]
+
+  SQUARE_DETAILS = {
+    :go => {},
+    :jail => {},
+    :free_parking => {},
+
+    :income_tax => { event: PayIncomeTax },
+    :super_tax  => { event: PaySuperTax },
+
+    :go_to_jail => {},
+
+    :chance          => {},
+    :community_chest => {},
+
+    :kings_cross_station      => { property: true, station: true },
+    :marylbone_station        => { property: true, station: true },
+    :fenchurch_street_station => { property: true, station: true },
+    :liverpool_street_station => { property: true, station: true },
+
+    :electric_company => { property: true, utility: true },
+    :water_works      => { property: true, utility: true },
+
+    :old_kent_road    => { property: true, colour: :brown },
+    :whitechapel_road => { property: true, colour: :brown },
+
+    :the_angel_islington => { property: true, colour: :blue },
+    :euston_road         => { property: true, colour: :blue },
+    :pentonville_road    => { property: true, colour: :blue },
+
+    :pall_mall             => { property: true, colour: :pink },
+    :whitehall             => { property: true, colour: :pink },
+    :northumberland_avenue => { property: true, colour: :pink },
+
+    :bow_street         => { property: true, colour: :orange },
+    :marlborough_street => { property: true, colour: :orange },
+    :vine_street        => { property: true, colour: :orange },
+
+    :strand           => { property: true, colour: :red },
+    :fleet_street     => { property: true, colour: :red },
+    :trafalgar_square => { property: true, colour: :red },
+
+    :leicester_square => { property: true, colour: :yellow },
+    :coventry_street  => { property: true, colour: :yellow },
+    :piccadilly       => { property: true, colour: :yellow },
+
+    :regent_street => { property: true, colour: :green },
+    :oxford_street => { property: true, colour: :green },
+    :bond_street   => { property: true, colour: :green },
+
+    :park_lane => { property: true, colour: :purple },
+    :mayfair   => { property: true, colour: :purple },
+  }
 
   def self.create(game)
     game.events.inject(GameState.new(game: game)) { |state, event| event.apply(state) }
@@ -92,10 +144,14 @@ class GameState
     player[:dice_rolls] = []
     player[:doubles_in_a_row] = 0
     player[:pairs_rolled_while_in_jail] = 0
-    self.current_player = (current_player + 1) % players.size
+    self.current_player = (current_player + 1) % players.size if player == players[current_player]
   end
 
   def board
     BOARD
+  end
+
+  def details(square)
+    SQUARE_DETAILS[square]
   end
 end
