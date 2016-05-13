@@ -40,6 +40,7 @@ Feature: Playing a game
     And It is my turn
     When I roll two dice (not doubles)
     Then I should be in jail
+    And It should not be my turn
 
   Scenario: Breaking out of jail with doubles
     Given I am in jail

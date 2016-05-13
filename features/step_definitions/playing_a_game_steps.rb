@@ -45,6 +45,11 @@ Given(/^I know my balance$/) do
   @balance = balance
 end
 
+Given(/^I am on (.*)$/) do |location|
+  unless current_location.downcase == location
+    # Move
+  end
+end
 
 When(/^(I|another user) (?:roll|rolls) the dice$/) do |user|
   # First step logs in

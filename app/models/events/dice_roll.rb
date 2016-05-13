@@ -16,6 +16,7 @@ class DiceRoll < Event
             if player[:pairs_rolled_while_in_jail] == 3
               # Add event to break out of jail...
             end
+            game_state.end_turn!(player)
           end
         else
           # Normal movement
