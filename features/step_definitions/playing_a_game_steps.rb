@@ -30,6 +30,9 @@ Given(/^It is my turn$/) do
     step 'another user rolls two dice (not doubles)'
   end
   step 'I go to the game'
+  # get some state
+  step 'I know my location'
+  step 'I know my balance'
 end
 
 Given(/^I am in jail$/) do

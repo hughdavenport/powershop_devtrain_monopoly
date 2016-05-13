@@ -9,14 +9,12 @@ Feature: Playing a game
 
   Scenario: Rolling a dice
     Given It is my turn
-    And I know my location
     When I roll the dice
     Then I should see a dice roll
     And I should not move along the board
 
   Scenario: Moving along the board
     Given It is my turn
-    And I know my location
     When I roll two dice
     Then I should move along the board
 
@@ -51,7 +49,6 @@ Feature: Playing a game
   Scenario: Landing on Income Tax
     Given I am on Go
     And It is my turn
-    And I know my balance
     When I roll a 1
     And I roll a 3
     Then I should be on Income Tax
@@ -61,7 +58,6 @@ Feature: Playing a game
   Scenario: Landing on Super Tax
     Given I am on Bond Street
     And It is my turn
-    And I know my balance
     When I roll a 3
     And I roll a 1
     Then I should be on Super Tax
