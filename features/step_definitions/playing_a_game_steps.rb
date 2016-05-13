@@ -59,13 +59,15 @@ Given(/^I know my balance$/) do
   @balance = balance
 end
 
-Given(/^I am on (.*)$/) do |location|
-  unless current_location.downcase == location.downcase
+
+When(/^I land on (.*)$/) do |location|
+  if current_location.downcase == location.downcase
+    step 'I roll two dice (not doubles)'
     step 'It is my turn'
-    2.times { step 'I roll a 1' } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
-    step 'I roll a 0'
-    step "I roll a #{distance_to_move(location)}"
   end
+  2.times { step 'I roll a 1' } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
+  step 'I roll a 0'
+  step "I roll a #{distance_to_move(location)}"
 end
 
 When(/^(I|another user) (?:roll|rolls) the dice$/) do |user|

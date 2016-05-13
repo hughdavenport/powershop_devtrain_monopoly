@@ -47,18 +47,12 @@ Feature: Playing a game
     Then I should be visiting jail
 
   Scenario: Landing on Income Tax
-    Given I am on Go
-    And It is my turn
-    When I roll a 1
-    And I roll a 3
-    Then I should be on Income Tax
+    Given It is my turn
+    When I land on Income Tax
     # This only tests the -$200, not the -15%
     And I should lose $200
 
   Scenario: Landing on Super Tax
-    Given I am on Bond Street
-    And It is my turn
-    When I roll a 3
-    And I roll a 1
-    Then I should be on Super Tax
-    And I should lose $100
+    Given It is my turn
+    When I land on Super Tax
+    Then I should lose $100
