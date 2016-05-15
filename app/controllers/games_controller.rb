@@ -1,7 +1,7 @@
 class GamesController < ApplicationController
   before_action :set_game, only: [:show, :destroy]
   before_action :set_game_state, only: [:show]
-  before_action :logged_in
+  before_action :check_logged_in_or_redirect_root
 
   # GET /games
   def index

@@ -17,15 +17,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def logged_in
+  def check_logged_in_or_redirect_root
     unless @current_user
       flash[:danger] = t("Please log in")
       redirect_to :root
     end
   end
 
-  def current_player
-    logged_in
+  def check_current_player_or_redirect_game
+    check_logged_in_or_redirect_root
     unless @game
       flash[:danger] = t('Developer error')
       # Shouldn't happen, controller shouldn't request this unless nested below a game
