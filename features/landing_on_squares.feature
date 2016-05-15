@@ -28,3 +28,11 @@ Feature: Landing on squares
     When I land on Go To Jail
     Then I should be in jail
     And It should not be my turn
+
+  Scenario: Landing on a property
+    Given It is my turn
+    And Whitechapel road is not owned
+    When I land on Whitechapel road
+    And I click on "Buy Property"
+    Then I should own Whitechapel road
+    And I should lose $60
