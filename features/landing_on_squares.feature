@@ -36,3 +36,4 @@ Feature: Landing on squares
     And I click on "Buy property"
     Then I should own Whitechapel Road
     And I should lose $60
+    And It should not be my turn
