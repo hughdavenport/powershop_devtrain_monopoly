@@ -5,7 +5,7 @@ class LandOnProperty < Event
         property = game_state.board[player[:location]]
         owner = game_state.property_owner(property)
         if owner.nil?
-          # Event for buy
+          game_state.can_buy_property = true
         elsif owner != player
           # Event for tax
         end

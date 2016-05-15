@@ -2,6 +2,7 @@ class GameState
   attr_accessor :players
   attr_accessor :game
   attr_accessor :current_player
+  attr_accessor :can_buy_property
 
   PIECES = [:wheelbarrow, :battleship, :racecar, :thumble, :boot, :dog, :hat]
   BOARD  = [
@@ -132,6 +133,16 @@ class GameState
     players.select { |player| player[:properties].include?(property) }.first
   end
 
+  def action_required?
+    [
+      can_buy_property?,
+    ].any?
+  end
+
+  def can_buy_property?
+    can_buy_property
+  end
+
   def shift_player!(player)
     player[:location] = (player[:location] + player[:dice_rolls].inject(:+)) % board.size
     player[:dice_rolls] = []
@@ -149,9 +160,15 @@ class GameState
     end_turn!(player)
   end
 
+  def purchase_property!(player, property)
+    player[:properties] << property
+    end_turn!(player)
+  end
+
   def end_turn!(player)
     player[:dice_rolls] = []
     player[:doubles_in_a_row] = 0
+    self.can_buy_property = false
     self.current_player = (current_player + 1) % players.size if player == players[current_player]
   end
 

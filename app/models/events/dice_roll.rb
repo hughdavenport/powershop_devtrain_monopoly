@@ -23,7 +23,7 @@ class DiceRoll < Event
             game_state.shift_player!(player)
             LandOnSquare.new.apply(game_state)
             PassGo.new.apply(game_state) if player[:location] < old_location
-            game_state.end_turn!(player) unless rolled_a_double
+            game_state.end_turn!(player) unless game_state.action_required? || rolled_a_double
           end
         end
       end

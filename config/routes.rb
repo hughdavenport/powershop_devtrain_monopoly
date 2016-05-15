@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   resources :games, only: [:index, :show, :new, :create, :destroy] do
     resources :players, only: [:index, :new, :create]
     resources :dice_rolls, only: [:create]
+    resources :buy_properties, only: [:create]
   end
 end

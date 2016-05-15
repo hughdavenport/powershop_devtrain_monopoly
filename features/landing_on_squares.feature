@@ -31,8 +31,8 @@ Feature: Landing on squares
 
   Scenario: Landing on a property
     Given It is my turn
-    And Whitechapel road is not owned
-    When I land on Whitechapel road
-    And I click on "Buy Property"
-    Then I should own Whitechapel road
+    And Whitechapel Road is not owned
+    When I land on Whitechapel Road
+    And I click on "Buy property"
+    Then I should own Whitechapel Road
     And I should lose $60

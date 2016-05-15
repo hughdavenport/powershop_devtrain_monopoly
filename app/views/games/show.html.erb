@@ -26,6 +26,9 @@
   <% if current_game_player[:in_jail] %>
     <p id="in_jail"><%= t('You are in jail') %></p>
   <% end %>
+  <% if @game_state.can_buy_property? %>
+    <%= buy_property_form %>
+  <% end %>
 <% end %>
 
 <%= owned_properties %>
