@@ -9,6 +9,9 @@ BALANCE_REGEX              = /^Your balance is \$(?<amount>\d+)$/i
 
 CURRENT_PLAYER_SELECTOR    = "#current_player"
 
+OWNED_PROPERTIES_SELECTOR  = "#owned_properties"
+MY_PROPERTIES_SELECTOR     = "#my_properties"
+
 IN_JAIL_SELECTOR           = "#in_jail"
 
 def dice_roll
@@ -57,6 +60,14 @@ Given(/^I am in jail for (\d+) turns$/) do |number|
   number.to_i.times do
     step 'It is my turn'
     step 'I roll two dice (not doubles)'
+  end
+end
+
+Given(/^(.*) is( not)? owned$/) do |property, negation|
+  if negation
+    expect(find(OWNED_PROPERTIES_SELECTOR)).not_to have_content(property)
+  else
+    expect(find(OWNED_PROPERTIES_SELECTOR)).to have_content(property)
   end
 end
 
@@ -175,4 +186,10 @@ Then(/^(I|another user) should be the current player$/) do |user|
   # First step will login as user
   step "#{user} goes to the game"
   expect(page).to have_selector(CURRENT_PLAYER_SELECTOR)
+end
+
+Then(/^(I|another user) should own (.*)$/) do |user, property|
+  # First step will login as user
+  step "#{user} goes to the game"
+  expect(find(MY_PROPERTIES_SELECTOR)).to have_content(property)
 end

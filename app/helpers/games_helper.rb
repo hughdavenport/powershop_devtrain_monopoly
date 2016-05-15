@@ -24,4 +24,18 @@ module GamesHelper
       end.html_safe
     end
   end
+
+  def owned_properties
+    content_tag(:div, id: "owned_properties") do
+      "".tap do |string|
+        string << content_tag(:strong, "Owned properties")
+        @game_state.owned_properties.each do |user, properties|
+          string << content_tag(:div, User.find(user).username, id: ("my_properties" if user == @current_user.id))
+          properties.each do |property|
+            string << content_tag(:div, property.to_s)
+          end
+        end
+      end.html_safe
+    end
+  end
 end

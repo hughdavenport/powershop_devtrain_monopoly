@@ -124,6 +124,10 @@ class GameState
     players.select { |player| player[:position] == location }
   end
 
+  def owned_properties
+    players.map { |player| [player[:user], player[:properties]] }.to_h
+  end
+
   def shift_player!(player)
     player[:location] = (player[:location] + player[:dice_rolls].inject(:+)) % board.size
     player[:dice_rolls] = []
