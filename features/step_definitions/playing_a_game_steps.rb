@@ -37,6 +37,7 @@ end
 Given(/^It is my turn$/) do
   # The background should set this up
   step 'I go to the game'
+  # TODO have a @monopoly that abstracts out the dom
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'another user rolls two dice (not doubles)'
   end
