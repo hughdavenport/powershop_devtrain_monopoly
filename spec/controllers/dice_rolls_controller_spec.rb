@@ -18,6 +18,7 @@ RSpec.describe DiceRollsController, type: :controller do
   end
 
   # Used by application controller
+  # TODO allow controller to recieve filter method, instead of doing user model
   let(:user_model) do
     class_double("User").as_stubbed_const.tap do |user_model|
       expect(user_model).to receive(:find_by_username).with(username).and_return(user)
