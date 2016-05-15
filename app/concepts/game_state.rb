@@ -60,43 +60,43 @@ class GameState
     :chance          => {},
     :community_chest => {},
 
-    :kings_cross_station      => { property: true, station: true },
-    :marylbone_station        => { property: true, station: true },
-    :fenchurch_street_station => { property: true, station: true },
-    :liverpool_street_station => { property: true, station: true },
+    :kings_cross_station      => { event: LandOnProperty, station: true },
+    :marylbone_station        => { event: LandOnProperty, station: true },
+    :fenchurch_street_station => { event: LandOnProperty, station: true },
+    :liverpool_street_station => { event: LandOnProperty, station: true },
 
-    :electric_company => { property: true, utility: true },
-    :water_works      => { property: true, utility: true },
+    :electric_company => { event: LandOnProperty, event: LandOnProperty, utility: true },
+    :water_works      => { event: LandOnProperty, utility: true },
 
-    :old_kent_road    => { property: true, colour: :brown },
-    :whitechapel_road => { property: true, colour: :brown },
+    :old_kent_road    => { event: LandOnProperty, colour: :brown },
+    :whitechapel_road => { event: LandOnProperty, colour: :brown },
 
-    :the_angel_islington => { property: true, colour: :blue },
-    :euston_road         => { property: true, colour: :blue },
-    :pentonville_road    => { property: true, colour: :blue },
+    :the_angel_islington => { event: LandOnProperty, colour: :blue },
+    :euston_road         => { event: LandOnProperty, colour: :blue },
+    :pentonville_road    => { event: LandOnProperty, colour: :blue },
 
-    :pall_mall             => { property: true, colour: :pink },
-    :whitehall             => { property: true, colour: :pink },
-    :northumberland_avenue => { property: true, colour: :pink },
+    :pall_mall             => { event: LandOnProperty, colour: :pink },
+    :whitehall             => { event: LandOnProperty, colour: :pink },
+    :northumberland_avenue => { event: LandOnProperty, colour: :pink },
 
-    :bow_street         => { property: true, colour: :orange },
-    :marlborough_street => { property: true, colour: :orange },
-    :vine_street        => { property: true, colour: :orange },
+    :bow_street         => { event: LandOnProperty, colour: :orange },
+    :marlborough_street => { event: LandOnProperty, colour: :orange },
+    :vine_street        => { event: LandOnProperty, colour: :orange },
 
-    :strand           => { property: true, colour: :red },
-    :fleet_street     => { property: true, colour: :red },
-    :trafalgar_square => { property: true, colour: :red },
+    :strand           => { event: LandOnProperty, colour: :red },
+    :fleet_street     => { event: LandOnProperty, colour: :red },
+    :trafalgar_square => { event: LandOnProperty, colour: :red },
 
-    :leicester_square => { property: true, colour: :yellow },
-    :coventry_street  => { property: true, colour: :yellow },
-    :piccadilly       => { property: true, colour: :yellow },
+    :leicester_square => { event: LandOnProperty, colour: :yellow },
+    :coventry_street  => { event: LandOnProperty, colour: :yellow },
+    :piccadilly       => { event: LandOnProperty, colour: :yellow },
 
-    :regent_street => { property: true, colour: :green },
-    :oxford_street => { property: true, colour: :green },
-    :bond_street   => { property: true, colour: :green },
+    :regent_street => { event: LandOnProperty, colour: :green },
+    :oxford_street => { event: LandOnProperty, colour: :green },
+    :bond_street   => { event: LandOnProperty, colour: :green },
 
-    :park_lane => { property: true, colour: :purple },
-    :mayfair   => { property: true, colour: :purple },
+    :park_lane => { event: LandOnProperty, colour: :purple },
+    :mayfair   => { event: LandOnProperty, colour: :purple },
   }
 
   def self.create(game)
@@ -126,6 +126,10 @@ class GameState
 
   def owned_properties
     players.map { |player| [player[:user], player[:properties]] }.to_h
+  end
+
+  def property_owner(property)
+    players.select { |player| player[:properties].include?(property) }.first
   end
 
   def shift_player!(player)
