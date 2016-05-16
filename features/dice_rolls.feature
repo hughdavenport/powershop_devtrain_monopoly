@@ -21,6 +21,7 @@ Feature: Rolling dice
   Scenario: Changing turns
     Given It is my turn
     When I roll two dice (not doubles)
+    And I click on "End turn" if it is there
     Then It should not be my turn
 
   Scenario: Rolling a double

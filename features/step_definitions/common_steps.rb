@@ -29,6 +29,10 @@ When(/^I click on "([^"]*)"$/) do |link|
   click_on link
 end
 
+When(/^I click on "([^"]*)" if it is there$/) do |link|
+  step "I click on \"#{link}\"" if page.has_selector?(:link_or_button, link)
+end
+
 When(/^I enter in (.*) as (.*)$/) do |value, field|
   fill_in field.capitalize, :with => value
 end
