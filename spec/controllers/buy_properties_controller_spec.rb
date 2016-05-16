@@ -74,60 +74,82 @@ RSpec.describe BuyPropertiesController, type: :controller do
     end
 
     context "when it is our turn" do
-      # Mock out service that is going to be called
       before do
-        buy_property_service
+        expect(game_state).to receive(:can_buy_property?).and_return(can_buy_property)
         # Make sure game_state matches our thoughts that we are logged in
         expect(game_state).to receive(:player).and_return(players[0])
-        pending "TODO check whether we can buy a property!"
       end
 
-      let(:buy_property_service) do
-        class_double("BuyProperty").as_stubbed_const.tap do |buy_property_service|
-          expect(buy_property_service).to receive(:new).with(game: game).and_return(service)
-        end
-      end
-
-      let(:service) do
-        double("BuyProperty").tap do |service|
-          expect(service).to receive(:call).and_return(return_value)
-        end
-      end
-
-      context "with valid game state" do
-        let(:return_value) { true }
+      context "when we are not on a buyable property" do
+        let(:can_buy_property) { false }
 
         before { post :create, {game_id: game_id, username: username}, valid_session }
 
-        it "has a success notice" do
-          expect(flash[:notice]).to eq "Dice rolled"
+        it "should redirect" do
+          expect(response).to redirect_to(game)
         end
 
-        it "redirects to the game" do
-          expect(response).to redirect_to(game)
+        it "should have a flash message" do
+          expect(flash[:danger]).to eq "Cannot buy property"
         end
       end
 
-      context "with invalid game state" do
-        let(:return_value) { false }
+      context "when we are on a buyable property" do
+        let(:can_buy_property) { true }
 
         before do
-          expect(service).to receive(:errors).and_return(errors)
+          buy_property_service
         end
-        let(:errors) do
-          double("errors").tap do |errors|
-            expect(errors).to receive(:full_messages).and_return(errors)
+
+        # Mock out service that is going to be called
+        let(:buy_property_service) do
+          class_double("BuyProperty").as_stubbed_const.tap do |buy_property_service|
+            expect(buy_property_service).to receive(:new).with(game: game).and_return(service)
           end
         end
 
-        before { post :create, {game_id: game_id, username: username}, valid_session }
-
-        it "has errors" do
-          expect(flash[:alert]).to eq errors: errors
+        let(:service) do
+          double("BuyProperty").tap do |service|
+            expect(service).to receive(:call).and_return(return_value)
+          end
         end
 
-        it "redirects to the game" do
-          expect(response).to redirect_to(game)
+        context "with valid game state" do
+          let(:return_value) { true }
+
+          before { post :create, {game_id: game_id, username: username}, valid_session }
+
+          it "has a success notice" do
+            expect(flash[:notice]).to eq "Property purchased"
+          end
+
+          it "redirects to the game" do
+            expect(response).to redirect_to(game)
+          end
+        end
+
+        context "with invalid game state" do
+          let(:return_value) { false }
+
+          before do
+            expect(service).to receive(:errors).and_return(errors)
+          end
+
+          let(:errors) do
+            double("errors").tap do |errors|
+              expect(errors).to receive(:full_messages).and_return(errors)
+            end
+          end
+
+          before { post :create, {game_id: game_id, username: username}, valid_session }
+
+          it "has errors" do
+            expect(flash[:alert]).to eq errors: errors
+          end
+
+          it "redirects to the game" do
+            expect(response).to redirect_to(game)
+          end
         end
       end
     end
