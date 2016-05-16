@@ -55,6 +55,8 @@ Given(/^It is another users turn$/) do
   step 'another user goes to the game'
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'I roll two dice (not doubles)'
+    step 'I click on "End turn"' if page.has_selector?(CURRENT_PLAYER_SELECTOR)
+    step 'another user goes to the game'
   end
   step 'another user goes to the game'
 end
