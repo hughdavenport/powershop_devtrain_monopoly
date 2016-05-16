@@ -134,6 +134,7 @@ RSpec.describe EndTurnsController, type: :controller do
           before do
             expect(service).to receive(:errors).and_return(errors)
           end
+
           let(:errors) do
             double("errors").tap do |errors|
               expect(errors).to receive(:full_messages).and_return(errors)
