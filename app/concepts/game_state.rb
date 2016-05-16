@@ -135,12 +135,6 @@ class GameState
     players.select { |player| player[:properties].include?(property) }.first
   end
 
-  def action_required?
-    [
-      can_buy_property?,
-    ].any?
-  end
-
   def can_buy_property?
     can_buy_property
   end
@@ -148,6 +142,7 @@ class GameState
   def shift_player!(player)
     player[:location] = (player[:location] + player[:dice_rolls].inject(:+)) % board.size
     player[:dice_rolls] = []
+    self.can_buy_property = false
   end
 
   def send_player_to_jail!(player)

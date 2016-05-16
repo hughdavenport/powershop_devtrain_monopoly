@@ -27,7 +27,7 @@
     <p id="in_jail"><%= t('You are in jail') %></p>
   <% end %>
   <% if @game_state.players[@game_state.current_player] == current_game_player %>
-    <% if @game_state.can_buy_property? %>
+    <% if @game_state.can_buy_property? && current_game_player[:money] >= @game_state.details(@game_state.board[current_game_player[:location]])[:price] %>
       <%= buy_property_form %>
     <% end %>
     <% if @game_state.expecting_rolls > 0 %>
