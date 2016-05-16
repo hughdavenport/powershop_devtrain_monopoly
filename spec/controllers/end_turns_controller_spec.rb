@@ -74,60 +74,81 @@ RSpec.describe EndTurnsController, type: :controller do
     end
 
     context "when it is our turn" do
-      # Mock out service that is going to be called
       before do
-      end_turn_service
         # Make sure game_state matches our thoughts that we are logged in
         expect(game_state).to receive(:player).and_return(players[0])
-        pending "TODO check whether we can buy a property!"
+        expect(game_state).to receive(:expecting_rolls).and_return(expecting_rolls)
       end
 
-      let(:buy_property_service) do
-        class_double("EndTurn").as_stubbed_const.tap do |end_turn_service|
-          expect(end_turn_service).to receive(:new).with(game: game).and_return(service)
-        end
-      end
-
-      let(:service) do
-        double("EndTurn").tap do |service|
-          expect(service).to receive(:call).and_return(return_value)
-        end
-      end
-
-      context "with valid game state" do
-        let(:return_value) { true }
+      context "and we have to roll the dice" do
+        let(:expecting_rolls) { 1 }
 
         before { post :create, {game_id: game_id, username: username}, valid_session }
 
-        it "has a success notice" do
-          expect(flash[:notice]).to eq "Turn ended"
+        it "should redirect" do
+          expect(response).to redirect_to(game)
         end
 
-        it "redirects to the game" do
-          expect(response).to redirect_to(game)
+        it "should have a flash message" do
+          expect(flash[:danger]).to eq "Expecting dice roll"
         end
       end
 
-      context "with invalid game state" do
-        let(:return_value) { false }
+      context "when we don't have to roll the dice" do
+        let(:expecting_rolls) { 0 }
 
         before do
-          expect(service).to receive(:errors).and_return(errors)
+          # Mock out service that is going to be called
+          end_turn_service
         end
-        let(:errors) do
-          double("errors").tap do |errors|
-            expect(errors).to receive(:full_messages).and_return(errors)
+
+        let(:end_turn_service) do
+          class_double("EndTurn").as_stubbed_const.tap do |end_turn_service|
+            expect(end_turn_service).to receive(:new).with(game: game).and_return(service)
           end
         end
 
-        before { post :create, {game_id: game_id, username: username}, valid_session }
-
-        it "has errors" do
-          expect(flash[:alert]).to eq errors: errors
+        let(:service) do
+          double("EndTurn").tap do |service|
+            expect(service).to receive(:call).and_return(return_value)
+          end
         end
 
-        it "redirects to the game" do
-          expect(response).to redirect_to(game)
+        context "with valid game state" do
+          let(:return_value) { true }
+
+          before { post :create, {game_id: game_id, username: username}, valid_session }
+
+          it "has a success notice" do
+            expect(flash[:notice]).to eq "Turn ended"
+          end
+
+          it "redirects to the game" do
+            expect(response).to redirect_to(game)
+          end
+        end
+
+        context "with invalid game state" do
+          let(:return_value) { false }
+
+          before do
+            expect(service).to receive(:errors).and_return(errors)
+          end
+          let(:errors) do
+            double("errors").tap do |errors|
+              expect(errors).to receive(:full_messages).and_return(errors)
+            end
+          end
+
+          before { post :create, {game_id: game_id, username: username}, valid_session }
+
+          it "has errors" do
+            expect(flash[:alert]).to eq errors: errors
+          end
+
+          it "redirects to the game" do
+            expect(response).to redirect_to(game)
+          end
         end
       end
     end
