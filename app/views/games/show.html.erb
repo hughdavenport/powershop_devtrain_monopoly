@@ -28,14 +28,15 @@
   <% end %>
   <% if @game_state.can_buy_property? %>
     <%= buy_property_form %>
+    <%= end_turn_form %>
   <% end %>
+  <%= roll_dice_form %>
 <% end %>
 
 <%= owned_properties %>
 
 <%= last_dice_roll_p %>
 
-<%= roll_dice_form %>
 
 <%= link_to 'Players', game_players_path(@game) %> |
 <%= link_to 'Back', games_path %>

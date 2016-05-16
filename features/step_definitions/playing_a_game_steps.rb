@@ -43,8 +43,9 @@ Given(/^It is my turn$/) do
   # TODO have a @monopoly that abstracts out the dom
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'another user rolls two dice (not doubles)'
+    step 'I click on "End turn"'
+    step 'I go to the game'
   end
-  step 'I go to the game'
   # get some state
   step 'I know my location'
   step 'I know my balance'
@@ -108,6 +109,7 @@ When(/^I pass (.*)$/) do |location|
     step 'I roll two dice (not doubles)'
     step 'It is my turn'
   end
+  2.times { step 'I roll a 1' } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
   step "I roll a #{distance_to_move(location)}"
   step 'I roll a 1'
 end
@@ -137,9 +139,7 @@ When(/^(I|another user) (?:roll|rolls) (a|\d+) (?:double|doubles)$/) do |user, n
 end
 
 When(/^I roll a (\d+)$/) do |number|
-  # Need to create the dice manually here...
-  # Add to the game events model?
-  # or change controller to accept number when in testing mode...
+  # Works only in testing and development mode, controller accepts a number for dice roll
   step "I enter in #{number} as dice roll"
   step 'I click on "Roll Dice"'
 end
