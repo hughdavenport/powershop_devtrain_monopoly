@@ -1,4 +1,4 @@
-DICE_ROLL_SELECTOR         = '#dice_roll'
+DICE_ROLL_SELECTOR         = '#last_dice_roll'
 DICE_ROLL_REGEX            = /^You rolled a (?<dice_roll>\d+)$/i
 
 CURRENT_LOCATION_SELECTOR  = "#current_location"
@@ -43,7 +43,7 @@ Given(/^It is my turn$/) do
   # TODO have a @monopoly that abstracts out the dom
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'another user rolls two dice (not doubles)'
-    step 'I click on "End turn"' if page.has_selector?(CURRENT_PLAYER_SELECTOR)
+    step 'I click on "End turn" if it is there' if page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'I go to the game'
   end
   # get some state
@@ -55,7 +55,7 @@ Given(/^It is another users turn$/) do
   step 'another user goes to the game'
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'I roll two dice (not doubles)'
-    step 'I click on "End turn"' if page.has_selector?(CURRENT_PLAYER_SELECTOR)
+    step 'I click on "End turn" if it is there' if page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'another user goes to the game'
   end
   step 'another user goes to the game'
@@ -87,6 +87,13 @@ Given(/^(I|another user) (?:own|owns) (.*)$/) do |user, property|
   # Make sure we don't test the passing go step, so just jump there now
   step 'It is my turn'
   step 'I land on Go'
+end
+
+Given(/^I have \$(\d+)$/) do |balance|
+  # Only works on test/development mode, due to controller check
+  step 'It is my turn'
+  within("#set_balance") { step "I enter in #{balance} as balance" }
+  step 'I click on "Set balance"'
 end
 
 Given(/^I know my location$/) do
@@ -144,7 +151,7 @@ end
 
 When(/^I roll a (\d+)$/) do |number|
   # Works only in testing and development mode, controller accepts a number for dice roll
-  step "I enter in #{number} as dice roll"
+  within("#dice_roll") { step "I enter in #{number} as dice roll" }
   step 'I click on "Roll Dice"'
 end
 

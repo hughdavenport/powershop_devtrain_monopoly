@@ -50,6 +50,10 @@ Then(/^I should( not)? see the content (.*)$/) do |negation, content|
   end
 end
 
-Then(/^I should( not)? see "(.*)$/) do |negation, content|
-  step "I should#{negation} see the content #{content}"
+Then(/^I should( not)? see "(.*)"$/) do |negation, content|
+  if negation
+    expect(page).not_to have_selector(:link_or_button, content)
+  else
+    expect(page).to have_selector(:link_or_button, content)
+  end
 end

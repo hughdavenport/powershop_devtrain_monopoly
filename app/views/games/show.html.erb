@@ -31,7 +31,14 @@
     <%= end_turn_form %>
   <% end %>
   <% if @game_state.players[@game_state.current_player] == current_game_player %>
-    <%= roll_dice_form %>
+    <div id="dice_roll">
+      <%= roll_dice_form %>
+    </div>
+    <% if testing_mode? %>
+      <div id="set_balance">
+        <%= set_balance_form %>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
 

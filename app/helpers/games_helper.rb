@@ -1,4 +1,8 @@
 module GamesHelper
+  def testing_mode?
+    Rails.env.development? || Rails.env.test?
+  end
+
   def current_game_player
     @game_state.player(@current_user.id)
   end
@@ -12,14 +16,28 @@ module GamesHelper
   end
 
   def last_dice_roll_p
-    '<p id="dice_roll">'.html_safe + "#{'You rolled a '"#{last_dice_roll.amount}"}" + '</p>'.html_safe if current_users_turn? && last_dice_roll
+    '<p id="last_dice_roll">'.html_safe + "#{'You rolled a '"#{last_dice_roll.amount}"}" + '</p>'.html_safe if current_users_turn? && last_dice_roll
+  end
+
+  def set_balance_form
+    form_tag(game_set_balances_path(@game)) do
+      "".tap do |string|
+        if testing_mode?
+          string << label_tag(:amount, "Balance")
+          string << text_field_tag(:amount)
+        end
+        string << submit_tag('Set balance')
+      end.html_safe
+    end
   end
 
   def roll_dice_form
     form_tag(game_dice_rolls_path(@game)) do
       "".tap do |string|
-        string << label_tag(:amount, "Dice roll")
-        string << text_field_tag(:amount)# if Rails.env.test? || Rails.env.development?
+        if testing_mode?
+          string << label_tag(:amount, "Dice roll")
+          string << text_field_tag(:amount)
+        end
         string << submit_tag('Roll Dice')
       end.html_safe
     end
