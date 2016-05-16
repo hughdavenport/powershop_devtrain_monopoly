@@ -49,7 +49,7 @@ RSpec.describe AddPlayerToGame, type: :service do
       expect(game).to receive(:events).and_return([])
     end
 
-    describe "adding a player" do
+    describe "#call" do
       it "succeeds" do
         expect(service.call).to be_truthy
       end
@@ -79,7 +79,7 @@ RSpec.describe AddPlayerToGame, type: :service do
   context "when the game state is invalid" do
     let(:can_apply) { false }
 
-    describe "adding a player" do
+    describe "#call" do
       it "fails" do
         expect(service.call).to be_falsey
       end
