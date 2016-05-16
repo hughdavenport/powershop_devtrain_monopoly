@@ -2,7 +2,7 @@ class EndTurnsController < ApplicationController
   before_action :set_game
   before_action :check_logged_in_or_redirect_root
   before_action :check_current_player_or_redirect_game
-  before_action :check_can_buy_property_or_redirect_game
+  before_action :check_not_expecting_roll_or_redirect_game
 
   # POST /games/1/end_turns
   def create
@@ -21,9 +21,9 @@ class EndTurnsController < ApplicationController
       @game = Game.find(params[:game_id])
     end
 
-    def check_can_buy_property_or_redirect_game
-      unless @game.state.can_buy_property?
-        flash[:danger] = 'Cannot buy property'
+    def check_not_expecting_roll_or_redirect_game
+      if @game.state.expecting_rolls > 0
+        flash[:danger] = 'Expecting dice roll'
         redirect_to @game
       end
     end

@@ -7,7 +7,6 @@ class PayRent < Event
         owner = game_state.property_owner(property)
         player[:money] -= details[:rent]
         owner[:money] += details[:rent]
-        EndTurn.new.apply(game_state)
       end
     end
   end

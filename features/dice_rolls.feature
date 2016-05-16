@@ -21,13 +21,18 @@ Feature: Rolling dice
   Scenario: Changing turns
     Given It is my turn
     When I roll two dice (not doubles)
-    And I click on "End turn" if it is there
+    And I end my turn
     Then It should not be my turn
+
+  Scenario: Not allowed to roll
+    Given It is my turn
+    When I roll two dice (not doubles)
+    Then I should not be able to roll the dice
 
   Scenario: Rolling a double
     Given It is my turn
     When I roll a double
-    Then It should be my turn
+    Then I should be able to roll the dice
 
   Scenario: Rolling three doubles
     Given It is my turn
@@ -39,8 +44,15 @@ Feature: Rolling dice
     Given I am in jail
     And It is my turn
     When I roll two dice (not doubles)
+    And I end my turn
     Then I should be in jail
     And It should not be my turn
+
+  Scenario: Not allowed to roll in jail
+    Given I am in jail
+    And It is my turn
+    When I roll two dice (not doubles)
+    Then I should not be able to roll the dice
 
   Scenario: Breaking out of jail with doubles
     Given I am in jail

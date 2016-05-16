@@ -3,6 +3,7 @@ class GameState
   attr_accessor :game
   attr_accessor :current_player
   attr_accessor :can_buy_property
+  attr_accessor :expecting_rolls
 
   PIECES = [:wheelbarrow, :battleship, :racecar, :thumble, :boot, :dog, :hat]
   BOARD  = [
@@ -106,6 +107,7 @@ class GameState
 
   def initialize(game:)
     self.game = game
+    self.expecting_rolls = 2
     self.players = []
   end
 
@@ -163,13 +165,13 @@ class GameState
   def purchase_property!(player, property)
     player[:money] -= details(property)[:price]
     player[:properties] << property
-    end_turn!(player)
   end
 
   def end_turn!(player)
     player[:dice_rolls] = []
     player[:doubles_in_a_row] = 0
     self.can_buy_property = false
+    self.expecting_rolls = 2
     self.current_player = (current_player + 1) % players.size if player == players[current_player]
   end
 

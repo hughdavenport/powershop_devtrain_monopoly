@@ -11,7 +11,6 @@ class DiceRoll < Event
             return BreakOutOfJail.new.apply(game_state) if player[:dice_rolls].uniq.size == 1
             player[:pairs_rolled_while_in_jail] += 1
             return PayBond.new.apply(game_state) if player[:pairs_rolled_while_in_jail] == 3
-            game_state.end_turn!(player)
           end
         else
           # Normal movement
@@ -23,21 +22,23 @@ class DiceRoll < Event
             game_state.shift_player!(player)
             LandOnSquare.new.apply(game_state)
             PassGo.new.apply(game_state) if player[:location] < old_location
-            game_state.end_turn!(player) unless game_state.action_required? || rolled_a_double
+            game_state.expecting_rolls += 2 if rolled_a_double
           end
         end
+        game_state.expecting_rolls -= 1
       end
     end
   end
 
   def can_apply?(game_state = game.state)
-    game_state.started? && users_current_turn?(game_state)
+    game_state.started? && users_current_turn?(game_state) && game_state.expecting_rolls > 0
   end
 
   def errors(game_state = game.state)
     ActiveModel::Errors.new(self).tap do |errors|
       errors.add(:base, :not_started) unless game_state.started?
       errors.add(:base, :not_current_turn) unless users_current_turn?(game_state)
+      errors.add(:base, :not_expecting_roll) unless game_state.expecting_rolls > 0
     end
   end
 

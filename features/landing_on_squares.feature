@@ -41,7 +41,6 @@ Feature: Landing on squares
     And I click on "Buy property"
     Then I should own Whitechapel Road
     And I should lose $60
-    And It should not be my turn
 
   Scenario: Can't afford property
     Given Whitechapel Road is not owned
@@ -55,14 +54,12 @@ Feature: Landing on squares
     When I land on Whitechapel Road
     Then I should own Whitechapel Road
     And I should lose $0
-    And It should not be my turn
 
   Scenario: Landing on another users property
     Given another user owns Whitechapel Road
     And It is my turn
     When I land on Whitechapel Road
     Then I should lose $4
-    And It should not be my turn
 
   Scenario: Not buying a property
     Given Whitechapel Road is not owned

@@ -8,7 +8,12 @@ class TurnEnded < Event
   end
 
   def can_apply?(game_state = game.state)
-    game_state.can_buy_property?
-    # TODO check balance of player
+    game_state.expecting_rolls == 0
+  end
+
+  def errors(game_state = game.state)
+    ActiveModel::Errors.new(self).tap do |errors|
+      errors.add(:base, :expecting_roll) unless game_state.expecting_rolls == 0
+    end
   end
 end

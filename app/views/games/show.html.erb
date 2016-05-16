@@ -26,14 +26,17 @@
   <% if current_game_player[:in_jail] %>
     <p id="in_jail"><%= t('You are in jail') %></p>
   <% end %>
-  <% if @game_state.can_buy_property? %>
-    <%= buy_property_form %>
-    <%= end_turn_form %>
-  <% end %>
   <% if @game_state.players[@game_state.current_player] == current_game_player %>
-    <div id="dice_roll">
-      <%= roll_dice_form %>
-    </div>
+    <% if @game_state.can_buy_property? %>
+      <%= buy_property_form %>
+    <% end %>
+    <% if @game_state.expecting_rolls > 0 %>
+      <div id="dice_roll">
+        <%= roll_dice_form %>
+      </div>
+    <% else %>
+      <%= end_turn_form %>
+    <% end %>
     <% if testing_mode? %>
       <div id="set_balance">
         <%= set_balance_form %>
