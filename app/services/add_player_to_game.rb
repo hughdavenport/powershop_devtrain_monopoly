@@ -10,17 +10,17 @@ class AddPlayerToGame
   def call
     game.with_lock do
       self.event = PlayerJoined.new(user: user.id, piece: piece)
-      game.events << event if event.can_apply?(game.state)
+      game.events << event if event.can_apply?(game_state)
     end
   end
 
   def errors
-    event.errors(game.state)
+    event.errors(game_state)
   end
 
   private
 
-  def gamestate
+  def game_state
     game.state
   end
 
