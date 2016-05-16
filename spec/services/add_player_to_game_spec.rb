@@ -29,8 +29,6 @@ RSpec.describe AddPlayerToGame, type: :service do
     end
   end
 
-  let(:can_apply) { false }
-
   let(:user) do
     instance_double("User").tap do |user|
       expect(user).to receive(:id).and_return(user_id)
