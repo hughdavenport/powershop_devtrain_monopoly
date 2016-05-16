@@ -43,7 +43,6 @@ RSpec.describe AddPlayerToGame, type: :service do
 
   context "when the game state is valid" do
     let(:can_apply) { true }
-    let(:errors) { nil }
 
     before do
       expect(game).to receive(:events).and_return([])
