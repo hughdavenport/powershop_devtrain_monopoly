@@ -38,6 +38,14 @@ When(/^I select (.*) as (.*)$/) do |value, field|
 end
 
 
-Then(/^I should see the content (.*)$/) do |content|
-  expect(page).to have_content(content)
+Then(/^I should( not)? see the content (.*)$/) do |negation, content|
+  if negation
+    expect(page).not_to have_content(content)
+  else
+    expect(page).to have_content(content)
+  end
+end
+
+Then(/^I should( not)? see "(.*)$/) do |negation, content|
+  step "I should#{negation} see the content #{content}"
 end

@@ -50,6 +50,14 @@ Given(/^It is my turn$/) do
   step 'I know my balance'
 end
 
+Given(/^It is another users turn$/) do
+  step 'another user goes to the game'
+  unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
+    step 'I roll two dice (not doubles)'
+  end
+  step 'another user goes to the game'
+end
+
 Given(/^I am in jail$/) do
   step 'I go to the game'
   step 'I roll 3 doubles'
@@ -63,12 +71,17 @@ Given(/^I am in jail for (\d+) turns$/) do |number|
   end
 end
 
-Given(/^(.*) is( not)? owned$/) do |property, negation|
-  if negation
-    expect(find(OWNED_PROPERTIES_SELECTOR)).not_to have_content(property)
-  else
-    expect(find(OWNED_PROPERTIES_SELECTOR)).to have_content(property)
-  end
+Given(/^(.*) is not owned$/) do |property|
+  # It shouldn't be owned at the start
+end
+
+Given(/^(I|another user) (?:own|owns) (.*)$/) do |user, property|
+  # First step logs in as user
+  step "It is #{user == "I" ? "my" : "another users"} turn"
+  # TODO, bug in this, if we already are on this, and we are another user, the turn will switch...
+  step "I land on #{property}"
+  step 'I click on "Buy property"'
+  step 'I land on Go' # Make sure we don't test the whole extra $200 thing
 end
 
 Given(/^I know my location$/) do
@@ -192,4 +205,12 @@ Then(/^(I|another user) should own (.*)$/) do |user, property|
   # First step will login as user
   step "#{user} goes to the game"
   expect(find(MY_PROPERTIES_SELECTOR)).to have_content(property)
+end
+
+Then(/^(.*) should( not)? be owned$/) do |property, negation|
+  if negation
+    expect(find(OWNED_PROPERTIES_SELECTOR)).not_to have_content(property)
+  else
+    expect(find(OWNED_PROPERTIES_SELECTOR)).to have_content(property)
+  end
 end
