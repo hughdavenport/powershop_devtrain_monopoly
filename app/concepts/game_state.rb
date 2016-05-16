@@ -69,35 +69,35 @@ class GameState
     :electric_company => { event: LandOnProperty, utility: true, price: 150 },
     :water_works      => { event: LandOnProperty, utility: true, price: 150 },
 
-    :old_kent_road    => { event: LandOnProperty, colour: :brown, price: 60 },
-    :whitechapel_road => { event: LandOnProperty, colour: :brown, price: 60 },
+    :old_kent_road    => { event: LandOnProperty, colour: :brown, price: 60, rent: 2 },
+    :whitechapel_road => { event: LandOnProperty, colour: :brown, price: 60, rent: 4 },
 
-    :the_angel_islington => { event: LandOnProperty, colour: :blue, price: 100 },
-    :euston_road         => { event: LandOnProperty, colour: :blue, price: 100 },
-    :pentonville_road    => { event: LandOnProperty, colour: :blue, price: 120 },
+    :the_angel_islington => { event: LandOnProperty, colour: :blue, price: 100, rent: 6 },
+    :euston_road         => { event: LandOnProperty, colour: :blue, price: 100, rent: 6 },
+    :pentonville_road    => { event: LandOnProperty, colour: :blue, price: 120, rent: 8 },
 
-    :pall_mall             => { event: LandOnProperty, colour: :pink, price: 140 },
-    :whitehall             => { event: LandOnProperty, colour: :pink, price: 140 },
-    :northumberland_avenue => { event: LandOnProperty, colour: :pink, price: 160 },
+    :pall_mall             => { event: LandOnProperty, colour: :pink, price: 140, rent: 10 },
+    :whitehall             => { event: LandOnProperty, colour: :pink, price: 140, rent: 10 },
+    :northumberland_avenue => { event: LandOnProperty, colour: :pink, price: 160, rent: 12 },
 
-    :bow_street         => { event: LandOnProperty, colour: :orange, price: 100 },
-    :marlborough_street => { event: LandOnProperty, colour: :orange, price: 100 },
-    :vine_street        => { event: LandOnProperty, colour: :orange, price: 200 },
+    :bow_street         => { event: LandOnProperty, colour: :orange, price: 100, rent: 14 },
+    :marlborough_street => { event: LandOnProperty, colour: :orange, price: 100, rent: 14 },
+    :vine_street        => { event: LandOnProperty, colour: :orange, price: 200, rent: 16 },
 
-    :strand           => { event: LandOnProperty, colour: :red, price: 220 },
-    :fleet_street     => { event: LandOnProperty, colour: :red, price: 220 },
-    :trafalgar_square => { event: LandOnProperty, colour: :red, price: 240 },
+    :strand           => { event: LandOnProperty, colour: :red, price: 220, rent: 18 },
+    :fleet_street     => { event: LandOnProperty, colour: :red, price: 220, rent: 18 },
+    :trafalgar_square => { event: LandOnProperty, colour: :red, price: 240, rent: 20 },
 
-    :leicester_square => { event: LandOnProperty, colour: :yellow, price: 260 },
-    :coventry_street  => { event: LandOnProperty, colour: :yellow, price: 260 },
-    :piccadilly       => { event: LandOnProperty, colour: :yellow, price: 280 },
+    :leicester_square => { event: LandOnProperty, colour: :yellow, price: 260, rent: 22 },
+    :coventry_street  => { event: LandOnProperty, colour: :yellow, price: 260, rent: 22 },
+    :piccadilly       => { event: LandOnProperty, colour: :yellow, price: 280, rent: 24 },
 
-    :regent_street => { event: LandOnProperty, colour: :green, price: 300 },
-    :oxford_street => { event: LandOnProperty, colour: :green, price: 300 },
-    :bond_street   => { event: LandOnProperty, colour: :green, price: 320 },
+    :regent_street => { event: LandOnProperty, colour: :green, price: 300, rent: 26 },
+    :oxford_street => { event: LandOnProperty, colour: :green, price: 300, rent: 26 },
+    :bond_street   => { event: LandOnProperty, colour: :green, price: 320, rent: 28 },
 
-    :park_lane => { event: LandOnProperty, colour: :purple, price: 350 },
-    :mayfair   => { event: LandOnProperty, colour: :purple, price: 400 },
+    :park_lane => { event: LandOnProperty, colour: :purple, price: 350, rent: 35 },
+    :mayfair   => { event: LandOnProperty, colour: :purple, price: 400, rent: 50 },
   }
 
   def self.create(game)
