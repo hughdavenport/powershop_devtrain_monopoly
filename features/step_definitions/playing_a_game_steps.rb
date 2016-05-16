@@ -43,7 +43,7 @@ Given(/^It is my turn$/) do
   # TODO have a @monopoly that abstracts out the dom
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'another user rolls two dice (not doubles)'
-    step 'I click on "End turn"'
+    step 'I click on "End turn"' if page.has_selector?(CURRENT_PLAYER_SELECTOR)
     step 'I go to the game'
   end
   # get some state
