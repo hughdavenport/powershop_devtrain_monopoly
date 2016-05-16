@@ -30,7 +30,9 @@
     <%= buy_property_form %>
     <%= end_turn_form %>
   <% end %>
-  <%= roll_dice_form %>
+  <% if @game_state.players[@game_state.current_player] == current_game_player %>
+    <%= roll_dice_form %>
+  <% end %>
 <% end %>
 
 <%= owned_properties %>

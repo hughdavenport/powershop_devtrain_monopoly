@@ -82,7 +82,9 @@ Given(/^(I|another user) (?:own|owns) (.*)$/) do |user, property|
   # TODO, bug in this, if we already are on this, and we are another user, the turn will switch...
   step "I land on #{property}"
   step 'I click on "Buy property"'
-  step 'I land on Go' # Make sure we don't test the whole extra $200 thing
+  # Make sure we don't test the passing go step, so just jump there now
+  step 'It is my turn'
+  step 'I land on Go'
 end
 
 Given(/^I know my location$/) do
