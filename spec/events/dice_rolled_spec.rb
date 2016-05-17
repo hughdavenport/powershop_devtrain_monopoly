@@ -139,6 +139,11 @@ RSpec.describe DiceRolled, type: :event do
       context "and I roll twice" do
         let(:dice_rolls_size) { 2 }
 
+        before do
+          expect(game_state).to receive(:expecting_rolls).and_return(1)
+          expect(game_state).to receive(:expecting_rolls=).and_return(0)
+        end
+
         context "and they are doubles" do
           before do
             expect(dice_rolls).to receive(:uniq).and_return([1])
@@ -169,9 +174,7 @@ RSpec.describe DiceRolled, type: :event do
           context "and we have not been in jail for 3 turns" do
             let(:pairs_rolled_while_in_jail) { 1 }
 
-            it "should set the state to not require any more rolls" do
-              expect(game_state).to receive(:expecting_rolls).and_return(1)
-              expect(game_state).to receive(:expecting_rolls=).and_return(0)
+            it "should apply with normal constraints" do
               event.apply(game_state)
             end
           end
@@ -195,6 +198,11 @@ RSpec.describe DiceRolled, type: :event do
       context "and I roll twice" do
         let(:dice_rolls_size) { 2 }
 
+        before do
+          expect(game_state).to receive(:expecting_rolls).and_return(1)
+          expect(game_state).to receive(:expecting_rolls=).and_return(0)
+        end
+
         context "and they are doubles" do
           before do
             expect(dice_rolls).to receive(:uniq).and_return([1])
@@ -215,10 +223,8 @@ RSpec.describe DiceRolled, type: :event do
             let(:doubles_in_a_row) { 1 }
 
             before do
-              # Get an extra turn, then decrement
-              expect(game_state).to receive(:expecting_rolls).and_return(1)
-              expect(game_state).to receive(:expecting_rolls=).and_return(3)
-              expect(game_state).to receive(:expecting_rolls).and_return(3)
+              # Get an extra turn
+              expect(game_state).to receive(:expecting_rolls).and_return(0)
               expect(game_state).to receive(:expecting_rolls=).and_return(2)
             end
 
@@ -236,8 +242,6 @@ RSpec.describe DiceRolled, type: :event do
           before do
             expect(dice_rolls).to receive(:uniq).and_return([1, 2])
             expect(player).to receive(:[]).with(:doubles_in_a_row).and_return(0)
-            expect(game_state).to receive(:expecting_rolls).and_return(1)
-            expect(game_state).to receive(:expecting_rolls=).and_return(0)
           end
 
           it "should apply a shift player event" do

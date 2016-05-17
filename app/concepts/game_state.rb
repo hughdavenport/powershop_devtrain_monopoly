@@ -102,7 +102,9 @@ class GameState
   }
 
   def self.create(game)
-    game.events.inject(GameState.new(game: game)) { |state, event| event.apply(state) }
+    GameState.new(game: game).tap do |game_state|
+      game.events.each { |event| event.apply(game_state) }
+    end
   end
 
   def initialize(game:)
