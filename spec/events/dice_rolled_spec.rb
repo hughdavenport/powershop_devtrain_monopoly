@@ -166,7 +166,7 @@ RSpec.describe DiceRolled, type: :event do
             let(:pairs_rolled_while_in_jail) { 3 }
 
             it "should apply a pay bond event" do
-              expect_event_called("PayBond")
+              expect_event_called("BondPosted")
               event.apply(game_state)
             end
           end

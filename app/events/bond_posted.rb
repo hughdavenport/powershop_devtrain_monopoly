@@ -1,4 +1,4 @@
-class PayBond < Event
+class BondPosted < Event
   store_accessor :data, :amount
   after_initialize :default_values
 
