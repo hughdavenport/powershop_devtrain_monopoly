@@ -1,11 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe DiceRoll, type: :event do
-  pending "Test expecting dice roll passes"
-  pending "Test opposite"
-  pending "Test not started"
-  pending "Test current turn and not"
-
   let(:game_state) do
     instance_double("GameState").tap do |game_state|
 
@@ -29,6 +24,16 @@ RSpec.describe DiceRoll, type: :event do
 
         it { is_expected.to be_falsey }
       end
+
+      describe "#errors" do
+        before do
+          expect(game_state).to receive(:expecting_rolls).and_return(1)
+        end
+
+        subject { event.errors(game_state) }
+
+        it { is_expected.to be_present }
+      end
     end
 
     context "when the game is started" do
@@ -46,6 +51,12 @@ RSpec.describe DiceRoll, type: :event do
 
           it { is_expected.to be_falsey }
         end
+
+        describe "#errors" do
+          subject { event.errors(game_state) }
+
+          it { is_expected.to be_present }
+        end
       end
 
       context "when I can roll the dice" do
@@ -55,6 +66,12 @@ RSpec.describe DiceRoll, type: :event do
           subject { event.can_apply?(game_state) }
 
           it { is_expected.to be_truthy }
+        end
+
+        describe "#errors" do
+          subject { event.errors(game_state) }
+
+          it { is_expected.not_to be_present }
         end
       end
     end
