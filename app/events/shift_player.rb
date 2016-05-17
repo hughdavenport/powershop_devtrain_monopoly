@@ -4,6 +4,6 @@ class ShiftPlayer < Event
     old_location = player[:location]
     game_state.shift_player!(player)
     SquareLandedOn.new.apply(game_state)
-    PassGo.new.apply(game_state) if player[:location] < old_location
+    PassedGo.new.apply(game_state) if player[:location] < old_location
   end
 end
