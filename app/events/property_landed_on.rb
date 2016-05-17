@@ -1,4 +1,4 @@
-class LandOnProperty < Event
+class PropertyLandedOn < Event
   def apply(game_state)
     player = game_state.players[game_state.current_player]
     property = game_state.board[player[:location]]
