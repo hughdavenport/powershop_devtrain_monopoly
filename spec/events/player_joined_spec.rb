@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe PlayerJoined, type: :event do
-  let(:game) do
-    instance_double("Game").tap do |game|
-
-    end
-  end
-
   let(:game_state) do
     instance_double("GameState").tap do |game_state|
 
