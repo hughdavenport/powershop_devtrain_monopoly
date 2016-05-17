@@ -55,5 +55,15 @@ RSpec.describe TurnEnded, type: :event do
       expect(game_state).to receive(:players).and_return([player])
     end
 
+    let(:player) do
+      double("Player").tap do |player|
+
+      end
+    end
+
+    it "should end my turn" do
+      expect(game_state).to receive(:end_turn!).with(player)
+      event.apply(game_state)
+    end
   end
 end
