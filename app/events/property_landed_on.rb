@@ -12,7 +12,11 @@ class PropertyLandedOn < Event
       elsif details[:utility]
         OwnedUtilityLandedOn.new.apply(game_state)
       else
-        RentPaid.new.apply(game_state)
+        if game_state.colour_group(details[:colour]).all? { |property| game_state.property_owner(property) == owner }
+          FullColourGroupRentPaid.new.apply(game_state)
+        else
+          RentPaid.new.apply(game_state)
+        end
       end
     end
   end
