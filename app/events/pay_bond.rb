@@ -3,12 +3,9 @@ class PayBond < Event
   after_initialize :default_values
 
   def apply(game_state)
-    game_state.tap do |game_state|
-      game_state.players[game_state.current_player].tap do |player|
-        player[:money] -= amount
-        game_state.break_out_of_jail!(player)
-      end
-    end
+    player = game_state.players[game_state.current_player]
+    player[:money] -= amount
+    game_state.break_out_of_jail!(player)
   end
 
   private

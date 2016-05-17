@@ -1,11 +1,8 @@
 class PropertyPurchased < Event
   def apply(game_state)
-    game_state.tap do |game_state|
-      game_state.players[game_state.current_player].tap do |player|
-        property = game_state.board[player[:location]]
-        game_state.purchase_property!(player, property)
-      end
-    end
+    player = game_state.players[game_state.current_player]
+    property = game_state.board[player[:location]]
+    game_state.purchase_property!(player, property)
   end
 
   def can_apply?(game_state = game.state)

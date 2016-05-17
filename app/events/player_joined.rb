@@ -3,20 +3,8 @@ class PlayerJoined < Event
   store_accessor :data, :user
 
   def apply(game_state)
-    game_state.tap do |game_state|
-      game_state.players << {
-        user: user,
-        piece: piece,
-        money: 1500,
-        location: 0,
-        in_jail: false,
-        dice_rolls: [],
-        doubles_in_a_row: 0,
-        pairs_rolled_while_in_jail: 0,
-        properties: [],
-      }
-      game_state.current_player = 0 if game_state.current_player.nil?
-    end
+    game_state.players << new_user
+    game_state.current_player = 0 if game_state.current_player.nil?
   end
 
   def can_apply?(game_state = game.state)
@@ -44,5 +32,19 @@ class PlayerJoined < Event
 
   def user_already_joined?(game_state = game.state)
     !game_state.players.select { |data| data[:user] == user }.empty?
+  end
+
+  def new_user
+    {
+      user: user,
+      piece: piece,
+      money: 1500,
+      location: 0,
+      in_jail: false,
+      dice_rolls: [],
+      doubles_in_a_row: 0,
+      pairs_rolled_while_in_jail: 0,
+      properties: [],
+    }
   end
 end
