@@ -19,10 +19,7 @@ class DiceRoll < Event
             rolled_a_double = player[:dice_rolls].uniq.size == 1
             player[:doubles_in_a_row] += 1 if rolled_a_double
             return GoToJail.new.apply(game_state) if player[:doubles_in_a_row] == 3
-            old_location = player[:location]
-            game_state.shift_player!(player)
-            LandOnSquare.new.apply(game_state)
-            PassGo.new.apply(game_state) if player[:location] < old_location
+            ShiftPlayer.new.apply(game_state)
             game_state.expecting_rolls += 2 if rolled_a_double
           end
         end
