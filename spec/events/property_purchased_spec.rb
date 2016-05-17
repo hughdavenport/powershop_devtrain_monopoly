@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe PurchaseProperty, type: :event do
+RSpec.describe PropertyPurchased, type: :event do
   let(:game_state) do
     instance_double("GameState").tap do |game_state|
 
     end
   end
 
-  subject(:event) { PurchaseProperty.new }
+  subject(:event) { PropertyPurchased.new }
 
   let(:amount) { nil }
 

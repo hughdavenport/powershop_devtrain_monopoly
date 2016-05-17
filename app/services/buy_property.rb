@@ -7,7 +7,7 @@ class BuyProperty
 
   def call
     game.with_lock do
-      self.event = PurchaseProperty.new
+      self.event = PropertyPurchased.new
       game.events << event if event.can_apply?(game.state)
     end
   end

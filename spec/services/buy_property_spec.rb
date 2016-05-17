@@ -14,17 +14,17 @@ RSpec.describe BuyProperty, type: :service do
   end
 
   before do
-    purchase_property_event
+    property_purchased_event
   end
 
-  let(:purchase_property_event) do
-    class_double("PurchaseProperty").as_stubbed_const.tap do |purchase_property|
-      expect(purchase_property).to receive(:new).with(no_args).and_return(event)
+  let(:property_purchased_event) do
+    class_double("PropertyPurchased").as_stubbed_const.tap do |property_purchased|
+      expect(property_purchased).to receive(:new).with(no_args).and_return(event)
     end
   end
 
   let(:event) do
-    double("PurchaseProperty").tap do |event|
+    double("PropertyPurchased").tap do |event|
       expect(event).to receive(:can_apply?).and_return(can_apply)
     end
   end
