@@ -13,7 +13,7 @@ RSpec.describe DiceRoll, type: :event do
 
   describe "checking validity" do
     before do
-      expect(game_state).to receive(:started?).and_return(started)
+      expect(game_state).to receive(:started?) { started }
     end
 
     context "when the game is not started yet" do
@@ -27,7 +27,7 @@ RSpec.describe DiceRoll, type: :event do
 
       describe "#errors" do
         before do
-          expect(game_state).to receive(:expecting_rolls).and_return(1)
+          expect(game_state).to receive(:expecting_rolls) { 1 }
         end
 
         subject { event.errors(game_state) }
@@ -40,7 +40,7 @@ RSpec.describe DiceRoll, type: :event do
       let(:started) { true }
 
       before do
-        expect(game_state).to receive(:expecting_rolls).and_return(expecting_rolls)
+        expect(game_state).to receive(:expecting_rolls) { expecting_rolls }
       end
 
       context "when I can't roll the dice" do
