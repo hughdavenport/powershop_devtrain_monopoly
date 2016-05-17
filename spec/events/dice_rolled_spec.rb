@@ -232,7 +232,7 @@ RSpec.describe DiceRolled, type: :event do
             let(:new_location) { original_location }
 
             it "should apply a shift player event" do
-              expect_event_called("ShiftPlayer")
+              expect_event_called("PlayerShifted")
               event.apply(game_state)
             end
           end
@@ -245,7 +245,7 @@ RSpec.describe DiceRolled, type: :event do
           end
 
           it "should apply a shift player event" do
-            expect_event_called("ShiftPlayer")
+            expect_event_called("PlayerShifted")
             event.apply(game_state)
           end
         end
