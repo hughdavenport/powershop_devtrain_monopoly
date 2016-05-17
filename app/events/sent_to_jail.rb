@@ -1,4 +1,4 @@
-class GoToJail < Event
+class SentToJail < Event
   def apply(game_state)
     player = game_state.players[game_state.current_player]
     game_state.send_player_to_jail!(player)

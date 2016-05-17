@@ -214,7 +214,7 @@ RSpec.describe DiceRolled, type: :event do
             let(:doubles_in_a_row) { 3 }
 
             it "should apply a go to jail event" do
-              expect_event_called("GoToJail")
+              expect_event_called("SentToJail")
               event.apply(game_state)
             end
           end

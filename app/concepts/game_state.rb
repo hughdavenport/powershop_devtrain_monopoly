@@ -57,7 +57,7 @@ class GameState
     :income_tax => { event: PayIncomeTax },
     :super_tax  => { event: PaySuperTax },
 
-    :go_to_jail => { event: GoToJail },
+    :go_to_jail => { event: SentToJail },
 
     :chance          => {},
     :community_chest => {},
