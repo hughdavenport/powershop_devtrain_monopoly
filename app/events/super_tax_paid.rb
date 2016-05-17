@@ -1,4 +1,4 @@
-class PaySuperTax < PayTax
+class SuperTaxPaid < TaxPaid
   after_initialize :default_values
 
   private

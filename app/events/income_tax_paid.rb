@@ -1,4 +1,4 @@
-class PayIncomeTax < PayTax
+class IncomeTaxPaid < TaxPaid
   def apply(game_state)
     player = game_state.players[game_state.current_player]
     # TODO get 15% of player worth

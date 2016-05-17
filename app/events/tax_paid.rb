@@ -1,4 +1,4 @@
-class PayTax < Event
+class TaxPaid < Event
   store_accessor :data, :amount
 
   def apply(game_state)

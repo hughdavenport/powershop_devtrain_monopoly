@@ -54,8 +54,8 @@ class GameState
     :jail => {},
     :free_parking => {},
 
-    :income_tax => { event: PayIncomeTax },
-    :super_tax  => { event: PaySuperTax },
+    :income_tax => { event: IncomeTaxPaid },
+    :super_tax  => { event: SuperTaxPaid },
 
     :go_to_jail => { event: SentToJail },
 
