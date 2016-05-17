@@ -32,13 +32,12 @@ class DiceRoll < Event
   end
 
   def can_apply?(game_state = game.state)
-    game_state.started? && users_current_turn?(game_state) && game_state.expecting_rolls > 0
+    game_state.started? && game_state.expecting_rolls > 0
   end
 
   def errors(game_state = game.state)
     ActiveModel::Errors.new(self).tap do |errors|
       errors.add(:base, :not_started) unless game_state.started?
-      errors.add(:base, :not_current_turn) unless users_current_turn?(game_state)
       errors.add(:base, :not_expecting_roll) unless game_state.expecting_rolls > 0
     end
   end
@@ -47,10 +46,5 @@ class DiceRoll < Event
 
   def default_values
     self.amount = (Random.rand(6) + 1) unless amount.present?
-  end
-
-  def users_current_turn?(game_state = game.state)
-    # This needs to check whether current_player can actuall roll, and change method name
-    true
   end
 end
