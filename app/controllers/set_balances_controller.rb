@@ -6,7 +6,7 @@ class SetBalancesController < ApplicationController
 
   # POST /games/1/set_balances
   def create
-    @game.events << SetBalance.new(amount: params[:amount])
+    @game.events << BalanceSet.new(amount: params[:amount])
     redirect_to @game
   end
 

@@ -1,4 +1,4 @@
-class SetBalance < Event
+class BalanceSet < Event
   store_accessor :data, :amount
 
   def apply(game_state)
