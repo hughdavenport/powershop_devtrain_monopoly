@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-def expect_event_called(event_name)
+def expect_event_called(event_name, with = no_args)
   class_double(event_name).as_stubbed_const.tap do |event|
-    expect(event).to receive(:new).and_return(event)
+    expect(event).to receive(:new).with(with).and_return(event)
     expect(event).to receive(:apply).with(game_state)
   end
 end
@@ -119,9 +119,11 @@ RSpec.describe DiceRolled, type: :event do
     let(:dice_rolls) do
       double("DiceRolls").tap do |dice_rolls|
         expect(dice_rolls).to receive(:<<).with(event.amount)
-        expect(dice_rolls).to receive(:size).and_return(dice_rolls_size)
+        expect(dice_rolls).to receive(:size).at_least(:once).and_return(dice_rolls_size)
       end
     end
+
+    let(:expected_rolls) { 1 }
 
     context "when I am in jail" do
       let(:in_jail) { true }
@@ -130,8 +132,8 @@ RSpec.describe DiceRolled, type: :event do
         let(:dice_rolls_size) { 1 }
 
         it "should still require one more roll" do
-          expect(game_state).to receive(:expecting_rolls).and_return(2)
-          expect(game_state).to receive(:expecting_rolls=).and_return(1)
+          expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
+          expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
           event.apply(game_state)
         end
       end
@@ -140,8 +142,8 @@ RSpec.describe DiceRolled, type: :event do
         let(:dice_rolls_size) { 2 }
 
         before do
-          expect(game_state).to receive(:expecting_rolls).and_return(1)
-          expect(game_state).to receive(:expecting_rolls=).and_return(0)
+          expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
+          expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
         end
 
         context "and they are doubles" do
@@ -188,10 +190,28 @@ RSpec.describe DiceRolled, type: :event do
       context "and I roll once" do
         let(:dice_rolls_size) { 1 }
 
-        it "should still require one more roll" do
-          expect(game_state).to receive(:expecting_rolls).and_return(2)
-          expect(game_state).to receive(:expecting_rolls=).and_return(1)
-          event.apply(game_state)
+        context "and I haven't landed on an owned utility" do
+          it "should still require one more roll" do
+            expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
+            expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
+            event.apply(game_state)
+          end
+        end
+
+        context "and I have landed on an owned utility" do
+          let(:expected_rolls) { 2 }
+          let(:dice_roll) { 3 }
+
+          before do
+            expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
+            expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
+            expect(dice_rolls).to receive(:pop).and_return(dice_roll)
+          end
+
+          it "should apply a utilities rent paid event" do
+            expect_event_called("UtilitiesRentPaid", amount: dice_roll)
+            event.apply(game_state)
+          end
         end
       end
 
@@ -199,8 +219,8 @@ RSpec.describe DiceRolled, type: :event do
         let(:dice_rolls_size) { 2 }
 
         before do
-          expect(game_state).to receive(:expecting_rolls).and_return(1)
-          expect(game_state).to receive(:expecting_rolls=).and_return(0)
+          expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
+          expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
         end
 
         context "and they are doubles" do
@@ -224,8 +244,7 @@ RSpec.describe DiceRolled, type: :event do
 
             before do
               # Get an extra turn
-              expect(game_state).to receive(:expecting_rolls).and_return(0)
-              expect(game_state).to receive(:expecting_rolls=).and_return(2)
+              expect(game_state).to receive(:expecting_rolls=).with(expected_rolls + 2)
             end
 
             let(:original_location) { 20 }

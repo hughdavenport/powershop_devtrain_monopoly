@@ -6,7 +6,14 @@ class PropertyLandedOn < Event
     if owner.nil?
       game_state.can_buy_property = true
     elsif owner != player
-      RentPaid.new.apply(game_state)
+      details = game_state.details(property)
+      if details[:station]
+        StationRentPaid.new.apply(game_state)
+      elsif details[:utility]
+        OwnedUtilityLandedOn.new.apply(game_state)
+      else
+        RentPaid.new.apply(game_state)
+      end
     end
   end
 end

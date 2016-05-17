@@ -238,3 +238,7 @@ end
 Then(/^I should( not)? be able to roll the dice$/) do |negation|
   step "I should#{negation} see \"Roll Dice\""
 end
+
+Then(/^I should lose (\d+) times the dice roll$/) do |multiplier|
+  step "I should lose $#{dice_roll.to_i * multiplier.to_i}"
+end
