@@ -1,4 +1,4 @@
-class PayRent < Event
+class RentPaid < Event
   def apply(game_state)
     player = game_state.players[game_state.current_player]
     # make a query object to just get what I need, rather than multiple calls like this

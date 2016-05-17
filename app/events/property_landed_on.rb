@@ -6,7 +6,7 @@ class PropertyLandedOn < Event
     if owner.nil?
       game_state.can_buy_property = true
     elsif owner != player
-      PayRent.new.apply(game_state)
+      RentPaid.new.apply(game_state)
     end
   end
 end
