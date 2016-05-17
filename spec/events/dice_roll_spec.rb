@@ -77,6 +77,25 @@ RSpec.describe DiceRoll, type: :event do
     end
   end
 
+  context "when I supply an amount" do
+    let(:amount) { 30 }
+
+    describe "#amount" do
+      it "should be the same" do
+        expect(event.amount).to be amount
+      end
+    end
+  end
+
+  context "when I don't supply an amount" do
+    describe "#amount" do
+      subject { event.amount }
+
+      it { is_expected.to be <= 6 }
+      it { is_expected.to be >= 1 }
+    end
+  end
+
   describe "applying the event" do
   end
 end
