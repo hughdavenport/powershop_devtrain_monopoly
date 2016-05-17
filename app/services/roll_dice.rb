@@ -8,7 +8,7 @@ class RollDice
 
   def call
     game.with_lock do
-      self.event = DiceRoll.new(amount: amount)
+      self.event = DiceRolled.new(amount: amount)
       game.events << event if event.can_apply?(game.state)
     end
   end

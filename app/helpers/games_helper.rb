@@ -12,7 +12,7 @@ module GamesHelper
   end
 
   def last_dice_roll
-    @game.dice_rolls.last
+    @game.dice_rolleds.last
   end
 
   def last_dice_roll_p

@@ -7,14 +7,14 @@ def expect_event_called(event_name)
   end
 end
 
-RSpec.describe DiceRoll, type: :event do
+RSpec.describe DiceRolled, type: :event do
   let(:game_state) do
     instance_double("GameState").tap do |game_state|
 
     end
   end
 
-  subject(:event) { DiceRoll.new(amount: amount) }
+  subject(:event) { DiceRolled.new(amount: amount) }
 
   let(:amount) { nil }
 

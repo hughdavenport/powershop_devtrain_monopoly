@@ -1,4 +1,4 @@
-class DiceRoll < Event
+class DiceRolled < Event
   after_initialize :default_values
   store_accessor :data, :amount
 

@@ -14,17 +14,17 @@ RSpec.describe RollDice, type: :service do
   end
 
   before do
-    dice_roll_event
+    dice_rolled_event
   end
 
-  let(:dice_roll_event) do
-    class_double("DiceRoll").as_stubbed_const.tap do |dice_roll|
-      expect(dice_roll).to receive(:new).with(amount: amount).and_return(event)
+  let(:dice_rolled_event) do
+    class_double("DiceRolled").as_stubbed_const.tap do |dice_rolled|
+      expect(dice_rolled).to receive(:new).with(amount: amount).and_return(event)
     end
   end
 
   let(:event) do
-    double("DiceRoll").tap do |event|
+    double("DiceRolled").tap do |event|
       expect(event).to receive(:can_apply?).and_return(can_apply)
     end
   end
