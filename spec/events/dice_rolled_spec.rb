@@ -150,7 +150,7 @@ RSpec.describe DiceRolled, type: :event do
           end
 
           it "should apply a break out of jail event" do
-            expect_event_called("BreakOutOfJail")
+            expect_event_called("BrokeOutOfJail")
             event.apply(game_state)
           end
         end

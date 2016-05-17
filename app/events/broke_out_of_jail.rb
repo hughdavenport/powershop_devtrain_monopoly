@@ -1,4 +1,4 @@
-class BreakOutOfJail < PayBond
+class BrokeOutOfJail < PayBond
   after_initialize :default_values
 
   private

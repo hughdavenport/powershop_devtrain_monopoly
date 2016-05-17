@@ -32,7 +32,7 @@ class DiceRolled < Event
 
   def apply_in_jail(game_state, player)
     if player[:dice_rolls].size == 2
-      return BreakOutOfJail.new.apply(game_state) if player[:dice_rolls].uniq.size == 1
+      return BrokeOutOfJail.new.apply(game_state) if player[:dice_rolls].uniq.size == 1
       player[:pairs_rolled_while_in_jail] += 1
       return PayBond.new.apply(game_state) if player[:pairs_rolled_while_in_jail] == 3
     end
