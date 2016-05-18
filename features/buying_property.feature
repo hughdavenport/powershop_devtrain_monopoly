@@ -11,7 +11,7 @@ Feature: Buying property
     Given Whitechapel Road is not owned
     And It is my turn
     When I land on Whitechapel Road
-    And I click on "Buy property"
+    And I buy the property
     Then I should own Whitechapel Road
     And I should lose $60
 
@@ -19,7 +19,7 @@ Feature: Buying property
     Given Whitechapel Road is not owned
     And I have $50
     When I land on Whitechapel Road
-    Then I should not see "Buy property"
+    Then I should not be able to buy the property
 
   Scenario: Not buying a property
     Given Whitechapel Road is not owned

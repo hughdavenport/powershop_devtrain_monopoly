@@ -33,7 +33,10 @@ end
 def distance_to_move(location)
   current = GameState::BOARD.index(current_location.downcase.gsub(" ", "_").to_sym)
   wanted = GameState::BOARD.index(location.downcase.gsub(" ", "_").to_sym)
-  wanted += GameState::BOARD.size if wanted < current
+  if wanted < current
+    wanted += GameState::BOARD.size if wanted < current
+    @passed_go = true
+  end
   wanted - current
 end
 
@@ -42,8 +45,7 @@ Given(/^It is my turn$/) do
   step 'I go to the game'
   # TODO have a @monopoly that abstracts out the dom
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
-    step 'another user rolls two dice (not doubles)'
-    step 'I end my turn'
+    step 'another user makes a move'
     step 'I go to the game'
   end
   # get some state
@@ -54,8 +56,7 @@ end
 Given(/^It is another users turn$/) do
   step 'another user goes to the game'
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
-    step 'I roll two dice (not doubles)'
-    step 'I end my turn'
+    step 'I make a move'
     step 'another user goes to the game'
   end
   step 'another user goes to the game'
@@ -82,14 +83,13 @@ end
 Given(/^(I|another user) (?:own|owns) (.*)$/) do |user, property|
   # First step logs in as user
   step "It is #{user == "I" ? "my" : "another users"} turn"
-  # TODO, bug in this, if we already are on this, and we are another user, the turn will switch...
-  step "I land on #{property}"
-  step 'I click on "Buy property"'
-  step 'I end my turn'
+  step "#{user} lands on #{property}"
+  step "#{user} buys the property"
+  step "#{user} ends their turn"
   # Make sure we don't test the passing go step, so just jump there now
-  step 'It is my turn'
-  step 'I land on Go'
-  step 'I end my turn'
+  step "It is #{user == "I" ? "my" : "another users"} turn"
+  step "#{user} lands on Go"
+  step "#{user} ends their turn"
 end
 
 Given(/^I have \$(\d+)$/) do |balance|
@@ -105,29 +105,28 @@ end
 
 Given(/^I know my balance$/) do
   @balance = balance
+  @passed_go = false
 end
 
 
-When(/^I land on (.*)$/) do |location|
+When(/^(I|another user) (?:land|lands) on (.*)$/) do |user, location|
   if current_location.downcase == location.downcase
-    step 'I roll two dice (not doubles)'
-    step 'I end my turn'
-    step 'It is my turn'
+    step "#{user} makes a move"
+    step "It is #{user == "I" ? "my" : "another users"} turn"
   end
-  2.times { step 'I roll a 1' } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
-  step 'I roll a 0'
-  step "I roll a #{distance_to_move(location)}"
+  2.times { step "#{user} rolls a 1" } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
+  step "#{user} rolls a 0"
+  step "#{user} rolls a #{distance_to_move(location)}"
 end
 
-When(/^I pass (.*)$/) do |location|
+When(/^(I|another user) (?:pass|passes) (.*)$/) do |user, location|
   if current_location.downcase == location.downcase
-    step 'I roll two dice (not doubles)'
-    step 'I end my turn'
-    step 'It is my turn'
+    step "#{user} makes a move"
+    step "It is #{user == "I" ? "my" : "another users"} turn"
   end
-  2.times { step 'I roll a 1' } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
-  step "I roll a #{distance_to_move(location)}"
-  step 'I roll a 1'
+  2.times { step "#{user} rolls a 1" } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
+  step "#{user} rolls a #{distance_to_move(location)}"
+  step "#{user} rolls a 1"
 end
 
 When(/^(I|another user) (?:roll|rolls) the dice$/) do |user|
@@ -143,25 +142,34 @@ end
 When(/^(I|another user) (?:roll|rolls) two dice \(not doubles\)$/) do |user|
   step "#{user} rolls the dice"
             # make 0-based for % operation, then 1-based for step
-  step "I roll a #{(((dice_roll.to_i - 1) + 1) % 6) + 1}"
+  step "#{user} rolls a #{(((dice_roll.to_i - 1) + 1) % 6) + 1}"
 end
 
 When(/^(I|another user) (?:roll|rolls) (a|\d+) (?:double|doubles)$/) do |user, number|
   number = 1 if number == "a"
   number.to_i.times do
     step "#{user} rolls the dice"
-    step "I roll a #{dice_roll}"
+    step "#{user} rolls a #{dice_roll}"
   end
 end
 
-When(/^I roll a (\d+)$/) do |number|
+When(/^(?:I|another user) (?:roll|rolls) a (\d+)$/) do |number|
   # Works only in testing and development mode, controller accepts a number for dice roll
   within("#dice_roll") { step "I enter in #{number} as dice roll" }
   step 'I click on "Roll Dice"'
 end
 
-When(/^I end my turn$/) do
+When(/^(?:I|another user) (?:end|ends) (?:my|their) turn$/) do
   step 'I click on "End turn"'
+end
+
+When(/^(I|another user) (?:make|makes) a move$/) do |user|
+  step "#{user} rolls two dice (not doubles)"
+  step "#{user} ends their turn"
+end
+
+When(/^(?:I|another user) (?:buy|buys) the property$/) do
+  step 'I click on "Buy property"'
 end
 
 
@@ -212,6 +220,7 @@ end
 
 Then(/^I should (lose|gain) \$(\d+)$/) do |direction, amount|
   multiplier = (direction == "lose" ? -1 : 1)
+  @balance = @balance.to_i + 200 if @passed_go && multiplier == -1
   expect(@balance.to_i + multiplier * amount.to_i).to eq balance.to_i
 end
 
@@ -241,4 +250,8 @@ end
 
 Then(/^I should lose (\d+) times the dice roll$/) do |multiplier|
   step "I should lose $#{dice_roll.to_i * multiplier.to_i}"
+end
+
+Then(/^I should( not)? be able to buy the property$/) do |negation|
+  step "I should#{negation} see \"Buy property\""
 end
