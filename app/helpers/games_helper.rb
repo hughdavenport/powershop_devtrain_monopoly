@@ -44,7 +44,7 @@ module GamesHelper
   end
 
   def end_turn_form
-    form_tag(game_end_turns_path(@game)) do
+    form_tag(game_turn_ends_path(@game)) do
       "".tap do |string|
         string << submit_tag('End turn')
       end.html_safe
@@ -52,7 +52,7 @@ module GamesHelper
   end
 
   def buy_property_form
-    form_tag(game_buy_properties_path(@game)) do
+    form_tag(game_property_purchases_path(@game)) do
       "".tap do |string|
         string << submit_tag('Buy property')
       end.html_safe

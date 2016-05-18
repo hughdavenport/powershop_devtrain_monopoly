@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe BuyPropertiesController, type: :controller do
+RSpec.describe TurnEndsController, type: :controller do
   # Inputs
   let(:game_id) { "1" }
   let(:username) { "testing" }
@@ -75,13 +75,13 @@ RSpec.describe BuyPropertiesController, type: :controller do
 
     context "when it is our turn" do
       before do
-        expect(game_state).to receive(:can_buy_property?).and_return(can_buy_property)
         # Make sure game_state matches our thoughts that we are logged in
         expect(game_state).to receive(:player).and_return(players[0])
+        expect(game_state).to receive(:expecting_rolls).and_return(expecting_rolls)
       end
 
-      context "when we are not on a buyable property" do
-        let(:can_buy_property) { false }
+      context "and we have to roll the dice" do
+        let(:expecting_rolls) { 1 }
 
         before { post :create, {game_id: game_id, username: username}, valid_session }
 
@@ -90,26 +90,26 @@ RSpec.describe BuyPropertiesController, type: :controller do
         end
 
         it "should have a flash message" do
-          expect(flash[:danger]).to eq "Cannot buy property"
+          expect(flash[:danger]).to eq "Expecting dice roll"
         end
       end
 
-      context "when we are on a buyable property" do
-        let(:can_buy_property) { true }
+      context "when we don't have to roll the dice" do
+        let(:expecting_rolls) { 0 }
 
         before do
-          buy_property_service
+          # Mock out service that is going to be called
+          end_turn_service
         end
 
-        # Mock out service that is going to be called
-        let(:buy_property_service) do
-          class_double("BuyProperty").as_stubbed_const.tap do |buy_property_service|
-            expect(buy_property_service).to receive(:new).with(game: game).and_return(service)
+        let(:end_turn_service) do
+          class_double("EndTurn").as_stubbed_const.tap do |end_turn_service|
+            expect(end_turn_service).to receive(:new).with(game: game).and_return(service)
           end
         end
 
         let(:service) do
-          double("BuyProperty").tap do |service|
+          double("EndTurn").tap do |service|
             expect(service).to receive(:call).and_return(return_value)
           end
         end
@@ -120,7 +120,7 @@ RSpec.describe BuyPropertiesController, type: :controller do
           before { post :create, {game_id: game_id, username: username}, valid_session }
 
           it "has a success notice" do
-            expect(flash[:notice]).to eq "Property purchased"
+            expect(flash[:notice]).to eq "Turn ended"
           end
 
           it "redirects to the game" do

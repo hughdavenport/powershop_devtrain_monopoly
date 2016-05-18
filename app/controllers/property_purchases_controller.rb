@@ -1,12 +1,12 @@
-class BuyPropertiesController < ApplicationController
+class PropertyPurchasesController < ApplicationController
   before_action :set_game
   before_action :check_logged_in_or_redirect_root
   before_action :check_current_player_or_redirect_game
   before_action :check_can_buy_property_or_redirect_game
 
-  # POST /games/1/buy_properties
+  # POST /games/1/purchase_properties
   def create
-    service = BuyProperty.new(game: @game)
+    service = PurchaseProperty.new(game: @game)
 
     if service.call
       redirect_to @game, notice: 'Property purchased'

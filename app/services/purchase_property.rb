@@ -1,4 +1,4 @@
-class BuyProperty
+class PurchaseProperty
   attr_reader :game, :event
 
   def initialize(game:)

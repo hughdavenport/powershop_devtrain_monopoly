@@ -1,10 +1,10 @@
-class EndTurnsController < ApplicationController
+class TurnEndsController < ApplicationController
   before_action :set_game
   before_action :check_logged_in_or_redirect_root
   before_action :check_current_player_or_redirect_game
   before_action :check_not_expecting_roll_or_redirect_game
 
-  # POST /games/1/end_turns
+  # POST /games/1/turn_ends
   def create
     service = EndTurn.new(game: @game)
 

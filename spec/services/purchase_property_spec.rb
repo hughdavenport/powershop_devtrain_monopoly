@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe BuyProperty, type: :service do
+RSpec.describe PurchaseProperty, type: :service do
   let(:game) do
     instance_double("Game").tap do |game|
       expect(game).to receive(:with_lock) { |&block| block.call }
@@ -29,7 +29,7 @@ RSpec.describe BuyProperty, type: :service do
     end
   end
 
-  subject(:service) { BuyProperty.new(game: game) }
+  subject(:service) { PurchaseProperty.new(game: game) }
 
   context "when the game state is valid" do
     let(:can_apply) { true }

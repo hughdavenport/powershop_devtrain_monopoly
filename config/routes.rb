@@ -3,10 +3,12 @@ Rails.application.routes.draw do
 
   resources :users
   resources :games, only: [:index, :show, :new, :create, :destroy] do
+    # TODO integrate into game view instead?
     resources :players, only: [:index, :new, :create]
     resources :dice_rolls, only: [:create]
-    resources :buy_properties, only: [:create]
-    resources :end_turns, only: [:create]
+    resources :property_purchases, only: [:create]
+    resources :turn_ends, only: [:create]
+    # TESTING ROUTE
     resources :set_balances, only: [:create]
   end
 end
