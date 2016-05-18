@@ -107,6 +107,8 @@ RSpec.describe DiceRolled, type: :event do
     before do
       expect(game_state).to receive(:current_player).and_return(0)
       expect(game_state).to receive(:players).and_return([player])
+      expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
+      expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
     end
 
     let(:player) do
@@ -119,7 +121,6 @@ RSpec.describe DiceRolled, type: :event do
     let(:dice_rolls) do
       double("DiceRolls").tap do |dice_rolls|
         expect(dice_rolls).to receive(:<<).with(event.amount)
-        expect(dice_rolls).to receive(:size).at_least(:once).and_return(dice_rolls_size)
       end
     end
 
@@ -128,64 +129,18 @@ RSpec.describe DiceRolled, type: :event do
     context "when I am in jail" do
       let(:in_jail) { true }
 
-      context "and I roll once" do
-        let(:dice_rolls_size) { 1 }
-
-        it "should still require one more roll" do
-          expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
-          expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
-          event.apply(game_state)
-        end
-      end
-
-      context "and I roll twice" do
-        let(:dice_rolls_size) { 2 }
-
-        before do
-          expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
-          expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
-        end
-
-        context "and they are doubles" do
-          before do
-            expect(dice_rolls).to receive(:uniq).and_return([1])
-          end
-
-          it "should apply a break out of jail event" do
-            expect_effect_called("BrokeOutOfJail")
-            event.apply(game_state)
-          end
-        end
-
-        context "and they are not doubles" do
-          before do
-            expect(dice_rolls).to receive(:uniq).and_return([1,2])
-            expect(player).to receive(:[]).with(:pairs_rolled_while_in_jail).twice.and_return(pairs_rolled_while_in_jail)
-            expect(player).to receive(:[]=).with(:pairs_rolled_while_in_jail, pairs_rolled_while_in_jail + 1)
-          end
-
-          context "and we have been in jail for 3 turns" do
-            let(:pairs_rolled_while_in_jail) { 3 }
-
-            it "should apply a pay bond event" do
-              expect_effect_called("BondPosted")
-              event.apply(game_state)
-            end
-          end
-
-          context "and we have not been in jail for 3 turns" do
-            let(:pairs_rolled_while_in_jail) { 1 }
-
-            it "should apply with normal constraints" do
-              event.apply(game_state)
-            end
-          end
-        end
+      it "should apply a rolled dice while in jail event" do
+        expect_effect_called("DiceRolledWhileInJail")
+        event.apply(game_state)
       end
     end
 
     context "when I am not in jail" do
       let(:in_jail) { false }
+
+      before do
+        expect(dice_rolls).to receive(:size).at_least(:once).and_return(dice_rolls_size)
+      end
 
       context "and I roll once" do
         let(:dice_rolls_size) { 1 }

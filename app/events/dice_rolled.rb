@@ -7,7 +7,7 @@ class DiceRolled < Event
     player[:dice_rolls] << amount.to_i
     game_state.expecting_rolls -= 1
     if player[:in_jail]
-      apply_in_jail(game_state, player)
+      DiceRolledWhileInJail.new.apply(game_state)
     elsif player[:dice_rolls].size == 1 && game_state.expecting_rolls % 2 == 0
       apply_utilities_rent(game_state, player)
     else
@@ -30,14 +30,6 @@ class DiceRolled < Event
 
   def default_values
     self.amount = (Random.rand(6) + 1) unless amount.present?
-  end
-
-  def apply_in_jail(game_state, player)
-    if player[:dice_rolls].size == 2
-      return BrokeOutOfJail.new.apply(game_state) if player[:dice_rolls].uniq.size == 1
-      player[:pairs_rolled_while_in_jail] += 1
-      return BondPosted.new.apply(game_state) if player[:pairs_rolled_while_in_jail] == 3
-    end
   end
 
   def apply_normal(game_state, player)
