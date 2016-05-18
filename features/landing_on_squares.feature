@@ -21,15 +21,16 @@ Feature: Landing on squares
   Scenario: Passing Go
     Given It is my turn
     When I pass Go
-    Then I should gain $200
+    Then I should gain go money
 
   Scenario: Landing on Go
     Given It is my turn
     When I land on Go
-    Then I should gain $200
+    Then I should gain go money
 
   Scenario: Landing on go to jail
     Given It is my turn
     When I land on Go To Jail
     Then I should be in jail
     And It should not be my turn
+    And I should gain $0

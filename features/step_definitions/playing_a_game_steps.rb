@@ -33,11 +33,14 @@ end
 def distance_to_move(location)
   current = GameState::BOARD.index(current_location.downcase.gsub(" ", "_").to_sym)
   wanted = GameState::BOARD.index(location.downcase.gsub(" ", "_").to_sym)
-  if wanted < current
-    wanted += GameState::BOARD.size if wanted < current
-    @passed_go = true
-  end
+  wanted += GameState::BOARD.size if wanted < current
   wanted - current
+end
+
+def passed_go?(old_location)
+  current = GameState::BOARD.index(current_location.downcase.gsub(" ", "_").to_sym)
+  old = GameState::BOARD.index(old_location.downcase.gsub(" ",  "_").to_sym)
+  current < old
 end
 
 Given(/^It is my turn$/) do
@@ -101,7 +104,7 @@ end
 
 Given(/^I know my balance$/) do
   @balance = balance
-  @passed_go = false
+  @passed_go = 0
 end
 
 
@@ -111,8 +114,10 @@ When(/^(I|another user) (?:land|lands) on (.*)$/) do |user, location|
     step "It is #{user == "I" ? "my" : "another users"} turn"
   end
   2.times { step "#{user} rolls a 1" } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
+  old_location = current_location
   step "#{user} rolls a 0"
   step "#{user} rolls a #{distance_to_move(location)}"
+  @passed_go += 1 if user == "I" && @passed_go && passed_go?(old_location)
 end
 
 When(/^(I|another user) (?:pass|passes) (.*)$/) do |user, location|
@@ -121,8 +126,10 @@ When(/^(I|another user) (?:pass|passes) (.*)$/) do |user, location|
     step "It is #{user == "I" ? "my" : "another users"} turn"
   end
   2.times { step "#{user} rolls a 1" } if ambiguous_location?(current_location) # May bankrupt, but hey, only when on chance/community chest
+  old_location = current_location
   step "#{user} rolls a #{distance_to_move(location)}"
   step "#{user} rolls a 1"
+  @passed_go += 1 if user == "I" && @passed_go && passed_go?(old_location)
 end
 
 When(/^(I|another user) (?:roll|rolls) the dice$/) do |user|
@@ -225,9 +232,15 @@ Then(/^(I|another user) should have \$(\d+) balance$/) do |user, amount|
 end
 
 Then(/^I should (lose|gain) \$(\d+)$/) do |direction, amount|
+  step "I go to the game"
   multiplier = (direction == "lose" ? -1 : 1)
-  @balance = @balance.to_i + 200 if @passed_go && multiplier == -1
+  @balance = @balance.to_i + 200 * @passed_go if @passed_go
   expect(@balance.to_i + multiplier * amount.to_i).to eq balance.to_i
+end
+
+Then(/^I should gain go money$/) do
+  @passed_go = 0
+  step 'I should gain $200'
 end
 
 Then(/^(I|another user) should be the current player$/) do |user|
@@ -254,8 +267,8 @@ Then(/^I should( not)? be able to roll the dice$/) do |negation|
   step "I should#{negation} see \"Roll Dice\""
 end
 
-Then(/^I should lose (\d+) times the dice roll$/) do |multiplier|
-  step "I should lose $#{dice_roll.to_i * multiplier.to_i}"
+Then(/^I should (lose|gain) (\d+) times the dice roll$/) do |direction, multiplier|
+  step "I should #{direction} $#{dice_roll.to_i * multiplier.to_i}"
 end
 
 Then(/^I should( not)? be able to buy the property$/) do |negation|

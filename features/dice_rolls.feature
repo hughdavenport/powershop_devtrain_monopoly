@@ -39,6 +39,7 @@ Feature: Rolling dice
     When I roll 3 doubles
     Then I should be in jail
     And It should not be my turn
+    And I should gain $0
 
   Scenario: While in jail
     Given I am in jail
