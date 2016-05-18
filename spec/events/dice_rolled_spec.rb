@@ -158,13 +158,11 @@ RSpec.describe DiceRolled, type: :event do
           let(:dice_roll) { 3 }
 
           before do
-            expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
-            expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
             expect(dice_rolls).to receive(:pop).and_return(dice_roll)
           end
 
-          it "should apply a utilities rent paid event" do
-            expect_effect_called("UtilitiesRentPaid", dice_roll: dice_roll)
+          it "should apply a dice rolled for utility rent event" do
+            expect_effect_called("DiceRolledForUtilityRent", dice_roll: dice_roll)
             event.apply(game_state)
           end
         end

@@ -9,7 +9,7 @@ class DiceRolled < Event
     if player[:in_jail]
       DiceRolledWhileInJail.new.apply(game_state)
     elsif player[:dice_rolls].size == 1 && game_state.expecting_rolls % 2 == 0
-      apply_utilities_rent(game_state, player)
+      DiceRolledForUtilityRent.new(dice_roll: player[:dice_rolls].pop).apply(game_state)
     else
       apply_normal(game_state, player)
     end
@@ -40,9 +40,5 @@ class DiceRolled < Event
       PlayerShifted.new.apply(game_state)
       game_state.expecting_rolls += 2 if rolled_a_double
     end
-  end
-
-  def apply_utilities_rent(game_state, player)
-    UtilitiesRentPaid.new(dice_roll: player[:dice_rolls].pop).apply(game_state)
   end
 end
