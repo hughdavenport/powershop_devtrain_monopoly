@@ -11,7 +11,7 @@ class DiceRolled < Event
     elsif player[:dice_rolls].size == 1 && game_state.expecting_rolls % 2 == 0
       DiceRolledForUtilityRent.new(dice_roll: player[:dice_rolls].pop).apply(game_state)
     else
-      apply_normal(game_state, player)
+      DiceRolledWhileNotInJail.new.apply(game_state)
     end
   end
 
@@ -30,15 +30,5 @@ class DiceRolled < Event
 
   def default_values
     self.amount = (Random.rand(6) + 1) unless amount.present?
-  end
-
-  def apply_normal(game_state, player)
-    if player[:dice_rolls].size == 2
-      rolled_a_double = player[:dice_rolls].uniq.size == 1
-      player[:doubles_in_a_row] += 1 if rolled_a_double
-      return SentToJail.new.apply(game_state) if player[:doubles_in_a_row] == 3
-      PlayerShifted.new.apply(game_state)
-      game_state.expecting_rolls += 2 if rolled_a_double
-    end
   end
 end

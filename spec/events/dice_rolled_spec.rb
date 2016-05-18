@@ -146,9 +146,8 @@ RSpec.describe DiceRolled, type: :event do
         let(:dice_rolls_size) { 1 }
 
         context "and I haven't landed on an owned utility" do
-          it "should still require one more roll" do
-            expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
-            expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
+          it "should apply a dice rolled while not in jail effect" do
+            expect_effect_called("DiceRolledWhileNotInJail")
             event.apply(game_state)
           end
         end
@@ -171,55 +170,9 @@ RSpec.describe DiceRolled, type: :event do
       context "and I roll twice" do
         let(:dice_rolls_size) { 2 }
 
-        before do
-          expect(game_state).to receive(:expecting_rolls).at_least(:once).and_return(expected_rolls)
-          expect(game_state).to receive(:expecting_rolls=).with(expected_rolls - 1)
-        end
-
-        context "and they are doubles" do
-          before do
-            expect(dice_rolls).to receive(:uniq).and_return([1])
-            expect(player).to receive(:[]).with(:doubles_in_a_row).twice.and_return(doubles_in_a_row)
-            expect(player).to receive(:[]=).with(:doubles_in_a_row, doubles_in_a_row + 1)
-          end
-
-          context "and I have rolled 3 doubles in a row" do
-            let(:doubles_in_a_row) { 3 }
-
-            it "should apply a go to jail event" do
-              expect_effect_called("SentToJail")
-              event.apply(game_state)
-            end
-          end
-
-          context "and I haven't rolled 3 doubles in a row" do
-            let(:doubles_in_a_row) { 1 }
-
-            before do
-              # Get an extra turn
-              expect(game_state).to receive(:expecting_rolls=).with(expected_rolls + 2)
-            end
-
-            let(:original_location) { 20 }
-            let(:new_location) { original_location }
-
-            it "should apply a shift player event" do
-              expect_effect_called("PlayerShifted")
-              event.apply(game_state)
-            end
-          end
-        end
-
-        context "and they are not doubles" do
-          before do
-            expect(dice_rolls).to receive(:uniq).and_return([1, 2])
-            expect(player).to receive(:[]).with(:doubles_in_a_row).and_return(0)
-          end
-
-          it "should apply a shift player event" do
-            expect_effect_called("PlayerShifted")
-            event.apply(game_state)
-          end
+        it "should apply a dice rolled while not in jail effect" do
+          expect_effect_called("DiceRolledWhileNotInJail")
+          event.apply(game_state)
         end
       end
     end
