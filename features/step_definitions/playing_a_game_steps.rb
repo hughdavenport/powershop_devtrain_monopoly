@@ -45,7 +45,7 @@ Given(/^It is my turn$/) do
   step 'I go to the game'
   # TODO have a @monopoly that abstracts out the dom
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
-    step 'another user makes a move'
+    step 'another user makes a move (not going to jail)'
     step 'I go to the game'
   end
   # get some state
@@ -56,7 +56,7 @@ end
 Given(/^It is another users turn$/) do
   step 'another user goes to the game'
   unless page.has_selector?(CURRENT_PLAYER_SELECTOR)
-    step 'I make a move'
+    step 'I make a move (not going to jail)'
     step 'another user goes to the game'
   end
   step 'another user goes to the game'
@@ -161,6 +161,16 @@ end
 
 When(/^(I|another user) (?:make|makes) a move$/) do |user|
   step "#{user} rolls two dice (not doubles)"
+  step "#{user} ends their turn"
+end
+
+When(/^(I|another user) (?:make|makes) a move \(not going to jail\)$/) do |user|
+  step "#{user} goes to the game"
+  if current_location.downcase == "jail"
+    step "#{user} lands on Go"
+  else
+    step "#{user} lands on Jail"
+  end
   step "#{user} ends their turn"
 end
 
