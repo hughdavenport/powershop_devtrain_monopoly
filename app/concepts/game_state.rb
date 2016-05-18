@@ -166,6 +166,7 @@ class GameState
   def purchase_property!(player, property)
     player[:money] -= details(property)[:price]
     player[:properties] << property
+    self.can_buy_property = false
   end
 
   def end_turn!(player)
