@@ -86,10 +86,6 @@ Given(/^(I|another user) (?:own|owns) (.*)$/) do |user, property|
   step "#{user} lands on #{property}"
   step "#{user} buys the property"
   step "#{user} ends their turn"
-  # Make sure we don't test the passing go step, so just jump there now
-  step "It is #{user == "I" ? "my" : "another users"} turn"
-  step "#{user} lands on Go"
-  step "#{user} ends their turn"
 end
 
 Given(/^I have \$(\d+)$/) do |balance|

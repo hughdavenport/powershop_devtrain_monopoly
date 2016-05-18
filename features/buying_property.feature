@@ -26,7 +26,7 @@ Feature: Buying property
     And It is my turn
     When I land on Whitechapel Road
     And TODO: Change this to start auction?
-    And I click on "End turn"
+    And I end my turn
     Then Whitechapel Road should not be owned
     And I should lose $0
     And It should not be my turn
