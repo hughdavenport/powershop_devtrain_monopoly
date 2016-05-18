@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 def expect_effect_called(event_name, with = no_args)
-  class_double(event_name).as_stubbed_const.tap do |event|
-    expect(event).to receive(:new).with(with).and_return(event)
+  event = instance_double(event_name).tap do |event|
     expect(event).to receive(:apply).with(game_state)
+  end
+  class_double(event_name).as_stubbed_const.tap do |klass|
+    expect(klass).to receive(:new).with(with).and_return(event)
   end
 end
 
