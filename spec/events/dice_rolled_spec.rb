@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-def expect_event_called(event_name, with = no_args)
+def expect_effect_called(event_name, with = no_args)
   class_double(event_name).as_stubbed_const.tap do |event|
     expect(event).to receive(:new).with(with).and_return(event)
     expect(event).to receive(:apply).with(game_state)
@@ -152,7 +152,7 @@ RSpec.describe DiceRolled, type: :event do
           end
 
           it "should apply a break out of jail event" do
-            expect_event_called("BrokeOutOfJail")
+            expect_effect_called("BrokeOutOfJail")
             event.apply(game_state)
           end
         end
@@ -168,7 +168,7 @@ RSpec.describe DiceRolled, type: :event do
             let(:pairs_rolled_while_in_jail) { 3 }
 
             it "should apply a pay bond event" do
-              expect_event_called("BondPosted")
+              expect_effect_called("BondPosted")
               event.apply(game_state)
             end
           end
@@ -209,7 +209,7 @@ RSpec.describe DiceRolled, type: :event do
           end
 
           it "should apply a utilities rent paid event" do
-            expect_event_called("UtilitiesRentPaid", amount: dice_roll)
+            expect_effect_called("UtilitiesRentPaid", dice_roll: dice_roll)
             event.apply(game_state)
           end
         end
@@ -234,7 +234,7 @@ RSpec.describe DiceRolled, type: :event do
             let(:doubles_in_a_row) { 3 }
 
             it "should apply a go to jail event" do
-              expect_event_called("SentToJail")
+              expect_effect_called("SentToJail")
               event.apply(game_state)
             end
           end
@@ -251,7 +251,7 @@ RSpec.describe DiceRolled, type: :event do
             let(:new_location) { original_location }
 
             it "should apply a shift player event" do
-              expect_event_called("PlayerShifted")
+              expect_effect_called("PlayerShifted")
               event.apply(game_state)
             end
           end
@@ -264,7 +264,7 @@ RSpec.describe DiceRolled, type: :event do
           end
 
           it "should apply a shift player event" do
-            expect_event_called("PlayerShifted")
+            expect_effect_called("PlayerShifted")
             event.apply(game_state)
           end
         end

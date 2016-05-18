@@ -1,6 +1,9 @@
-class BondPosted < Event
-  store_accessor :data, :amount
-  after_initialize :default_values
+class BondPosted
+  attr_reader :amount
+
+  def initialize(amount: 50)
+    self.amount = amount
+  end
 
   def apply(game_state)
     player = game_state.players[game_state.current_player]
@@ -10,7 +13,5 @@ class BondPosted < Event
 
   private
 
-  def default_values
-    self.amount ||= 50
-  end
+  attr_writer :amount
 end

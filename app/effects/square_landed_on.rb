@@ -1,4 +1,4 @@
-class SquareLandedOn < Event
+class SquareLandedOn
   def apply(game_state)
     player = game_state.players[game_state.current_player]
     square = game_state.board[player[:location]]

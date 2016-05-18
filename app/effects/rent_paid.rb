@@ -1,5 +1,9 @@
-class RentPaid < Event
-  store_accessor :data, :amount
+class RentPaid
+  attr_reader :amount
+
+  def initialize(amount: nil)
+    self.amount = amount
+  end
 
   def apply(game_state)
     player = game_state.players[game_state.current_player]
@@ -16,4 +20,6 @@ class RentPaid < Event
   def set_amount(game_state, property)
     self.amount = game_state.details(property)[:rent]
   end
+
+  attr_writer :amount
 end

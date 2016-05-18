@@ -51,6 +51,6 @@ class DiceRolled < Event
   end
 
   def apply_utilities_rent(game_state, player)
-    UtilitiesRentPaid.new(amount: player[:dice_rolls].pop).apply(game_state)
+    UtilitiesRentPaid.new(dice_roll: player[:dice_rolls].pop).apply(game_state)
   end
 end
