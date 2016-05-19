@@ -7,7 +7,7 @@ class BondPosted
 
   def apply(game_state)
     player = game_state.players[game_state.current_player]
-    player[:money] -= amount
+    player.pay!(amount)
     game_state.break_out_of_jail!(player)
   end
 

@@ -3,6 +3,6 @@ class BalanceSet < Event
 
   def apply(game_state)
     player = game_state.players[game_state.current_player]
-    player[:money] = amount.to_i
+    player.set_balance!(amount.to_i)
   end
 end

@@ -25,7 +25,8 @@ RSpec.describe PlayerJoined, type: :event do
       describe "#errors" do
         before do
           allow(game_state).to receive(:started?).and_return(true)
-          allow(game_state).to receive(:players).and_return([])
+          allow(game_state).to receive(:player_with_piece).with(piece).and_return(nil)
+          allow(game_state).to receive(:player).with(user_id).and_return(nil)
         end
 
         subject { event.errors(game_state) }
@@ -50,7 +51,8 @@ RSpec.describe PlayerJoined, type: :event do
 
         describe "#errors" do
           before do
-            allow(game_state).to receive(:players).and_return([])
+            allow(game_state).to receive(:player_with_piece).with(piece).and_return(nil)
+            allow(game_state).to receive(:player).with(user_id).and_return(nil)
           end
 
           subject { event.errors(game_state) }
@@ -63,11 +65,11 @@ RSpec.describe PlayerJoined, type: :event do
         let(:started) { false }
 
         before do
-          expect(game_state).to receive(:players).at_least(:once).and_return(players)
+          expect(game_state).to receive(:player_with_piece).with(piece).and_return(player_with_piece)
         end
 
-        context "which another player already has" do
-          let(:players) { [ { piece: piece } ] }
+        context "which another player already has the same piece" do
+          let(:player_with_piece) { "player" }
 
           describe "#can_apply?" do
             subject { event.can_apply?(game_state) }
@@ -76,41 +78,53 @@ RSpec.describe PlayerJoined, type: :event do
           end
 
           describe "#errors" do
+            before do
+              expect(game_state).to receive(:player).with(user_id).and_return(nil)
+            end
+
             subject { event.errors(game_state) }
 
             it { is_expected.to be_present }
           end
         end
 
-        context "which I have already joined" do
-          let(:players) { [ { user: user_id } ] }
+        context "when no another player has the same piece" do
+          let(:player_with_piece) { nil }
 
-          describe "#can_apply?" do
-            subject { event.can_apply?(game_state) }
-
-            it { is_expected.to be_falsey }
+          before do
+            expect(game_state).to receive(:player).with(user_id).and_return(player)
           end
 
-          describe "#errors" do
-            subject { event.errors(game_state) }
+          context "which I have already joined" do
+            let(:player) { "player" }
 
-            it { is_expected.to be_present }
+            describe "#can_apply?" do
+              subject { event.can_apply?(game_state) }
+
+              it { is_expected.to be_falsey }
+            end
+
+            describe "#errors" do
+              subject { event.errors(game_state) }
+
+              it { is_expected.to be_present }
+            end
           end
-        end
 
-        context "and I can join" do
-          let(:players) { [] }
+          context "and I can join" do
+            let(:player) { nil }
 
-          describe "#can_apply?" do
-            subject { event.can_apply?(game_state) }
+            describe "#can_apply?" do
+              subject { event.can_apply?(game_state) }
 
-            it { is_expected.to be_truthy }
-          end
+              it { is_expected.to be_truthy }
+            end
 
-          describe "#errors" do
-            subject { event.errors(game_state) }
+            describe "#errors" do
+              subject { event.errors(game_state) }
 
-            it { is_expected.not_to be_present }
+              it { is_expected.not_to be_present }
+            end
           end
         end
       end
@@ -119,25 +133,20 @@ RSpec.describe PlayerJoined, type: :event do
 
   describe "applying the event" do
     before do
+      class_double("Player").as_stubbed_const.tap do |klazz|
+        expect(klazz).to receive(:new).with(user: user_id, piece: piece).and_return(new_player)
+      end
       expect(game_state).to receive(:current_player).and_return(current_player)
       expect(game_state).to receive(:players).and_return(players)
     end
 
     let(:players) do
       double("Players").tap do |players|
-        expect(players).to receive(:<<).with({
-          user: user_id,
-          piece: piece,
-          money: 1500,
-          location: 0,
-          in_jail: false,
-          dice_rolls: [],
-          doubles_in_a_row: 0,
-          pairs_rolled_while_in_jail: 0,
-          properties: [],
-        })
+        expect(players).to receive(:<<).with(new_player)
       end
     end
+
+    let(:new_player) { instance_double("Player") }
 
     context "as the first player" do
       let(:current_player) { nil }

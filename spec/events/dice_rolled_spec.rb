@@ -115,21 +115,17 @@ RSpec.describe DiceRolled, type: :event do
 
     let(:player) do
       double("Player").tap do |player|
-        expect(player).to receive(:[]).with(:dice_rolls).at_least(:once).and_return(dice_rolls)
-        expect(player).to receive(:[]).with(:in_jail).and_return(in_jail)
+        expect(player).to receive(:roll_dice).with(event.amount)
+        expect(player).to receive(:jail?).and_return(jail)
       end
     end
 
-    let(:dice_rolls) do
-      double("DiceRolls").tap do |dice_rolls|
-        expect(dice_rolls).to receive(:<<).with(event.amount)
-      end
-    end
+    let(:dice_rolls) { double("DiceRolls") }
 
     let(:expected_rolls) { 1 }
 
     context "when I am in jail" do
-      let(:in_jail) { true }
+      let(:jail) { true }
 
       it "should apply a rolled dice while in jail event" do
         expect_effect_called("DiceRolledWhileInJail")
@@ -138,9 +134,10 @@ RSpec.describe DiceRolled, type: :event do
     end
 
     context "when I am not in jail" do
-      let(:in_jail) { false }
+      let(:jail) { false }
 
       before do
+        expect(player).to receive(:dice_rolls).at_least(:once).and_return(dice_rolls)
         expect(dice_rolls).to receive(:size).at_least(:once).and_return(dice_rolls_size)
       end
 

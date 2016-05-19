@@ -7,7 +7,7 @@ class TaxPaid
 
   def apply(game_state)
     player = game_state.players[game_state.current_player]
-    player[:money] -= amount
+    player.pay!(amount)
   end
 
   private

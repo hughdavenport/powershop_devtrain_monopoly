@@ -22,7 +22,7 @@ RSpec.describe DiceRolledWhileNotInJail, type: :effect do
 
     let(:player) do
       double("Player").tap do |player|
-        expect(player).to receive(:[]).with(:dice_rolls).at_least(:once).and_return(dice_rolls)
+        expect(player).to receive(:dice_rolls).at_least(:once).and_return(dice_rolls)
       end
     end
 
@@ -46,8 +46,8 @@ RSpec.describe DiceRolledWhileNotInJail, type: :effect do
       context "and they are doubles" do
         before do
           expect(dice_rolls).to receive(:uniq).and_return([1])
-          expect(player).to receive(:[]).with(:doubles_in_a_row).twice.and_return(doubles_in_a_row)
-          expect(player).to receive(:[]=).with(:doubles_in_a_row, doubles_in_a_row + 1)
+          expect(player).to receive(:doubles_in_a_row).twice.and_return(doubles_in_a_row)
+          expect(player).to receive(:doubles_in_a_row=).with(doubles_in_a_row + 1)
         end
 
         context "and I have rolled 3 doubles in a row" do
@@ -82,7 +82,7 @@ RSpec.describe DiceRolledWhileNotInJail, type: :effect do
       context "and they are not doubles" do
         before do
           expect(dice_rolls).to receive(:uniq).and_return([1, 2])
-          expect(player).to receive(:[]).with(:doubles_in_a_row).and_return(0)
+          expect(player).to receive(:doubles_in_a_row).and_return(0)
         end
 
         it "should apply a shift player event" do

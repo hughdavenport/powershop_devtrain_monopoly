@@ -118,23 +118,27 @@ class GameState
   end
 
   def pieces_left
-    PIECES - players.map { |player| player[:piece].to_sym }
+    PIECES - players.map { |player| player.piece.to_sym }
   end
 
   def player(user)
-    players.select { |player| player[:user] == user }.first
+    players.select { |player| player.user == user }.first
+  end
+
+  def player_with_piece(piece)
+    players.select { |player| player.piece == piece }.first
   end
 
   def players_at(location)
-    players.select { |player| player[:position] == location }
+    players.select { |player| player.position == location }
   end
 
   def owned_properties
-    players.map { |player| [player[:user], player[:properties]] }.to_h
+    players.map { |player| [player.user, player.properties] }.to_h
   end
 
   def property_owner(property)
-    players.select { |player| player[:properties].include?(property) }.first
+    players.select { |player| player.owns_property?(property) }.first
   end
 
   def colour_group(colour)
@@ -146,32 +150,28 @@ class GameState
   end
 
   def shift_player!(player)
-    player[:location] = (player[:location] + player[:dice_rolls].inject(:+)) % board.size
-    player[:dice_rolls] = []
+    player.shift!
     self.can_buy_property = false
   end
 
   def send_player_to_jail!(player)
-    player[:location] = board.index(:jail)
-    player[:in_jail] = true
+    player.send_to_jail!
     end_turn!(player)
   end
 
   def break_out_of_jail!(player)
-    player[:in_jail] = false
-    player[:pairs_rolled_while_in_jail] = 0
+    player.break_out_of_jail!
     end_turn!(player)
   end
 
   def purchase_property!(player, property)
-    player[:money] -= details(property)[:price]
-    player[:properties] << property
+    player.pay!(details(property)[:price])
+    player.add_property!(property)
     self.can_buy_property = false
   end
 
   def end_turn!(player)
-    player[:dice_rolls] = []
-    player[:doubles_in_a_row] = 0
+    player.end_turn!
     self.can_buy_property = false
     self.expecting_rolls = 2
     self.current_player = (current_player + 1) % players.size if player == players[current_player]

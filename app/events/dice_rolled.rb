@@ -4,12 +4,12 @@ class DiceRolled < Event
 
   def apply(game_state)
     player = game_state.players[game_state.current_player]
-    player[:dice_rolls] << amount.to_i
+    player.roll_dice(amount.to_i)
     game_state.expecting_rolls -= 1
-    if player[:in_jail]
+    if player.jail?
       DiceRolledWhileInJail.new.apply(game_state)
-    elsif player[:dice_rolls].size == 1 && game_state.expecting_rolls % 2 == 0
-      DiceRolledForUtilityRent.new(dice_roll: player[:dice_rolls].pop).apply(game_state)
+    elsif player.dice_rolls.size == 1 && game_state.expecting_rolls % 2 == 0
+      DiceRolledForUtilityRent.new(dice_roll: player.dice_rolls.pop).apply(game_state)
     else
       DiceRolledWhileNotInJail.new.apply(game_state)
     end

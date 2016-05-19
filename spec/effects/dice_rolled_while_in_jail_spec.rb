@@ -22,7 +22,7 @@ RSpec.describe DiceRolledWhileInJail, type: :effect do
 
     let(:player) do
       double("Player").tap do |player|
-        expect(player).to receive(:[]).with(:dice_rolls).at_least(:once).and_return(dice_rolls)
+        expect(player).to receive(:dice_rolls).at_least(:once).and_return(dice_rolls)
       end
     end
 
@@ -57,8 +57,8 @@ RSpec.describe DiceRolledWhileInJail, type: :effect do
       context "and they are not doubles" do
         before do
           expect(dice_rolls).to receive(:uniq).and_return([1,2])
-          expect(player).to receive(:[]).with(:pairs_rolled_while_in_jail).twice.and_return(pairs_rolled_while_in_jail)
-          expect(player).to receive(:[]=).with(:pairs_rolled_while_in_jail, pairs_rolled_while_in_jail + 1)
+          expect(player).to receive(:pairs_rolled_while_in_jail).twice.and_return(pairs_rolled_while_in_jail)
+          expect(player).to receive(:pairs_rolled_while_in_jail=).with(pairs_rolled_while_in_jail + 1)
         end
 
         context "and we have been in jail for 3 turns" do

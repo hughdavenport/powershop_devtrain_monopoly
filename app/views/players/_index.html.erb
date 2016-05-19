@@ -15,8 +15,8 @@
   <tbody>
     <% @game_state.players.each do |player| %>
       <tr>
-        <td><%= User.find_by_id(player[:user]).username %></td>
-        <td><%= player[:piece] %></td>
+        <td><%= User.find_by_id(player.user).username %></td>
+        <td><%= player.piece %></td>
       </tr>
     <% end %>
   </tbody>

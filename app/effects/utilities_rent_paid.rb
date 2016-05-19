@@ -7,9 +7,9 @@ class UtilitiesRentPaid
 
   def apply(game_state)
     player = game_state.players[game_state.current_player]
-    property = game_state.board[player[:location]]
+    property = game_state.board[player.location]
     owner = game_state.property_owner(property)
-    utilities_owned = owner[:properties].select { |property| game_state.details(property)[:utility] }.count
+    utilities_owned = owner.properties.select { |property| game_state.details(property)[:utility] }.count
     RentPaid.new(amount: dice_roll * (utilities_owned == 1 ? 4 : 10)).apply(game_state)
   end
 

@@ -40,10 +40,10 @@ RSpec.describe PropertyPurchased, type: :event do
         end
 
         let(:player) do
-          {
-            money: money,
-            location: location,
-          }
+          instance_double("Player").tap do |player|
+            expect(player).to receive(:location).and_return(location)
+            expect(player).to receive(:can_afford?).with(price).and_return(can_afford)
+          end
         end
 
         let(:location) { 15 }
@@ -55,7 +55,7 @@ RSpec.describe PropertyPurchased, type: :event do
         end
 
         let(:price) { 50 }
-        let(:money) { 60 }
+        let(:can_afford) { true }
 
         subject { event.errors(game_state) }
 
@@ -80,10 +80,10 @@ RSpec.describe PropertyPurchased, type: :event do
       end
 
       let(:player) do
-        {
-          money: money,
-          location: location,
-        }
+        instance_double("Player").tap do |player|
+          expect(player).to receive(:location).and_return(location)
+          expect(player).to receive(:can_afford?).with(price).and_return(can_afford)
+        end
       end
 
       let(:location) { 15 }
@@ -97,7 +97,7 @@ RSpec.describe PropertyPurchased, type: :event do
       let(:price) { 50 }
 
       context "but we can't afford to buy the property" do
-        let(:money) { 10 }
+        let(:can_afford) { false }
 
         describe "#can_apply?" do
           subject { event.can_apply?(game_state) }
@@ -113,7 +113,7 @@ RSpec.describe PropertyPurchased, type: :event do
       end
 
       context "and we can afford to buy the property" do
-        let(:money) { 60 }
+        let(:can_afford) { true }
 
         describe "#can_apply?" do
           subject { event.can_apply?(game_state) }
@@ -146,9 +146,9 @@ RSpec.describe PropertyPurchased, type: :event do
     let(:property) { double("Property") }
 
     let(:player) do
-      {
-        location: location
-      }
+      instance_double("Player").tap do |player|
+        expect(player).to receive(:location).and_return(location)
+      end
     end
 
     let(:location) { 25 }
