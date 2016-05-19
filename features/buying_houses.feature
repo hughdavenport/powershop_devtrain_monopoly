@@ -128,3 +128,8 @@ Feature: Buying houses
     Given another user completely owns the brown set
     When It is my turn
     Then I should not be able to buy a house
+
+  Scenario: Can't buy more than 4 houses
+    Given I completely own the pink set with 4 houses each
+    When It is my turn
+    Then I should not be able to buy a house
