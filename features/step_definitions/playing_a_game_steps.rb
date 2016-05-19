@@ -97,6 +97,7 @@ Given(/^(I|another user) (?:own|owns) (.*)$/) do |user, property|
   step "It is #{user == "I" ? "my" : "another users"} turn"
   step "#{user} lands on #{property}"
   step "#{user} buys the property"
+  puts "#{user} #{user == "I" ? "own" : "owns"} #{property}"
   step "#{user} ends their turn"
 end
 
@@ -104,6 +105,7 @@ Given(/^(I|another user) completely (?:own|owns) the (.*) set$/) do |user, colou
   (colour.capitalize + "Property").constantize.all.each do |property|
     step "#{user} owns #{property.name}"
   end
+  step "#{user} has $10000" # Make sure they have money for houses
 end
 
 Given(/^(.*) has (\d+) (?:house|houses)$/) do |property, number|
@@ -120,9 +122,9 @@ Given(/^the (.*) set has (\d+) (?:house|houses) each$/) do |colour, number|
   end
 end
 
-Given(/^I have \$(\d+)$/) do |balance|
+Given(/^(I|another user) (?:have|has) \$(\d+)$/) do |user, balance|
   # Only works on test/development mode, due to controller check
-  step 'It is my turn'
+  step "It is #{user == "I" ? "my" : "another users"} turn"
   within("#set_balance") { step "I enter in #{balance} as balance" }
   step 'I click on "Set balance"'
 end
@@ -224,6 +226,7 @@ end
 When(/^(?:I|another user) (?:buy|buys) a house for (.*)$/) do |property|
   within(BUY_HOUSE_SELECTOR) { step "I select #{property} as property" }
   step 'I click on "Buy house"'
+  puts "a house was purchased for #{property}"
 end
 
 
