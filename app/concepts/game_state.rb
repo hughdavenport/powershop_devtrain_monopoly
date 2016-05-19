@@ -49,58 +49,6 @@ class GameState
     Square.find_by_name("Mayfair")
   ]
 
-  SQUARE_DETAILS = {
-    :go => {},
-    :jail => {},
-    :free_parking => {},
-
-    :income_tax => { event: IncomeTaxPaid },
-    :super_tax  => { event: SuperTaxPaid },
-
-    :go_to_jail => { event: SentToJail },
-
-    :chance          => {},
-    :community_chest => {},
-
-    :kings_cross_station      => { event: PropertyLandedOn, station: true, price: 200 },
-    :marylbone_station        => { event: PropertyLandedOn, station: true, price: 200 },
-    :fenchurch_street_station => { event: PropertyLandedOn, station: true, price: 200 },
-    :liverpool_street_station => { event: PropertyLandedOn, station: true, price: 200 },
-
-    :electric_company => { event: PropertyLandedOn, utility: true, price: 150 },
-    :water_works      => { event: PropertyLandedOn, utility: true, price: 150 },
-
-    :old_kent_road    => { event: PropertyLandedOn, colour: :brown, price: 60, rent: 2 },
-    :whitechapel_road => { event: PropertyLandedOn, colour: :brown, price: 60, rent: 4 },
-
-    :the_angel_islington => { event: PropertyLandedOn, colour: :blue, price: 100, rent: 6 },
-    :euston_road         => { event: PropertyLandedOn, colour: :blue, price: 100, rent: 6 },
-    :pentonville_road    => { event: PropertyLandedOn, colour: :blue, price: 120, rent: 8 },
-
-    :pall_mall             => { event: PropertyLandedOn, colour: :pink, price: 140, rent: 10 },
-    :whitehall             => { event: PropertyLandedOn, colour: :pink, price: 140, rent: 10 },
-    :northumberland_avenue => { event: PropertyLandedOn, colour: :pink, price: 160, rent: 12 },
-
-    :bow_street         => { event: PropertyLandedOn, colour: :orange, price: 180, rent: 14 },
-    :marlborough_street => { event: PropertyLandedOn, colour: :orange, price: 180, rent: 14 },
-    :vine_street        => { event: PropertyLandedOn, colour: :orange, price: 200, rent: 16 },
-
-    :strand           => { event: PropertyLandedOn, colour: :red, price: 220, rent: 18 },
-    :fleet_street     => { event: PropertyLandedOn, colour: :red, price: 220, rent: 18 },
-    :trafalgar_square => { event: PropertyLandedOn, colour: :red, price: 240, rent: 20 },
-
-    :leicester_square => { event: PropertyLandedOn, colour: :yellow, price: 260, rent: 22 },
-    :coventry_street  => { event: PropertyLandedOn, colour: :yellow, price: 260, rent: 22 },
-    :piccadilly       => { event: PropertyLandedOn, colour: :yellow, price: 280, rent: 24 },
-
-    :regent_street => { event: PropertyLandedOn, colour: :green, price: 300, rent: 26 },
-    :oxford_street => { event: PropertyLandedOn, colour: :green, price: 300, rent: 26 },
-    :bond_street   => { event: PropertyLandedOn, colour: :green, price: 320, rent: 28 },
-
-    :park_lane => { event: PropertyLandedOn, colour: :purple, price: 350, rent: 35 },
-    :mayfair   => { event: PropertyLandedOn, colour: :purple, price: 400, rent: 50 },
-  }
-
   def self.create(game)
     GameState.new(game: game).tap do |game_state|
       game.events.each { |event| event.apply(game_state) }
@@ -179,9 +127,5 @@ class GameState
 
   def board
     BOARD
-  end
-
-  def details(square)
-    SQUARE_DETAILS[square]
   end
 end
