@@ -34,7 +34,7 @@ RSpec.describe HousePurchased, type: :event do
         before do
           expect(player).to receive(:can_afford?).with(price).and_return(true)
           expect(player).to receive(:can_buy_house?).and_return(true)
-          expect(house).to receive(:house_price).and_return(price)
+          expect(house).to receive(:building_price).and_return(price)
           class_double("ColouredProperty").as_stubbed_const.tap do |coloured_property|
             expect(coloured_property).to receive(:find_by_name).with(property).and_return(house)
           end
@@ -57,7 +57,7 @@ RSpec.describe HousePurchased, type: :event do
 
       let(:house) do
         instance_double("House").tap do |house|
-          expect(house).to receive(:house_price).and_return(price)
+          expect(house).to receive(:building_price).and_return(price)
         end
       end
 

@@ -12,7 +12,7 @@ class ColouredProperty < Property
   validates :house_rent, length: { is: 4 }
   validate :validate_house_rent
 
-  def house_price
+  def building_price
     {
       brown: 50,
       blue: 50,

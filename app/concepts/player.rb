@@ -55,7 +55,7 @@ class Player
     colour_groups_owned.map do |colour|
       properties.select { |property| property.colour == colour if property.is_a?(ColouredProperty) }
     end.flatten.select do |property|
-      can_afford?(property.house_price)
+      can_afford?(property.building_price)
     end.map do |property|
       property.name
     end - houses.select { |property, number| number == 4 }.keys
@@ -64,7 +64,7 @@ class Player
   def purchase_house!(property)
     self.houses[property] ||= 0
     self.houses[property] += 1
-    pay!(ColouredProperty.find_by_name(property).house_price)
+    pay!(ColouredProperty.find_by_name(property).building_price)
   end
 
   def shift!
