@@ -83,10 +83,6 @@ class GameState
     players.select { |player| player.owns_property?(property) }.first
   end
 
-  def colour_group(colour)
-    SQUARE_DETAILS.select { |property, details| details[:colour] == colour }.keys
-  end
-
   def can_buy_property?
     can_buy_property
   end
