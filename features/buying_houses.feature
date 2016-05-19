@@ -77,6 +77,7 @@ Feature: Buying houses
 
   Scenario: Can't build unevenly
     Given I completely own the red set
+    And It is my turn
     And Fleet Street has 1 house
     When It is my turn
     Then I should not be able to buy a house for Fleet Street
@@ -84,6 +85,7 @@ Feature: Buying houses
 
   Scenario: Can build evenly
     Given I completely own the red set
+    And It is my turn
     And the red set has 1 house each
     When It is my turn
     Then I should be able to buy a house

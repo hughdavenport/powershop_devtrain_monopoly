@@ -106,6 +106,20 @@ Given(/^(I|another user) completely (?:own|owns) the (.*) set$/) do |user, colou
   end
 end
 
+Given(/^(.*) has (\d+) (?:house|houses)$/) do |property, number|
+  number.to_i.times do
+    step "I buy a house for #{property}"
+  end
+end
+
+Given(/^the (.*) set has (\d+) (?:house|houses) each$/) do |colour, number|
+  number.to_i.times do
+    (colour.capitalize + "Property").constantize.all.each do |property|
+      step "I buy a house for #{property.name}"
+    end
+  end
+end
+
 Given(/^I have \$(\d+)$/) do |balance|
   # Only works on test/development mode, due to controller check
   step 'It is my turn'
