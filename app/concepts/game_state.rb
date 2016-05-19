@@ -81,8 +81,8 @@ class GameState
     :whitehall             => { event: PropertyLandedOn, colour: :pink, price: 140, rent: 10 },
     :northumberland_avenue => { event: PropertyLandedOn, colour: :pink, price: 160, rent: 12 },
 
-    :bow_street         => { event: PropertyLandedOn, colour: :orange, price: 100, rent: 14 },
-    :marlborough_street => { event: PropertyLandedOn, colour: :orange, price: 100, rent: 14 },
+    :bow_street         => { event: PropertyLandedOn, colour: :orange, price: 180, rent: 14 },
+    :marlborough_street => { event: PropertyLandedOn, colour: :orange, price: 180, rent: 14 },
     :vine_street        => { event: PropertyLandedOn, colour: :orange, price: 200, rent: 16 },
 
     :strand           => { event: PropertyLandedOn, colour: :red, price: 220, rent: 18 },
