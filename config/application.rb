@@ -25,5 +25,6 @@ module Monopoly
 
     config.autoload_paths += Dir[Rails.root.join('app', 'events')]
     config.autoload_paths += Dir[Rails.root.join('app', 'effects')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'squares')]
   end
 end
