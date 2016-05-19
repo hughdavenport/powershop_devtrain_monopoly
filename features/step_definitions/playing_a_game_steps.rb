@@ -65,6 +65,11 @@ Given(/^It is another users turn$/) do
   step 'another user goes to the game'
 end
 
+Given(/^I am on (.*)$/) do |location|
+  step "I land on #{location}"
+  step "I end my turn"
+end
+
 Given(/^I am in jail$/) do
   step 'I go to the game'
   step 'I roll 3 doubles'
