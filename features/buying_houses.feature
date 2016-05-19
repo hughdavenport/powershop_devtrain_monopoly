@@ -57,8 +57,8 @@ Feature: Buying houses
   Scenario: Cost of yellow set
     Given I completely own the yellow set
     And It is my turn
-    When I buy a house for Picadilly
-    Then Picadilly should have 1 house
+    When I buy a house for Piccadilly
+    Then Piccadilly should have 1 house
     And I should lose $150
 
   Scenario: Cost of green set
@@ -90,13 +90,14 @@ Feature: Buying houses
 
   Scenario: Can't buy a house when I can't afford
     Given I completely own the red set
-    And my balance is $10
+    And I have $10
     When It is my turn
     Then I should not be able to buy a house
 
   Scenario: Buying a house for two fully owned streets
     Given I completely own the orange set
     And I completely own the yellow set
+    And I have $300
     When It is my turn
     Then I should be able to buy a house for Bow Street
     And I should be able to buy a house for Coventry Street
@@ -104,7 +105,7 @@ Feature: Buying houses
   Scenario: Having two full streets, but only affording one
     Given I completely own the purple set
     And I completely own the brown set
-    And my balance is $75
+    And I have $75
     When It is my turn
     Then I should not be able to buy a house for Mayfair
     And I should be able to buy a house for Old Kent Road

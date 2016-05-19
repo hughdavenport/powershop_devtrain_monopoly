@@ -12,6 +12,8 @@ CURRENT_PLAYER_SELECTOR    = "#current_player"
 OWNED_PROPERTIES_SELECTOR  = "#owned_properties"
 MY_PROPERTIES_SELECTOR     = "#my_properties"
 
+BUY_HOUSE_SELECTOR         = "#buy_house"
+
 IN_JAIL_SELECTOR           = "#in_jail"
 
 def dice_roll
@@ -27,7 +29,9 @@ def balance
 end
 
 def ambiguous_location?(location)
-  GameState::BOARD.index(location.downcase.gsub(" ", "_").to_sym) != GameState::BOARD.rindex(location.downcase.gsub(" ", "_").to_sym)
+  block = lambda { |property| property.name.casecmp(location) == 0 }
+
+  GameState::BOARD.index(block) != GameState::BOARD.rindex(block)
 end
 
 def distance_to_move(location)
@@ -94,6 +98,12 @@ Given(/^(I|another user) (?:own|owns) (.*)$/) do |user, property|
   step "#{user} lands on #{property}"
   step "#{user} buys the property"
   step "#{user} ends their turn"
+end
+
+Given(/^(I|another user) completely (?:own|owns) the (.*) set$/) do |user, colour|
+  (colour.capitalize + "Property").constantize.all.each do |property|
+    step "#{user} owns #{property.name}"
+  end
 end
 
 Given(/^I have \$(\d+)$/) do |balance|
@@ -197,6 +207,11 @@ When(/^(?:I|another user) (?:buy|buys) the property$/) do
   step 'I click on "Buy property"'
 end
 
+When(/^(?:I|another user) (?:buy|buys) a house for (.*)$/) do |property|
+  within(BUY_HOUSE_SELECTOR) { step "I select #{property} as property" }
+  step 'I click on "Buy house"'
+end
+
 
 Then(/^I should see a dice roll$/) do
   expect(page).to have_selector(DICE_ROLL_SELECTOR)
@@ -288,4 +303,22 @@ end
 
 Then(/^I should( not)? be able to buy the property$/) do |negation|
   step "I should#{negation} see \"Buy property\""
+end
+
+Then(/^I should( not)? be able to buy a house$/) do |negation|
+  step "I should#{negation} see \"Buy house\""
+end
+
+Then(/^I should( not)? be able to buy a house for (.*)$/) do |negation, property|
+  # Either can't buy any, or can't buy that particular one
+  return if negation && !page.has_selector?(BUY_HOUSE_SELECTOR)
+  if negation
+    expect(find(BUY_HOUSE_SELECTOR)).not_to have_content(property)
+  else
+    expect(find(BUY_HOUSE_SELECTOR)).to have_content(property)
+  end
+end
+
+Then(/^(.*) should have (\d+) (?:house|houses)$/) do |property, number|
+  expect(find("##{property.downcase.gsub(" ", "_")}_houses")).to have_content(/with #{number} (?:house|houses)/i)
 end

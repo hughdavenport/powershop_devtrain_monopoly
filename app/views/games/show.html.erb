@@ -31,6 +31,11 @@
       <%= buy_property_form %>
     <% end %>
     <% if @game_state.expecting_rolls > 0 %>
+      <% if @game_state.expecting_rolls == 2 && !current_game_player.possible_house_locations.empty? %>
+        <div id="buy_house">
+          <%= buy_houses_form %>
+        </div>
+      <% end %>
       <div id="dice_roll">
         <%= roll_dice_form %>
       </div>

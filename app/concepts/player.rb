@@ -5,7 +5,8 @@ class Player
               :location,
               :jail,
               :dice_rolls,
-              :properties
+              :properties,
+              :houses
 
   # TODO make just a reader and deal with this a diferent way
   attr_accessor :doubles_in_a_row,
@@ -21,6 +22,7 @@ class Player
     self.doubles_in_a_row = 0
     self.pairs_rolled_while_in_jail = 0
     self.properties = []
+    self.houses = {}
   end
 
   def roll_dice(amount)
@@ -37,6 +39,23 @@ class Player
 
   def owns_property?(property)
     properties.include?(property)
+  end
+
+  def can_buy_house?(property)
+    possible_house_locations.include?(property)
+  end
+
+  def possible_house_locations
+    # TODO Need to make sure this is evenly buildable
+    colour_groups_owned.map do |colour|
+      properties.select { |property| property.colour == colour if property.is_a?(ColouredProperty) }
+    end.flatten.select { |property| can_afford?(property.house_price) }.map { |property| property.name }
+  end
+
+  def purchase_house!(property)
+    self.houses[property] ||= 0
+    self.houses[property] += 1
+    pay!(ColouredProperty.find_by_name(property).house_price)
   end
 
   def shift!
@@ -78,6 +97,19 @@ class Player
 
   private
 
+  def uniq_colours_owned
+    properties.map { |property| property.colour if property.is_a?(ColouredProperty) }.uniq
+  end
+
+  def colour_groups_owned
+    uniq_colours_owned.select do |colour|
+      total_count = ColouredProperty.select { |property| property.colour == colour }.count
+      my_count = properties.select { |property| property.colour == colour if property.is_a? ColouredProperty }.count
+
+      total_count == my_count
+    end
+  end
+
   attr_writer :user,
               :piece,
               :money,
@@ -87,5 +119,6 @@ class Player
 # TODO make these writers, and change how we do it, see accessor statement at top
 #              :doubles_in_a_row,
 #              :pairs_rolled_while_in_jail,
-              :properties
+              :properties,
+              :houses
 end

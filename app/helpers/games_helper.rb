@@ -59,6 +59,16 @@ module GamesHelper
     end
   end
 
+  def buy_houses_form
+    form_tag(game_house_purchases_path(@game)) do
+      "".tap do |string|
+        string << label_tag(:property)
+        string << select_tag(:property, options_for_select(current_game_player.possible_house_locations))
+        string << submit_tag('Buy house')
+      end.html_safe
+    end
+  end
+
   def owned_properties
     content_tag(:div, id: "owned_properties") do
       "".tap do |string|
@@ -69,11 +79,18 @@ module GamesHelper
               string << content_tag(:h5, User.find(user).username)
               properties.each do |property|
                 string << content_tag(:div, t(property.name))
+                string << content_tag(:div, id: (to_id(property.name) + "_houses")) do
+                  t("with #{pluralize(@game_state.player(user).houses[property.name], "house")}")
+                end if @game_state.player(user).houses[property.name]
               end
             end.html_safe
           end
         end
       end.html_safe
     end
+  end
+
+  def to_id(string)
+    string.downcase.gsub(" ", "_")
   end
 end
