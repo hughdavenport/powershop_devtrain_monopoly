@@ -100,11 +100,13 @@ end
 
 Given(/^I know my location$/) do
   @location = current_location
+  puts "I know my location to be #{@location}"
 end
 
 Given(/^I know my balance$/) do
   @balance = balance
   @passed_go = 0
+  puts "I know my balance to be #{@balance}"
 end
 
 
@@ -139,12 +141,16 @@ When(/^(I|another user) (?:roll|rolls) the dice$/) do |user|
 end
 
 When(/^(I|another user) (?:roll|rolls) two dice$/) do |user|
-  2.times { step "#{user} rolls the dice" }
+  2.times do
+    step "#{user} rolls the dice"
+    puts "#{user} rolled a #{dice_roll}"
+  end
 end
 
 When(/^(I|another user) (?:roll|rolls) two dice \(not doubles\)$/) do |user|
   step "#{user} rolls the dice"
             # make 0-based for % operation, then 1-based for step
+  puts "#{user} rolled a #{dice_roll}, then a #{(((dice_roll.to_i - 1) + 1) % 6) + 1}"
   step "#{user} rolls a #{(((dice_roll.to_i - 1) + 1) % 6) + 1}"
 end
 
@@ -152,6 +158,7 @@ When(/^(I|another user) (?:roll|rolls) (a|\d+) (?:double|doubles)$/) do |user, n
   number = 1 if number == "a"
   number.to_i.times do
     step "#{user} rolls the dice"
+    puts "#{user} rolled a #{dice_roll} twice"
     step "#{user} rolls a #{dice_roll}"
   end
 end
@@ -202,6 +209,7 @@ Then(/^I should( not)? move along the board$/) do |negation|
   if negation
     step "I should be on #{@location}"
   else
+    puts "I am on #{current_location}"
     step "I should not be on #{@location}"
   end
 end
@@ -234,6 +242,7 @@ end
 Then(/^I should (lose|gain) \$(\d+)$/) do |direction, amount|
   step "I go to the game"
   multiplier = (direction == "lose" ? -1 : 1)
+  puts "Ignoring the fact that I've passed go #{@passed_go} times" if @passed_go && @passed_go > 0
   @balance = @balance.to_i + 200 * @passed_go if @passed_go
   expect(@balance.to_i + multiplier * amount.to_i).to eq balance.to_i
 end
@@ -268,6 +277,7 @@ Then(/^I should( not)? be able to roll the dice$/) do |negation|
 end
 
 Then(/^I should (lose|gain) (\d+) times the dice roll$/) do |direction, multiplier|
+  puts "The dice roll is #{dice_roll}"
   step "I should #{direction} $#{dice_roll.to_i * multiplier.to_i}"
 end
 
