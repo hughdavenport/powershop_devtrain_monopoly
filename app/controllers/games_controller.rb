@@ -28,6 +28,7 @@ class GamesController < ApplicationController
       render :new
     end
   end
+
   # DELETE /games/1
   def destroy
     @game.destroy

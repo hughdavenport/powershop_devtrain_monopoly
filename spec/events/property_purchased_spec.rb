@@ -9,8 +9,6 @@ RSpec.describe PropertyPurchased, type: :event do
 
   subject(:event) { PropertyPurchased.new }
 
-  let(:amount) { nil }
-
   describe "checking validity" do
     before do
       expect(game_state).to receive(:can_buy_property?).and_return(can_buy_property)
