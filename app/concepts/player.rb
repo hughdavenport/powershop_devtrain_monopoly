@@ -51,9 +51,14 @@ class Player
 
   def possible_house_locations
     # TODO Need to make sure this is evenly buildable
+    # TODO Need to make this cleaner
     colour_groups_owned.map do |colour|
       properties.select { |property| property.colour == colour if property.is_a?(ColouredProperty) }
-    end.flatten.select { |property| can_afford?(property.house_price) }.map { |property| property.name }
+    end.flatten.select do |property|
+      can_afford?(property.house_price)
+    end.map do |property|
+      property.name
+    end - houses.select { |property, number| number == 4 }.keys
   end
 
   def purchase_house!(property)
