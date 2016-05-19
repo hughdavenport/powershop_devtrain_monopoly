@@ -13,6 +13,7 @@ OWNED_PROPERTIES_SELECTOR  = "#owned_properties"
 MY_PROPERTIES_SELECTOR     = "#my_properties"
 
 BUY_HOUSE_SELECTOR         = "#buy_house"
+BUY_HOTEL_SELECTOR         = "#buy_hotel"
 
 IN_JAIL_SELECTOR           = "#in_jail"
 
@@ -108,10 +109,14 @@ Given(/^(I|another user) completely (?:own|owns) the (.*) set$/) do |user, colou
   step "#{user} has $10000" # Make sure they have money for houses
 end
 
-Given(/^(.*) has (\d+) (?:house|houses)$/) do |property, number|
+Given(/^(.*) has (\d+)(?: more)? (?:house|houses)$/) do |property, number|
   number.to_i.times do
     step "I buy a house for #{property}"
   end
+end
+
+Given(/^(.*) has a hotel$/) do |property|
+  step "I buy a hotel for #{property.name}"
 end
 
 Given(/^the (.*) set has (\d+) (?:house|houses) each$/) do |colour, number|
@@ -122,10 +127,23 @@ Given(/^the (.*) set has (\d+) (?:house|houses) each$/) do |colour, number|
   end
 end
 
+Given(/^the (.*) set has a hotel each$/) do |colour|
+  step "the #{colour} set has 4 houses each"
+  (colour.capitalize + "Property").constantize.all.each do |property|
+    step "I buy a hotel for #{property.name}"
+  end
+end
+
 Given(/^(I|another user) completely (?:own|owns) the (.*) set with (\d+) (?:house|houses) each$/) do |user, colour, number|
   step "#{user} completely owns the #{colour} set"
   step "It is #{user == "I" ? "my" : "another users"} turn"
   step "the #{colour} set has #{number} houses each"
+end
+
+Given(/^(I|another user) completely (?:own|owns) the (.*) set with a hotel each$/) do |user, colour, number|
+  step "#{user} completely owns the #{colour} set"
+  step "It is #{user == "I" ? "my" : "another users"} turn"
+  step "the #{colour} set has a hotel each"
 end
 
 Given(/^(I|another user) (?:have|has) \$(\d+)$/) do |user, balance|
@@ -235,6 +253,12 @@ When(/^(?:I|another user) (?:buy|buys) a house for (.*)$/) do |property|
   puts "a house was purchased for #{property}"
 end
 
+When(/^(?:I|another user) (?:buy|buys) a hotel for (.*)$/) do |property|
+  within(BUY_HOTEL_SELECTOR) { step "I seleect #{property} as property" }
+  step 'I click on "Buy hotel"'
+  puts "a hotel was purchased for #{property}"
+end
+
 
 Then(/^I should see a dice roll$/) do
   expect(page).to have_selector(DICE_ROLL_SELECTOR)
@@ -342,6 +366,24 @@ Then(/^I should( not)? be able to buy a house for (.*)$/) do |negation, property
   end
 end
 
+Then(/^I should( not)? be able to buy a hotel$/) do |negation|
+  step "I should#{negation} see \"Buy hotel\""
+end
+
+Then(/^I should( not)? be able to buy a hotel for (.*)$/) do |negation, property|
+  # Either can't buy any, or can't buy that particular one
+  return if negation && !page.has_selector?(BUY_HOTEL_SELECTOR)
+  if negation
+    expect(find(BUY_HOTEL_SELECTOR)).not_to have_content(property)
+  else
+    expect(find(BUY_HOTEL_SELECTOR)).to have_content(property)
+  end
+end
+
 Then(/^(.*) should have (\d+) (?:house|houses)$/) do |property, number|
   expect(find("##{property.downcase.gsub(" ", "_")}_houses")).to have_content(/with #{number} (?:house|houses)/i)
+end
+
+Then(/^(.*) should have a hotel$/) do |property, number|
+  expect(find("##{property.downcase.gsub(" ", "_")}_hotel")).to have_content(/and a hotel/i)
 end
