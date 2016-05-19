@@ -22,12 +22,12 @@
   <% end %>
   <p id="piece"><%= t('Your piece is '"#{current_game_player.piece}") %></p>
   <p id="balance"><%= t('Your balance is $'"#{current_game_player.money}") %></p>
-  <p id="current_location"><%= t('You are at '"#{@game_state.board[current_game_player.location]}") %></p>
+  <p id="current_location"><%= t('You are at '"#{@game_state.board[current_game_player.location].name}") %></p>
   <% if current_game_player.jail? %>
     <p id="in_jail"><%= t('You are in jail') %></p>
   <% end %>
   <% if @game_state.players[@game_state.current_player] == current_game_player %>
-    <% if @game_state.can_buy_property? && current_game_player.can_afford?(@game_state.details(@game_state.board[current_game_player.location])[:price]) %>
+    <% if @game_state.can_buy_property? && current_game_player.can_afford?(@game_state.board[current_game_player.location].price) %>
       <%= buy_property_form %>
     <% end %>
     <% if @game_state.expecting_rolls > 0 %>

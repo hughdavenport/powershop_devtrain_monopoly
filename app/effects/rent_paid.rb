@@ -17,7 +17,7 @@ class RentPaid
   private
 
   def set_amount(game_state, property)
-    self.amount = game_state.details(property)[:rent]
+    self.amount = property.rent
   end
 
   attr_writer :amount

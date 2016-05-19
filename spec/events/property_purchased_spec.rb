@@ -30,12 +30,17 @@ RSpec.describe PropertyPurchased, type: :event do
           expect(game_state).to receive(:current_player).and_return(0)
           expect(game_state).to receive(:players).and_return([player])
           expect(game_state).to receive(:board).and_return(board)
-          expect(game_state).to receive(:details).with(board).and_return(details)
         end
 
         let(:board) do
           double("Board").tap do |board|
-            expect(board).to receive(:[]).with(location).and_return(board)
+            expect(board).to receive(:[]).with(location).and_return(property)
+          end
+        end
+
+        let(:property) do
+          instance_double("Property").tap do |property|
+            expect(property).to receive(:price).and_return(price)
           end
         end
 
@@ -47,13 +52,6 @@ RSpec.describe PropertyPurchased, type: :event do
         end
 
         let(:location) { 15 }
-
-        let(:details) do
-          {
-            price: price,
-          }
-        end
-
         let(:price) { 50 }
         let(:can_afford) { true }
 
@@ -70,12 +68,17 @@ RSpec.describe PropertyPurchased, type: :event do
         expect(game_state).to receive(:current_player).and_return(0)
         expect(game_state).to receive(:players).and_return([player])
         expect(game_state).to receive(:board).and_return(board)
-        expect(game_state).to receive(:details).with(board).and_return(details)
       end
 
       let(:board) do
         double("Board").tap do |board|
-          expect(board).to receive(:[]).with(location).and_return(board)
+          expect(board).to receive(:[]).with(location).and_return(property)
+        end
+      end
+
+      let(:property) do
+        instance_double("Property").tap do |property|
+          expect(property).to receive(:price).and_return(price)
         end
       end
 
@@ -87,13 +90,6 @@ RSpec.describe PropertyPurchased, type: :event do
       end
 
       let(:location) { 15 }
-
-      let(:details) do
-        {
-          price: price,
-        }
-      end
-
       let(:price) { 50 }
 
       context "but we can't afford to buy the property" do

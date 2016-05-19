@@ -6,13 +6,12 @@ class PropertyLandedOn
     if owner.nil?
       game_state.can_buy_property = true
     elsif owner != player
-      details = game_state.details(property)
-      if details[:station]
+      if property.is_a?(StationProperty)
         StationRentPaid.new.apply(game_state)
-      elsif details[:utility]
+      elsif property.is_a?(UtilityProperty)
         OwnedUtilityLandedOn.new.apply(game_state)
-      else
-        if game_state.colour_group(details[:colour]).all? { |property| game_state.property_owner(property) == owner }
+      elsif property.is_a?(ColouredProperty)
+        if property.class.name.constantize.all.all? { |property| game_state.property_owner(property) == owner }
           FullColourGroupRentPaid.new.apply(game_state)
         else
           RentPaid.new.apply(game_state)

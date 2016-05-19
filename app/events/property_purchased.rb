@@ -20,6 +20,6 @@ class PropertyPurchased < Event
 
   def can_afford_property?(game_state = game.state)
     player = game_state.players[game_state.current_player]
-    player.can_afford?(game_state.details(game_state.board[player.location])[:price])
+    player.can_afford?(game_state.board[player.location].price)
   end
 end

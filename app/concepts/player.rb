@@ -45,7 +45,7 @@ class Player
   end
 
   def send_to_jail!
-    self.location = GameState::BOARD.index(:jail)
+    self.location = GameState::BOARD.index { |property| property.name == "Jail" }
     self.jail = true
   end
 

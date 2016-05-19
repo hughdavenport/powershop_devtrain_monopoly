@@ -68,7 +68,7 @@ module GamesHelper
             "".tap do |string|
               string << content_tag(:h5, User.find(user).username)
               properties.each do |property|
-                string << content_tag(:div, t(property))
+                string << content_tag(:div, t(property.name))
               end
             end.html_safe
           end

@@ -31,15 +31,15 @@ def ambiguous_location?(location)
 end
 
 def distance_to_move(location)
-  current = GameState::BOARD.index(current_location.downcase.gsub(" ", "_").to_sym)
-  wanted = GameState::BOARD.index(location.downcase.gsub(" ", "_").to_sym)
+  current = GameState::BOARD.index { |property| property.name.casecmp(current_location) == 0 }
+  wanted = GameState::BOARD.index { |property| property.name.casecmp(location) == 0 }
   wanted += GameState::BOARD.size if wanted < current
   wanted - current
 end
 
 def passed_go?(old_location)
-  current = GameState::BOARD.index(current_location.downcase.gsub(" ", "_").to_sym)
-  old = GameState::BOARD.index(old_location.downcase.gsub(" ",  "_").to_sym)
+  current = GameState::BOARD.index { |property| property.name.casecmp(current_location) == 0 }
+  old = GameState::BOARD.index { |property| property.name.casecmp(old_location) == 0 }
   current < old
 end
 

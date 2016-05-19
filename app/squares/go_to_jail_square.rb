@@ -1,6 +1,10 @@
 class GoToJailSquare < Square
   after_initialize :set_name
 
+  def event
+    SentToJail
+  end
+
   private
 
   def set_name
