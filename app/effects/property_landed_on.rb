@@ -12,7 +12,11 @@ class PropertyLandedOn
         OwnedUtilityLandedOn.new.apply(game_state)
       elsif property.is_a?(ColouredProperty)
         if property.class.name.constantize.all.all? { |property| game_state.property_owner(property) == owner }
-          FullColourGroupRentPaid.new.apply(game_state)
+          if owner.has_buildings_on?(property)
+            BuiltUpPropertyRentPaid.new.apply(game_state)
+          else
+            FullColourGroupRentPaid.new.apply(game_state)
+          end
         else
           RentPaid.new.apply(game_state)
         end

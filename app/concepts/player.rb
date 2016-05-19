@@ -45,6 +45,10 @@ class Player
     possible_house_locations.include?(property)
   end
 
+  def has_buildings_on?(property)
+    houses.include?(property.name)
+  end
+
   def possible_house_locations
     # TODO Need to make sure this is evenly buildable
     colour_groups_owned.map do |colour|
