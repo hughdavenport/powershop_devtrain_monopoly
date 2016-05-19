@@ -12,6 +12,11 @@ class ColouredProperty < Property
   validates :house_rent, length: { is: 4 }
   validate :validate_house_rent
 
+  store_accessor :data, :hotel_rent
+  validates_presence_of :hotel_rent
+  validates :hotel_rent, numericality: { only_integer: true, greater_than: 0 }
+
+
   def building_price
     {
       brown: 50,

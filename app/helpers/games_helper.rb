@@ -69,6 +69,16 @@ module GamesHelper
     end
   end
 
+  def buy_hotel_form
+    form_tag(game_hotel_purchases_path(@game)) do
+      "".tap do |string|
+        string << label_tag(:property)
+        string << select_tag(:property, options_for_select(current_game_player.possible_hotel_locations))
+        string << submit_tag('Buy hotel')
+      end.html_safe
+    end
+  end
+
   def owned_properties
     content_tag(:div, id: "owned_properties") do
       "".tap do |string|
@@ -82,6 +92,9 @@ module GamesHelper
                 string << content_tag(:div, id: (to_id(property.name) + "_houses")) do
                   t("with #{pluralize(@game_state.player(user).houses[property.name], "house")}")
                 end if @game_state.player(user).houses[property.name]
+                string << content_tag(:div, id: (to_id(property.name) + "_hotel")) do
+                  t("and a hotel")
+                end if @game_state.player(user).hotels[property.name]
               end
             end.html_safe
           end

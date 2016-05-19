@@ -31,10 +31,17 @@
       <%= buy_property_form %>
     <% end %>
     <% if @game_state.expecting_rolls > 0 %>
-      <% if @game_state.expecting_rolls == 2 && !current_game_player.possible_house_locations.empty? %>
-        <div id="buy_house">
-          <%= buy_houses_form %>
-        </div>
+      <% if @game_state.expecting_rolls == 2 %>
+        <% unless current_game_player.possible_house_locations.empty? %>
+          <div id="buy_house">
+            <%= buy_houses_form %>
+          </div>
+        <% end %>
+        <% unless current_game_player.possible_hotel_locations.empty? %>
+          <div id="buy_hotel">
+            <%= buy_hotel_form %>
+          </div>
+        <% end %>
       <% end %>
       <div id="dice_roll">
         <%= roll_dice_form %>

@@ -6,7 +6,8 @@ class Player
               :jail,
               :dice_rolls,
               :properties,
-              :houses
+              :houses,
+              :hotels
 
   # TODO make just a reader and deal with this a diferent way
   attr_accessor :doubles_in_a_row,
@@ -23,6 +24,7 @@ class Player
     self.pairs_rolled_while_in_jail = 0
     self.properties = []
     self.houses = {}
+    self.hotels = {}
   end
 
   def roll_dice(amount)
@@ -45,6 +47,10 @@ class Player
     possible_house_locations.include?(property)
   end
 
+  def can_buy_hotel?(property)
+    possible_hotel_locations.include?(property)
+  end
+
   def has_buildings_on?(property)
     houses.include?(property.name)
   end
@@ -58,12 +64,23 @@ class Player
       can_afford?(property.building_price)
     end.map do |property|
       property.name
-    end - houses.select { |property, number| number == 4 }.keys
+    end - possible_hotel_locations - hotels.keys
+  end
+
+  def possible_hotel_locations
+    # TODO Need to make sure this is evenly buildable
+    # TODO Need to check whether we can afford
+    houses.select { |property, number| number == 4 }.keys - hotels.keys
   end
 
   def purchase_house!(property)
     self.houses[property] ||= 0
     self.houses[property] += 1
+    pay!(ColouredProperty.find_by_name(property).building_price)
+  end
+
+  def purchase_hotel!(property)
+    self.hotels[property] = true
     pay!(ColouredProperty.find_by_name(property).building_price)
   end
 
@@ -129,5 +146,6 @@ class Player
 #              :doubles_in_a_row,
 #              :pairs_rolled_while_in_jail,
               :properties,
-              :houses
+              :houses,
+              :hotels
 end

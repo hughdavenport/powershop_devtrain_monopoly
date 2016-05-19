@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :dice_rolls, only: [:create]
     resources :property_purchases, only: [:create]
     resources :house_purchases, only: [:create]
+    resources :hotel_purchases, only: [:create]
     resources :turn_ends, only: [:create]
     # TESTING ROUTE
     resources :set_balances, only: [:create]

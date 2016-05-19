@@ -116,7 +116,7 @@ Given(/^(.*) has (\d+)(?: more)? (?:house|houses)$/) do |property, number|
 end
 
 Given(/^(.*) has a hotel$/) do |property|
-  step "I buy a hotel for #{property.name}"
+  step "I buy a hotel for #{property}"
 end
 
 Given(/^the (.*) set has (\d+) (?:house|houses) each$/) do |colour, number|
@@ -140,7 +140,7 @@ Given(/^(I|another user) completely (?:own|owns) the (.*) set with (\d+) (?:hous
   step "the #{colour} set has #{number} houses each"
 end
 
-Given(/^(I|another user) completely (?:own|owns) the (.*) set with a hotel each$/) do |user, colour, number|
+Given(/^(I|another user) completely (?:own|owns) the (.*) set with a hotel each$/) do |user, colour|
   step "#{user} completely owns the #{colour} set"
   step "It is #{user == "I" ? "my" : "another users"} turn"
   step "the #{colour} set has a hotel each"
@@ -254,7 +254,7 @@ When(/^(?:I|another user) (?:buy|buys) a house for (.*)$/) do |property|
 end
 
 When(/^(?:I|another user) (?:buy|buys) a hotel for (.*)$/) do |property|
-  within(BUY_HOTEL_SELECTOR) { step "I seleect #{property} as property" }
+  within(BUY_HOTEL_SELECTOR) { step "I select #{property} as property" }
   step 'I click on "Buy hotel"'
   puts "a hotel was purchased for #{property}"
 end
@@ -384,6 +384,6 @@ Then(/^(.*) should have (\d+) (?:house|houses)$/) do |property, number|
   expect(find("##{property.downcase.gsub(" ", "_")}_houses")).to have_content(/with #{number} (?:house|houses)/i)
 end
 
-Then(/^(.*) should have a hotel$/) do |property, number|
+Then(/^(.*) should have a hotel$/) do |property|
   expect(find("##{property.downcase.gsub(" ", "_")}_hotel")).to have_content(/and a hotel/i)
 end
