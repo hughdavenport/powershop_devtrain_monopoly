@@ -36,7 +36,9 @@ Feature: Rolling dice
 
   Scenario: Rolling three doubles
     Given It is my turn
-    When I roll 3 doubles
+    And I roll 2 doubles
+    And I know my balance
+    When I roll a double
     Then I should be in jail
     And It should not be my turn
     And I should gain $0
