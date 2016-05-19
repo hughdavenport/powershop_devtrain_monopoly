@@ -18,36 +18,28 @@ Feature: Earning rent on houses
     Then I should gain $44
 
   Scenario: Earning rent for one house
-    Given I completely own the blue set
-    And It is my turn
-    And the blue set has 1 house each
+    Given I completely own the blue set with 1 house each
     And I know my balance
     And It is another users turn
     When another user lands on Pentonville Road
     Then I should gain $40
 
   Scenario: Earning rent for two houses
-    Given I completely own the purple set
-    And It is my turn
-    And the purple set has 2 house each
+    Given I completely own the purple set with 2 houses each
     And I know my balance
     And It is another users turn
     When another user lands on Mayfair
     Then I should gain $600
 
   Scenario: Earning rent for three houses
-    Given I completely own the pink set
-    And It is my turn
-    And the pink set has 3 house each
+    Given I completely own the pink set with 3 houses each
     And I know my balance
     And It is another users turn
     When another user lands on Pall Mall
     Then I should gain $450
 
   Scenario: Earning rent for four houses
-    Given I completely own the green set
-    And It is my turn
-    And the green set has 4 house each
+    Given I completely own the green set with 4 houses each
     And I know my balance
     And It is another users turn
     When another user lands on Bond Street

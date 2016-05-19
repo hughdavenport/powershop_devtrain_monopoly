@@ -17,33 +17,25 @@ Feature: Paying rent on houses
     Then I should lose $44
 
   Scenario: Paying rent for one house
-    Given another user completely owns the blue set
-    And It is another users turn
-    And the blue set has 1 house each
+    Given another user completely owns the blue set with 1 house each
     And It is my turn
     When I land on Pentonville Road
     Then I should lose $40
 
   Scenario: Paying rent for two houses
-    Given another user completely owns the purple set
-    And It is another users turn
-    And the purple set has 2 house each
+    Given another user completely owns the purple set with 2 houses each
     And It is my turn
     When I land on Mayfair
     Then I should lose $600
 
   Scenario: Paying rent for three houses
-    Given another user completely owns the pink set
-    And It is another users turn
-    And the pink set has 3 house each
+    Given another user completely owns the pink set with 3 houses each
     And It is my turn
     When I land on Pall Mall
     Then I should lose $450
 
   Scenario: Paying rent for four houses
-    Given another user completely owns the green set
-    And It is another users turn
-    And the green set has 4 house each
+    Given another user completely owns the green set with 4 houses each
     And It is my turn
     When I land on Bond Street
     Then I should lose $1200

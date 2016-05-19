@@ -122,6 +122,12 @@ Given(/^the (.*) set has (\d+) (?:house|houses) each$/) do |colour, number|
   end
 end
 
+Given(/^(I|another user) completely (?:own|owns) the (.*) set with (\d+) (?:house|houses) each$/) do |user, colour, number|
+  step "#{user} completely owns the #{colour} set"
+  step "It is #{user == "I" ? "my" : "another users"} turn"
+  step "the #{colour} set has #{number} houses each"
+end
+
 Given(/^(I|another user) (?:have|has) \$(\d+)$/) do |user, balance|
   # Only works on test/development mode, due to controller check
   step "It is #{user == "I" ? "my" : "another users"} turn"
