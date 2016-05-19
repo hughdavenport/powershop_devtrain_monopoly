@@ -24,9 +24,9 @@ RSpec.describe PlayerJoined, type: :event do
 
       describe "#errors" do
         before do
-          allow(game_state).to receive(:started?).and_return(true)
-          allow(game_state).to receive(:player_with_piece).with(piece).and_return(nil)
-          allow(game_state).to receive(:player).with(user_id).and_return(nil)
+          expect(game_state).to receive(:started?).and_return(true)
+          expect(game_state).to receive(:player_with_piece).with(piece).and_return(nil)
+          expect(game_state).to receive(:player).with(user_id).and_return(nil)
         end
 
         subject { event.errors(game_state) }
@@ -51,8 +51,8 @@ RSpec.describe PlayerJoined, type: :event do
 
         describe "#errors" do
           before do
-            allow(game_state).to receive(:player_with_piece).with(piece).and_return(nil)
-            allow(game_state).to receive(:player).with(user_id).and_return(nil)
+            expect(game_state).to receive(:player_with_piece).with(piece).and_return(nil)
+            expect(game_state).to receive(:player).with(user_id).and_return(nil)
           end
 
           subject { event.errors(game_state) }
