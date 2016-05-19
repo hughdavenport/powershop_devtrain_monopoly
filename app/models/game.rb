@@ -1,13 +1,20 @@
 class Game < ActiveRecord::Base
   has_many :events, dependent: :destroy
+  # TODO get rid of this, should just display from gamestate
   has_many :dice_rolleds
   validates :number_of_players, numericality: { only_integer: true, greater_than_or_equal_to: 2, less_than_or_equal_to: GameState::PIECES.count }
 
   def state
-    @game_state ||= GameState.create(self)
+    @game_state ||= create_game_state
   end
 
   private
+
+  def create_game_state
+    GameState.new(max_number_of_players: number_of_players).tap do |game_state|
+      events.each { |event| event.apply(game_state) }
+    end
+  end
 
   attr_accessor :game_state
 end

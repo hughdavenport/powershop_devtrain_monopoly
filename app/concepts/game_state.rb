@@ -1,6 +1,6 @@
 class GameState
   attr_accessor :players
-  attr_accessor :game
+  attr_accessor :max_number_of_players
   attr_accessor :current_player
   attr_accessor :can_buy_property
   attr_accessor :expecting_rolls
@@ -49,20 +49,14 @@ class GameState
     Square.find_by_name("Mayfair")
   ]
 
-  def self.create(game)
-    GameState.new(game: game).tap do |game_state|
-      game.events.each { |event| event.apply(game_state) }
-    end
-  end
-
-  def initialize(game:)
-    self.game = game
+  def initialize(max_number_of_players:)
+    self.max_number_of_players = max_number_of_players
     self.expecting_rolls = 2
     self.players = []
   end
 
   def started?
-    players.count == game.number_of_players
+    players.count == max_number_of_players
   end
 
   def pieces_left
