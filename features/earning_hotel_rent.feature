@@ -19,5 +19,5 @@ Feature: Earning rent on hotels
     Given I completely own the blue set with a hotel each
     And I know my balance
     And It is another users turn
-    When another user lands on Whitechapel Road
-    Then I should gain $450
+    When another user lands on Euston Road
+    Then I should gain $550

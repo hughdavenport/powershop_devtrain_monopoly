@@ -22,7 +22,7 @@ Feature: Buying hotels
   Scenario: Can buy a hotel for a fully owned and built street
     Given I completely own the orange set with 4 houses each
     When It is my turn
-    Then I should be able to buy a hotel for Trafalgar Square
+    Then I should be able to buy a hotel for Vine Street
 
   Scenario: Cost of brown set
     Given I completely own the brown set with 4 houses each
