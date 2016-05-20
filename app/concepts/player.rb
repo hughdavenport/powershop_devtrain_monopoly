@@ -69,8 +69,13 @@ class Player
 
   def possible_hotel_locations
     # TODO Need to make sure this is evenly buildable
-    # TODO Need to check whether we can afford
-    houses.select { |property, number| number == 4 }.keys - hotels.keys
+    colour_groups_owned.map do |colour|
+      properties.select { |property| property.colour == colour if property.is_a?(ColouredProperty) }
+    end.flatten.select do |property|
+      can_afford?(property.building_price)
+    end.map do |property|
+      property.name
+    end.select { |property| houses[property] == 4 } - hotels.keys
   end
 
   def purchase_house!(property)
