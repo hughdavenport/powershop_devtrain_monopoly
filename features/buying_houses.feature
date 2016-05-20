@@ -75,7 +75,7 @@ Feature: Buying houses
     Then Park Lane should have 1 house
     And I should lose $200
 
-  Scenario: Can't build unevenly
+  Scenario: Can't build unevenly with 0 and 1 house
     Given I completely own the red set
     And It is my turn
     And Fleet Street has 1 house
@@ -83,10 +83,40 @@ Feature: Buying houses
     Then I should not be able to buy a house for Fleet Street
     And I should be able to buy a house for Strand
 
-  Scenario: Can build evenly
+  Scenario: Can build evenly with 0 and 1 house
     Given I completely own the red set
     And It is my turn
     And the red set has 1 house each
+    When It is my turn
+    Then I should be able to buy a house
+
+  Scenario: Can't build unevenly with 1 and 2 house
+    Given I completely own the red set with 1 house each
+    And It is my turn
+    And Fleet Street has 1 more house
+    When It is my turn
+    Then I should not be able to buy a house for Fleet Street
+    And I should be able to buy a house for Strand
+
+  Scenario: Can build evenly with 1 and 2 house
+    Given I completely own the red set with 1 house each
+    And It is my turn
+    And the red set has 1 more house each
+    When It is my turn
+    Then I should be able to buy a house
+
+  Scenario: Can't build unevenly with 2 and 3 house
+    Given I completely own the red set
+    And It is my turn
+    And Fleet Street has 1 more house
+    When It is my turn
+    Then I should not be able to buy a house for Fleet Street
+    And I should be able to buy a house for Strand
+
+  Scenario: Can build evenly with 2 and 3 house
+    Given I completely own the red set
+    And It is my turn
+    And the red set has 1 more house each
     When It is my turn
     Then I should be able to buy a house
 

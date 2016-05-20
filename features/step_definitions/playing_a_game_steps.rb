@@ -119,7 +119,7 @@ Given(/^(.*) has a hotel$/) do |property|
   step "I buy a hotel for #{property}"
 end
 
-Given(/^the (.*) set has (\d+) (?:house|houses) each$/) do |colour, number|
+Given(/^the (.*) set has (\d+)(?: more)? (?:house|houses) each$/) do |colour, number|
   number.to_i.times do
     (colour.capitalize + "Property").constantize.all.each do |property|
       step "I buy a house for #{property.name}"
