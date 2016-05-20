@@ -26,8 +26,8 @@ BlueProperty.create!(name: "The Angel Islington", price: 100, rent: 6, house_ren
 BlueProperty.create!(name: "Euston Road", price: 100, rent: 6, house_rent: [30, 90, 270, 400], hotel_rent: 550)
 BlueProperty.create!(name: "Pentonville Road", price: 120, rent: 8, house_rent: [40, 100, 300, 450], hotel_rent: 600)
 
-PinkProperty.create!(name: "Pall Mall", price: 140, rent: 10, house_rent: [50, 150, 450, 675], hotel_rent: 750)
-PinkProperty.create!(name: "Whitehall", price: 140, rent: 10, house_rent: [50, 150, 450, 675], hotel_rent: 750)
+PinkProperty.create!(name: "Pall Mall", price: 140, rent: 10, house_rent: [50, 150, 450, 625], hotel_rent: 750)
+PinkProperty.create!(name: "Whitehall", price: 140, rent: 10, house_rent: [50, 150, 450, 625], hotel_rent: 750)
 PinkProperty.create!(name: "Northumberland Avenue", price: 160, rent: 12, house_rent: [60, 180, 500, 700], hotel_rent: 900)
 
 OrangeProperty.create!(name: "Bow Street", price: 180, rent: 14, house_rent: [70, 200, 550, 750], hotel_rent: 950)
