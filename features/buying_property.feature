@@ -21,16 +21,6 @@ Feature: Buying property
     When I land on Whitechapel Road
     Then I should not be able to buy the property
 
-  Scenario: Not buying a property
-    Given Whitechapel Road is not owned
-    And It is my turn
-    When I land on Whitechapel Road
-    And TODO: Change this to start auction?
-    And I end my turn
-    Then Whitechapel Road should not be owned
-    And I should lose $0
-    And It should not be my turn
-
   Scenario: Can't buy property twice in a turn
     Given Whitechapel Road is not owned
     And It is my turn
