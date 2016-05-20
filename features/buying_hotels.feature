@@ -86,7 +86,6 @@ Feature: Buying hotels
     And Fleet Street has 1 more house
     When It is my turn
     Then I should not be able to buy a hotel for Fleet Street
-    And I should be able to buy a hotel for Strand
 
   Scenario: Can't buy a hotel when I can't afford
     Given I completely own the red set with 4 houses each

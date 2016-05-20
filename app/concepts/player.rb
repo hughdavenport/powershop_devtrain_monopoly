@@ -60,6 +60,9 @@ class Player
     # TODO Need to make this cleaner
     colour_groups_owned.map do |colour|
       properties.select { |property| property.colour == colour if property.is_a?(ColouredProperty) }
+    end.each do |colour_group|
+      min = houses[colour_group.min { |a, b| houses.fetch(a.name, 0) <=> houses.fetch(b.name, 0) }.name]
+      colour_group.select! { |property| houses[property.name] == min }
     end.flatten.select do |property|
       can_afford?(property.building_price)
     end.map do |property|
@@ -71,6 +74,9 @@ class Player
     # TODO Need to make sure this is evenly buildable
     colour_groups_owned.map do |colour|
       properties.select { |property| property.colour == colour if property.is_a?(ColouredProperty) }
+    end.each do |colour_group|
+      min = houses[colour_group.min { |a, b| houses.fetch(a.name, 0) <=> houses.fetch(b.name, 0) }.name]
+      colour_group.select! { |property| houses[property.name] == min }
     end.flatten.select do |property|
       can_afford?(property.building_price)
     end.map do |property|

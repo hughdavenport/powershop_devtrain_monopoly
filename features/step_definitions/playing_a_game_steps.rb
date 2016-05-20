@@ -357,10 +357,9 @@ Then(/^I should( not)? be able to buy a house$/) do |negation|
 end
 
 Then(/^I should( not)? be able to buy a house for (.*)$/) do |negation, property|
-  # Either can't buy any, or can't buy that particular one
-  return if negation && !page.has_selector?(BUY_HOUSE_SELECTOR)
   if negation
-    expect(find(BUY_HOUSE_SELECTOR)).not_to have_content(property)
+    # Either can't buy any, or can't buy that particular one
+    expect(find(BUY_HOUSE_SELECTOR)).not_to have_content(property) if page.has_selector?(BUY_HOUSE_SELECTOR)
   else
     expect(find(BUY_HOUSE_SELECTOR)).to have_content(property)
   end
@@ -371,10 +370,9 @@ Then(/^I should( not)? be able to buy a hotel$/) do |negation|
 end
 
 Then(/^I should( not)? be able to buy a hotel for (.*)$/) do |negation, property|
-  # Either can't buy any, or can't buy that particular one
-  return if negation && !page.has_selector?(BUY_HOTEL_SELECTOR)
   if negation
-    expect(find(BUY_HOTEL_SELECTOR)).not_to have_content(property)
+    # Either can't buy any, or can't buy that particular one
+    expect(find(BUY_HOTEL_SELECTOR)).not_to have_content(property) if page.has_selector?(BUY_HOTEL_SELECTOR)
   else
     expect(find(BUY_HOTEL_SELECTOR)).to have_content(property)
   end
