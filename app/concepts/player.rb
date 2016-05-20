@@ -135,7 +135,7 @@ class Player
   private
 
   def uniq_colours_owned
-    properties.map { |property| property.colour if property.is_a?(ColouredProperty) }.uniq
+    properties.map { |property| property.colour if property.is_a?(ColouredProperty) }.compact.uniq
   end
 
   def colour_groups_owned
