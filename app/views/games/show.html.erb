@@ -32,12 +32,12 @@
     <% end %>
     <% if @game_state.expecting_rolls > 0 %>
       <% if @game_state.expecting_rolls == 2 %>
-        <% unless current_game_player.possible_house_locations.empty? %>
+        <% if @game_state.can_buy_house? && !current_game_player.possible_house_locations.empty? %>
           <div id="buy_house">
             <%= buy_houses_form %>
           </div>
         <% end %>
-        <% unless current_game_player.possible_hotel_locations.empty? %>
+        <% if @game_state.can_buy_hotel? && !current_game_player.possible_hotel_locations.empty? %>
           <div id="buy_hotel">
             <%= buy_hotel_form %>
           </div>

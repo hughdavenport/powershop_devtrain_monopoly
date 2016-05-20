@@ -5,6 +5,8 @@ class GameState
   attr_accessor :can_buy_property
   attr_accessor :expecting_rolls
 
+  MAX_HOUSES = 32
+  MAX_HOTELS = 12
   PIECES = [:wheelbarrow, :battleship, :racecar, :thumble, :boot, :dog, :hat]
   BOARD  = [
     Square.find_by_name("Go"),
@@ -83,8 +85,24 @@ class GameState
     players.select { |player| player.owns_property?(property) }.first
   end
 
+  def num_houses
+    players.map { |player| player.houses.values.inject(0, :+) - player.hotels.count * 4 }.inject(0, :+)
+  end
+
+  def num_hotels
+    players.map { |player| player.hotels.count }.inject(0, :+)
+  end
+
   def can_buy_property?
     can_buy_property
+  end
+
+  def can_buy_house?
+    num_houses < MAX_HOUSES
+  end
+
+  def can_buy_hotel?
+    num_hotels < MAX_HOTELS
   end
 
   def shift_player!(player)
