@@ -116,7 +116,7 @@ Feature: Buying hotels
     Then I should not be able to buy a hotel
 
   Scenario: Can't buy a hotel if they are all used
-    Given I completely own the red set with 4 houses each
+    Given I completely own the green set with 4 houses each
     And 12 hotels are used
     When It is my turn
     Then I should not be able to buy a hotel

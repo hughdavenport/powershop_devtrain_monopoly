@@ -149,7 +149,7 @@ Feature: Buying houses
     Then I should not be able to buy a house
 
   Scenario: Can't buy a house if they are all used
-    Given I completely own the red set
+    Given I completely own the green set
     And 32 houses are used
     When It is my turn
     Then I should not be able to buy a house

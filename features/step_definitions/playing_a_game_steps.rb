@@ -48,6 +48,7 @@ def passed_go?(old_location)
   current < old
 end
 
+
 Given(/^It is my turn$/) do
   # The background should set this up
   step 'I go to the game'
@@ -151,6 +152,23 @@ Given(/^(I|another user) (?:have|has) \$(\d+)$/) do |user, balance|
   step "It is #{user == "I" ? "my" : "another users"} turn"
   within("#set_balance") { step "I enter in #{balance} as balance" }
   step 'I click on "Set balance"'
+end
+
+Given(/^32 houses are used$/) do
+  step "It is my turn"
+  step "I have $100000"
+  step "I completely own the brown set with 4 houses each" # 2 * 4 == 8
+  step "I completely own the blue set with 4 houses each" # 3 * 4 == 12, +8 == 20
+  step "I completely own the pink set with 4 houses each" # 3 * 4 == 12, +20 == 32
+end
+
+Given(/^12 hotels are used$/) do
+  step "It is my turn"
+  step "I have $100000"
+  step "I completely own the blue set with a hotel each" # 3
+  step "I completely own the pink set with a hotel each" # 3 + 3 == 6
+  step "I completely own the orange set with a hotel each" # 3 + 6 == 9
+  step "I completely own the red set with a hotel each" # 3 + 9 == 12
 end
 
 Given(/^I know my location$/) do
