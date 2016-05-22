@@ -105,8 +105,8 @@ class GameState
     num_hotels < MAX_HOTELS
   end
 
-  def shift_player!(player)
-    player.shift!
+  def shift_player!(player, amount)
+    player.shift!(amount)
     self.can_buy_property = false
   end
 

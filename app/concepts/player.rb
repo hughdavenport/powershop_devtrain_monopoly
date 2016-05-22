@@ -95,8 +95,9 @@ class Player
     pay!(ColouredProperty.find_by_name(property).building_price)
   end
 
-  def shift!
-    self.location = (self.location + self.dice_rolls.inject(:+)) % GameState::BOARD.size
+  def shift!(amount)
+    self.location += amount
+    self.location %= GameState::BOARD.size
     self.dice_rolls = []
   end
 
