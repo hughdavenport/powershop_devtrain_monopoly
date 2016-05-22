@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :house_purchases, only: [:create]
     resources :hotel_purchases, only: [:create]
     resources :turn_ends, only: [:create]
+    resources :bond_payments, only: [:create]
     # TESTING ROUTE
     resources :set_balances, only: [:create]
   end

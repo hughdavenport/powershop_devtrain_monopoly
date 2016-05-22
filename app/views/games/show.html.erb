@@ -42,6 +42,11 @@
             <%= buy_hotel_form %>
           </div>
         <% end %>
+        <% if current_game_player.jail? %>
+          <div id="pay_bond">
+            <%= pay_bond_form %>
+          </div>
+        <% end %>
       <% end %>
       <div id="dice_roll">
         <%= roll_dice_form %>

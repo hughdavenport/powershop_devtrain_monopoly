@@ -51,6 +51,14 @@ module GamesHelper
     end
   end
 
+  def pay_bond_form
+    form_tag(game_bond_payments_path(@game)) do
+      "".tap do |string|
+        string << submit_tag('Pay bond')
+      end.html_safe
+    end
+  end
+
   def buy_property_form
     form_tag(game_property_purchases_path(@game)) do
       "".tap do |string|
