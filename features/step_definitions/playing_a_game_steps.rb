@@ -277,6 +277,10 @@ When(/^(?:I|another user) (?:buy|buys) a hotel for (.*)$/) do |property|
   puts "a hotel was purchased for #{property}"
 end
 
+When(/^(?:I|another user) (?:pay| pays) bond$/) do
+  step 'I click on "Pay bond"'
+end
+
 
 Then(/^I should see a dice roll$/) do
   expect(page).to have_selector(DICE_ROLL_SELECTOR)
@@ -402,4 +406,8 @@ end
 
 Then(/^(.*) should have a hotel$/) do |property|
   expect(find("##{property.downcase.gsub(" ", "_")}_hotel")).to have_content(/and a hotel/i)
+end
+
+Then(/^(?:I|another user) should( not)? be able to pay bond$/) do |negation|
+  step "I should#{negation} see \"Pay bond\""
 end
