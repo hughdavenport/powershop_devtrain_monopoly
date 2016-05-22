@@ -139,3 +139,9 @@ Feature: Jail
     And It is my turn
     When I roll two dice (not doubles)
     Then I should not be able to pay bond
+
+  Scenario: Can't pay bond early if can't afford
+    Given I am in jail
+    And I have $20
+    When It is my turn
+    Then I should not be able to pay bond
