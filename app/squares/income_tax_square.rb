@@ -1,7 +1,7 @@
 class IncomeTaxSquare < Square
   after_initialize :set_name
 
-  def event
+  def effect
     IncomeTaxPaid
   end
 

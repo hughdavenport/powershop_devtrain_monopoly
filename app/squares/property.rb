@@ -3,7 +3,7 @@ class Property < Square
   validates_presence_of :price
   validates :price, numericality: { only_integer: true, greater_than: 0 }
 
-  def event
+  def effect
     PropertyLandedOn
   end
 end

@@ -1,7 +1,7 @@
 class SuperTaxSquare < Square
   after_initialize :set_name
 
-  def event
+  def effect
     SuperTaxPaid
   end
 
