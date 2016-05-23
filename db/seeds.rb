@@ -12,7 +12,7 @@ Chance.create!
 CommunityChest.create!
 
 StationProperty.create!(name: "Kings Cross Station")
-StationProperty.create!(name: "Marylbone Station")
+StationProperty.create!(name: "Marylebone Station")
 StationProperty.create!(name: "Fenchurch Street Station")
 StationProperty.create!(name: "Liverpool Street Station")
 

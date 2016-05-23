@@ -25,7 +25,7 @@ class GameState
     Square.find_by_name("Electric Company"),
     Square.find_by_name("Whitehall"),
     Square.find_by_name("Northumberland Avenue"),
-    Square.find_by_name("Marylbone Station"),
+    Square.find_by_name("Marylebone Station"),
     Square.find_by_name("Bow Street"),
     Square.find_by_name("Community Chest"),
     Square.find_by_name("Marlborough Street"),

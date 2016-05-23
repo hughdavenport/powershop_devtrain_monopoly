@@ -49,7 +49,7 @@ Feature: Earning rent
 
   Scenario: Earning rent on two stations
     Given I own Kings Cross Station
-    And I own Marylbone Station
+    And I own Marylebone Station
     And I know my balance
     And It is another users turn
     When another user lands on Kings Cross Station
@@ -57,7 +57,7 @@ Feature: Earning rent
 
   Scenario: Earning rent on three stations
     Given I own Kings Cross Station
-    And I own Marylbone Station
+    And I own Marylebone Station
     And I own Fenchurch Street Station
     And I know my balance
     And It is another users turn
@@ -66,7 +66,7 @@ Feature: Earning rent
 
   Scenario: Earning rent on all four stations
     Given I own Kings Cross Station
-    And I own Marylbone Station
+    And I own Marylebone Station
     And I own Fenchurch Street Station
     And I own Liverpool Street Station
     And I know my balance
@@ -76,12 +76,12 @@ Feature: Earning rent
 
   Scenario: Earning rent on two stations when I own the other two
     Given I own Kings Cross Station
-    And I own Marylbone Station
+    And I own Marylebone Station
     And I know my balance
     And another user owns Fenchurch Street Station
     And another user owns Liverpool Street Station
     And It is another users turn
-    When another user lands on Marylbone Station
+    When another user lands on Marylebone Station
     Then I should gain $50
 
   Scenario: Earning rent for an entire colour group (size 3)

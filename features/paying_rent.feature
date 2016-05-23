@@ -51,14 +51,14 @@ Feature: Paying rent
 
   Scenario: Paying rent on two stations
     Given another user owns Kings Cross Station
-    And another user owns Marylbone Station
+    And another user owns Marylebone Station
     And It is my turn
     When I land on Kings Cross Station
     Then I should lose $50
 
   Scenario: Paying rent on three stations
     Given another user owns Kings Cross Station
-    And another user owns Marylbone Station
+    And another user owns Marylebone Station
     And another user owns Fenchurch Street Station
     And It is my turn
     When I land on Kings Cross Station
@@ -66,7 +66,7 @@ Feature: Paying rent
 
   Scenario: Paying rent on all four stations
     Given another user owns Kings Cross Station
-    And another user owns Marylbone Station
+    And another user owns Marylebone Station
     And another user owns Fenchurch Street Station
     And another user owns Liverpool Street Station
     And It is my turn
@@ -75,11 +75,11 @@ Feature: Paying rent
 
   Scenario: Paying rent on two stations when I own the other two
     Given another user owns Kings Cross Station
-    And another user owns Marylbone Station
+    And another user owns Marylebone Station
     And I own Fenchurch Street Station
     And I own Liverpool Street Station
     And It is my turn
-    When I land on Marylbone Station
+    When I land on Marylebone Station
     Then I should lose $50
 
   Scenario: Paying rent for an entire colour group (size 3)
