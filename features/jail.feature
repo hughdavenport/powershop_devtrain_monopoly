@@ -161,9 +161,31 @@ Feature: Jail
     And It should not be my turn
     And I should gain $0
 
+  Scenario: Drawing chance card after jail
+    Given I am on Free Parking
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # should be on chance in the middle
+    When I draw "Go to jail"
+    Then I should be in jail
+    And It should not be my turn
+    And I should gain $0
+
   Scenario: Drawing community chest card
     Given It is my turn
     And I land on Community Chest
+    When I draw "Go to jail"
+    Then I should be in jail
+    And It should not be my turn
+    And I should gain $0
+
+  Scenario: Drawing community chest card after jail
+    Given I am on Marylebone Station
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # should be on community chest on 2nd side
     When I draw "Go to jail"
     Then I should be in jail
     And It should not be my turn
