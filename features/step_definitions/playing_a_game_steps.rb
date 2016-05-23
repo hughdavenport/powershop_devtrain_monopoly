@@ -85,8 +85,7 @@ Given(/^I am in jail for (\d+) turns$/) do |number|
   step 'I am in jail'
   number.to_i.times do
     step 'It is my turn'
-    step 'I roll two dice (not doubles)'
-    step 'I end my turn'
+    step 'I make a move'
   end
 end
 
@@ -230,6 +229,7 @@ end
 When(/^(I|another user) (?:roll|rolls) (a|\d+) (?:double|doubles)$/) do |user, number|
   number = 1 if number == "a"
   number.to_i.times do
+    step "#{user} draws \"No card\"" if page.has_selector?("#draw_card")
     step "#{user} rolls the dice"
     puts "#{user} rolled a #{dice_roll} twice"
     step "#{user} rolls a #{dice_roll}"
