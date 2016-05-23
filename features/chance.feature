@@ -90,6 +90,30 @@ Feature: Landing on chance
     Then I should be on Mayfair
     And I should not gain go money
 
+  Scenario: Going to Marylebone Station
+    Given It is my turn
+    And I land on Chance
+    When I draw "Take a trip to Marylebone Station"
+    Then I should be on Marylebone Station
+
+  Scenario: Going to Marylebone Station not via go
+    Given I am on Kings Cross Station
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    When I draw "Take a trip to Marylebone Station"
+    Then I should be on Marylebone Station
+    And I should not gain go money
+
+  Scenario: Going to Marylebone Station via go
+    Given I am on Free Parking
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    When I draw "Take a trip to Marylebone Station"
+    Then I should be on Marylebone Station
+    And I should gain go money
+
   Scenario: Receiving money
     Given It is my turn
     And I land on Chance
