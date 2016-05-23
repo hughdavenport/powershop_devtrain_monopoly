@@ -281,6 +281,16 @@ When(/^(?:I|another user) (?:pay| pays) bond$/) do
   step 'I click on "Pay bond"'
 end
 
+When(/^(?:I|another user) (?:draw| draws) a card$/) do
+  step 'I click on "Draw card"'
+end
+
+When(/^(?:I|another user) (?:draw|draws) \"(.*)\"$/) do |card|
+  # Works only in testing and development mode, controller accepts a number for dice roll
+  within("#draw_card") { step "I select #{card} as card draw" }
+  step 'I click on "Draw card"'
+end
+
 
 Then(/^I should see a dice roll$/) do
   expect(page).to have_selector(DICE_ROLL_SELECTOR)
@@ -410,4 +420,8 @@ end
 
 Then(/^(?:I|another user) should( not)? be able to pay bond$/) do |negation|
   step "I should#{negation} see \"Pay bond\""
+end
+
+Then(/^(?:I|another user) should( not)? be able to draw a card$/) do |negation|
+  step "I should#{negation} see \"Draw card\""
 end
