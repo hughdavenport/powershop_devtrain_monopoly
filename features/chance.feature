@@ -29,3 +29,29 @@ Feature: Landing on chance
     When I draw "Advance to Go"
     Then I should be on Go
     And I should gain go money
+
+  Scenario: Going to trafalgar square
+    Given It is my turn
+    And I land on Chance
+    When I draw "Advance to Trafalgar Square"
+    Then I should be on Trafalgar Square
+
+  Scenario: Going to trafalgar square passing go
+    Given I am on Bond Street
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # I should be on chance before go
+    When I draw "Advance to Trafalgar Square"
+    Then I should be on Trafalgar Square
+    And I should gain go money
+
+  Scenario: Going to trafalgar square NOT passing go
+    Given I am on Kings Cross Station
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # I should be on chance after go
+    When I draw "Advance to Trafalgar Square"
+    Then I should be on Trafalgar Square
+    And I should not gain go money

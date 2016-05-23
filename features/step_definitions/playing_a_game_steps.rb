@@ -347,9 +347,9 @@ Then(/^I should (lose|gain) \$(\d+)$/) do |direction, amount|
   expect(@balance.to_i + multiplier * amount.to_i).to eq balance.to_i
 end
 
-Then(/^I should gain go money$/) do
+Then(/^I should( not)? gain go money$/) do |negation|
   @passed_go = 0
-  step 'I should gain $200'
+  step "I should gain $#{negation ? "0" : "200"}"
 end
 
 Then(/^(I|another user) should be the current player$/) do |user|
