@@ -11,6 +11,6 @@ class AdvanceTo < Card
   private
 
   def set_name
-    self.name ||= "Advance to #{location} #{location == "Go" ? " (Collect $200)" : "- If you pass Go, collect $200"}"
+    self.name ||= "Advance to #{location} #{location == "Go" ? "(Collect $200)" : "- If you pass Go, collect $200"}"
   end
 end

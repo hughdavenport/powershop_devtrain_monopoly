@@ -73,11 +73,11 @@ class GameState
   end
 
   def chance_cards
-    Card.chance.pluck(:name)
+    Card.chance
   end
 
   def community_chest_cards
-    Card.community_chest.pluck(:name)
+    Card.community_chest
   end
 
   def player(user)

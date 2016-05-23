@@ -16,9 +16,9 @@ RSpec.describe CardDrawn, type: :event do
     end
   end
 
-  subject(:event) { CardDrawn.new }
+  subject(:event) { CardDrawn.new(card: card) }
 
-  let(:amount) { nil }
+  let(:card) { "testing" }
 
   describe "checking validity" do
     before do
@@ -60,15 +60,59 @@ RSpec.describe CardDrawn, type: :event do
 
   describe "applying the event" do
     before do
-      expect(game_state).to receive(:current_player).and_return(0)
-      expect(game_state).to receive(:players).and_return([player])
       expect(game_state).to receive(:expecting_card_draw=).with(false)
     end
 
-    let(:player) { double("Player") }
+    context "when we are just using the 'No card' testing value" do
+      let(:card) { 'No card' }
 
-    it "should apply" do
-      event.apply(game_state)
+      it "should apply with no extra effects" do
+        event.apply(game_state)
+      end
+    end
+
+    context "when we are not applying with testing card of 'No card'" do
+      before do
+        expect(game_state).to receive(:cards).and_return(cards)
+      end
+
+      let(:cards) do
+        double("Cards").tap do |cards|
+          expect(cards).to receive(:find_by_name).with(card).and_return(card_obj)
+        end
+      end
+
+      let(:card_obj) do
+        double("Card").tap do |card_obj|
+          expect(card_obj).to receive(:respond_to?).with(:effect).and_return(respond_to)
+        end
+      end
+
+      context "when the card has no effect" do
+        let(:respond_to) { false }
+
+        it "should apply with no extra effect" do
+          event.apply(game_state)
+        end
+      end
+
+      context "when the card has an extra effect" do
+        let(:respond_to) { true }
+
+        before do
+          expect(card_obj).to receive(:effect).and_return(effect)
+        end
+
+        let(:effect) do
+          double("Effect").tap do |effect|
+            expect(effect).to receive(:apply).with(game_state)
+          end
+        end
+
+        it "should apply with the extra effect" do
+          event.apply(game_state)
+        end
+      end
     end
   end
 end

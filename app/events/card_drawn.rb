@@ -3,9 +3,10 @@ class CardDrawn < Event
   store_accessor :data, :card
 
   def apply(game_state)
-    player = game_state.players[game_state.current_player]
     unless card == "No card"
       # TODO get card, apply it
+      card_obj = game_state.cards.find_by_name(card)
+      card_obj.effect.apply(game_state) if card_obj.respond_to?(:effect)
     end
     game_state.expecting_card_draw = false
   end
