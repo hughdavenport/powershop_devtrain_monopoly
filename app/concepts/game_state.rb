@@ -5,6 +5,8 @@ class GameState
   attr_accessor :can_buy_property
   attr_accessor :expecting_rolls
   attr_accessor :expecting_card_draw
+  attr_accessor :chance_cards
+  attr_accessor :community_chest_cards
 
   MAX_HOUSES = 32
   MAX_HOTELS = 12
@@ -70,14 +72,6 @@ class GameState
     player = players[current_player]
     location = board[player.location]
     location.name == "Chance" ? chance_cards : community_chest_cards
-  end
-
-  def chance_cards
-    Card.chance
-  end
-
-  def community_chest_cards
-    Card.community_chest
   end
 
   def player(user)

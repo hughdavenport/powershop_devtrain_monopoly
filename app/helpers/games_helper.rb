@@ -47,7 +47,7 @@ module GamesHelper
     form_tag(game_card_draws_path(@game)) do
       "".tap do |string|
         string << label_tag(:card)
-        string << select_tag(:card, options_for_select(["", "No card"] + @game_state.cards.pluck(:name)))
+        string << select_tag(:card, options_for_select(["", "No card"] + @game_state.cards.map { |card| card.name }))
         string << submit_tag('Draw card')
       end.html_safe
     end

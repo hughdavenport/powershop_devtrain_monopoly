@@ -118,12 +118,20 @@ RSpec.describe GamesController, type: :controller do
 
   describe "POST #create" do
     before do
-      expect(game_model).to receive(:new).with(attributes).and_return(game)
+      class_double("CreateGame").as_stubbed_const.tap do |klazz|
+        expect(klazz).to receive(:new).with(attributes).and_return(service)
+      end
+    end
+
+    let(:service) do
+      instance_double("CreateGame").tap do |service|
+        expect(service).to receive(:call).and_return(return_value)
+        allow(service).to receive(:game).and_return(game)
+      end
     end
 
     let(:game) do
       double("Game").tap do |game|
-        expect(game).to receive(:save).and_return(return_value)
         # Set up redirect to
         allow(game).to receive(:to_model).and_return(game)
         allow(game).to receive(:model_name).and_return(game)

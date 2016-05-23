@@ -7,6 +7,8 @@ class CreateGame
 
   def call
     self.game = Game.new(number_of_players: number_of_players)
+    ShuffleChanceCards.new(game: game).call
+    ShuffleCommunityChestCards.new(game: game).call
     game.save
   end
 
