@@ -152,3 +152,19 @@ Feature: Jail
     Then I should be in jail
     And It should not be my turn
     And I should gain $0
+
+  Scenario: Drawing chance card
+    Given It is my turn
+    And I land on Chance
+    When I draw "Go to jail"
+    Then I should be in jail
+    And It should not be my turn
+    And I should gain $0
+
+  Scenario: Drawing community chest card
+    Given It is my turn
+    And I land on Community Chest
+    When I draw "Go to jail"
+    Then I should be in jail
+    And It should not be my turn
+    And I should gain $0

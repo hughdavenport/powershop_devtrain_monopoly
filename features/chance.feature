@@ -82,6 +82,14 @@ Feature: Landing on chance
     Then I should be on Pall Mall
     And I should not gain go money
 
+  Scenario: Going to Mayfair
+    Given It is my turn
+    And I land on Chance
+    And I know my balance
+    When I draw "Advance to Mayfair"
+    Then I should be on Mayfair
+    And I should not gain go money
+
   Scenario: Receiving money
     Given It is my turn
     And I land on Chance
