@@ -243,6 +243,7 @@ When(/^(?:I|another user) (?:roll|rolls) a (\d+)$/) do |number|
 end
 
 When(/^(?:I|another user) (?:end|ends) (?:my|their) turn$/) do
+  step 'I draw "No card"' if page.has_selector?("#draw_card")
   step 'I click on "End turn"'
 end
 
@@ -287,7 +288,7 @@ end
 
 When(/^(?:I|another user) (?:draw|draws) \"(.*)\"$/) do |card|
   # Works only in testing and development mode, controller accepts a number for dice roll
-  within("#draw_card") { step "I select #{card} as card draw" }
+  within("#draw_card") { step "I select #{card} as card" }
   step 'I click on "Draw card"'
 end
 

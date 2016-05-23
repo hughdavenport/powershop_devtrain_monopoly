@@ -12,6 +12,11 @@ Feature: Landing on chance
     When I land on Chance
     Then I should be able to draw a card
 
+  Scenario: Can't end turn before drawing card
+    Given It is my turn
+    When I land on Chance
+    Then I should not be able to end my turn
+
   Scenario: Can't draw multiple cards
     Given It is my turn
     And I land on Chance

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :hotel_purchases, only: [:create]
     resources :turn_ends, only: [:create]
     resources :bond_payments, only: [:create]
+    resources :card_draws, only: [:create]
     # TESTING ROUTE
     resources :set_balances, only: [:create]
   end

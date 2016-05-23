@@ -51,6 +51,10 @@
       <div id="dice_roll">
         <%= roll_dice_form %>
       </div>
+    <% elsif @game_state.expecting_card_draw %>
+      <div id="draw_card">
+        <%= draw_card_form %>
+      </div>
     <% else %>
       <%= end_turn_form %>
     <% end %>

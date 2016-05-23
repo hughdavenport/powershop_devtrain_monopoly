@@ -8,8 +8,8 @@ GoToJailSquare.create!
 IncomeTaxSquare.create!
 SuperTaxSquare.create!
 
-Square.create!(name: "Chance")
-Square.create!(name: "Community Chest")
+Chance.create!
+CommunityChest.create!
 
 StationProperty.create!(name: "Kings Cross Station")
 StationProperty.create!(name: "Marylbone Station")

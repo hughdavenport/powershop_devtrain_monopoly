@@ -4,6 +4,7 @@ class GameState
   attr_accessor :current_player
   attr_accessor :can_buy_property
   attr_accessor :expecting_rolls
+  attr_accessor :expecting_card_draw
 
   MAX_HOUSES = 32
   MAX_HOTELS = 12
@@ -65,6 +66,20 @@ class GameState
     PIECES - players.map { |player| player.piece.to_sym }
   end
 
+  def cards
+    player = players[current_player]
+    location = board[player.location]
+    location.name == "Chance" ? chance_cards : community_chest_cards
+  end
+
+  def chance_cards
+    Card.chance.pluck(:name)
+  end
+
+  def community_chest_cards
+    Card.community_chest.pluck(:name)
+  end
+
   def player(user)
     players.select { |player| player.user == user }.first
   end
@@ -74,7 +89,7 @@ class GameState
   end
 
   def players_at(location)
-    players.select { |player| player.position == location }
+    players.select { |player| player.location == location }
   end
 
   def owned_properties
