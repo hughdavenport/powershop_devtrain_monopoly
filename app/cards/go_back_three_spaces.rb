@@ -2,7 +2,7 @@ class GoBackThreeSpaces < Card
   after_initialize :set_name
 
   def effect
-    ShiftPlayer.new(amount: -3)
+    PlayerShifted.new(amount: -3)
   end
 
   private

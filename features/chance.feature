@@ -81,3 +81,46 @@ Feature: Landing on chance
     When I draw "Advance to Pall Mall"
     Then I should be on Pall Mall
     And I should not gain go money
+
+  Scenario: Receiving money
+    Given It is my turn
+    And I land on Chance
+    And I know my location
+    When I draw "Bank pays you dividend of $50"
+    Then I should gain $50
+    And I should not move along the board
+
+  Scenario: Giving money
+    Given It is my turn
+    And I land on Chance
+    And I know my location
+    When I draw "Pay poor tax of $15"
+    Then I should lose $15
+    And I should not move along the board
+
+  Scenario: Moving back three spaces #1
+    Given I am on Kings Cross Station
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # I should be on chance before go
+    When I draw "Go Back 3 Spaces"
+    Then I should be on Income Tax
+
+  Scenario: Moving back three spaces #2
+    Given I am on Free Parking
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # I should be on chance in the middle
+    When I draw "Go Back 3 Spaces"
+    Then I should be on Vine Street
+
+  Scenario: Moving back three spaces #3
+    Given I am on Bond Street
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # I should be on chance before go
+    When I draw "Go Back 3 Spaces"
+    Then I should be on Community Chest
