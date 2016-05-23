@@ -66,14 +66,16 @@ RSpec.describe DiceRolledWhileNotInJail, type: :effect do
             # Get an extra turn
             expect(game_state).to receive(:expecting_rolls).and_return(expected_rolls)
             expect(game_state).to receive(:expecting_rolls=).with(expected_rolls + 2)
+            expect(dice_rolls).to receive(:inject).with(0, :+).and_return(dice_roll_amount)
           end
 
           let(:expected_rolls) { 0 }
           let(:original_location) { 20 }
           let(:new_location) { original_location }
+          let(:dice_roll_amount) { 15 }
 
           it "should apply a shift player event" do
-            expect_effect_called("PlayerShifted")
+            expect_effect_called("PlayerShifted", amount: dice_roll_amount)
             event.apply(game_state)
           end
         end
@@ -83,10 +85,13 @@ RSpec.describe DiceRolledWhileNotInJail, type: :effect do
         before do
           expect(dice_rolls).to receive(:uniq).and_return([1, 2])
           expect(player).to receive(:doubles_in_a_row).and_return(0)
+          expect(dice_rolls).to receive(:inject).with(0, :+).and_return(dice_roll_amount)
         end
 
+        let(:dice_roll_amount) { 15 }
+
         it "should apply a shift player event" do
-          expect_effect_called("PlayerShifted")
+          expect_effect_called("PlayerShifted", amount: dice_roll_amount)
           event.apply(game_state)
         end
       end
