@@ -145,3 +145,10 @@ Feature: Jail
     And I have $20
     When It is my turn
     Then I should not be able to pay bond
+
+  Scenario: Landing on go to jail
+    Given It is my turn
+    When I land on Go To Jail
+    Then I should be in jail
+    And It should not be my turn
+    And I should gain $0
