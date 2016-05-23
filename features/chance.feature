@@ -55,3 +55,29 @@ Feature: Landing on chance
     When I draw "Advance to Trafalgar Square"
     Then I should be on Trafalgar Square
     And I should not gain go money
+
+  Scenario: Going to Pall Mall
+    Given It is my turn
+    And I land on Chance
+    When I draw "Advance to Pall Mall"
+    Then I should be on Pall Mall
+
+  Scenario: Going to pall mall via go
+    Given I am on Free Parking
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # I should be on Chance half way around
+    When I draw "Advance to Pall Mall"
+    Then I should be on Pall Mall
+    And I should gain go money
+
+  Scenario: Going to pall mall not via go
+    Given I am on Kings Cross Station
+    And It is my turn
+    And I roll a 1
+    And I roll a 1
+    # I should be on chance after go
+    When I draw "Advance to Pall Mall"
+    Then I should be on Pall Mall
+    And I should not gain go money
