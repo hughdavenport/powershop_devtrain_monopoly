@@ -23,7 +23,7 @@ RSpec.describe GamesController, type: :controller do
   let(:piece) { "piece" }
   let(:game_id) { "1" }
   let(:username) { "testing" }
-  let(:attributes) { { number_of_players: 2 } }
+  let(:attributes) { { number_of_players: "2" } }
 
   # Mock out models that controller always uses
   before do
@@ -118,7 +118,7 @@ RSpec.describe GamesController, type: :controller do
 
   describe "POST #create" do
     before do
-      expect(game_model).to receive(:new).and_return(game)
+      expect(game_model).to receive(:new).with(attributes).and_return(game)
     end
 
     let(:game) do
@@ -138,7 +138,7 @@ RSpec.describe GamesController, type: :controller do
       let(:return_value) { true }
 
       it "assigns a newly created game as @game" do
-        expect(assigns(:game)).to eq game
+        expect(assigns(:service).game).to eq game
       end
 
       it "redirects to the created game" do
@@ -154,7 +154,7 @@ RSpec.describe GamesController, type: :controller do
       let(:return_value) { false }
 
       it "assigns a newly created but unsaved game as @game" do
-        expect(assigns(:game)).to eq game
+        expect(assigns(:service).game).to eq game
       end
 
       it "re-renders the 'new' template" do

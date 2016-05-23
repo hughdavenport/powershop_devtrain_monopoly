@@ -20,10 +20,10 @@ class GamesController < ApplicationController
 
   # POST /games
   def create
-    @game = Game.new(game_params)
+    @service = CreateGame.new(number_of_players: game_params[:number_of_players])
 
-    if @game.save
-      redirect_to @game, notice: 'Game was successfully created.'
+    if @service.call
+      redirect_to @service.game, notice: 'Game was successfully created.'
     else
       render :new
     end
