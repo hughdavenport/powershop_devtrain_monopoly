@@ -11,7 +11,7 @@ Feature: Landing on squares
     Given It is my turn
     When I land on Income Tax
     # This only tests the -$200, not the -15%
-    And I should lose $200
+    Then I should lose $200
 
   Scenario: Landing on Super Tax
     Given It is my turn
