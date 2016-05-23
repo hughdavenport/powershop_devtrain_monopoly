@@ -425,3 +425,7 @@ end
 Then(/^(?:I|another user) should( not)? be able to draw a card$/) do |negation|
   step "I should#{negation} see \"Draw card\""
 end
+
+Then(/^(?:I|another user) should( not)? be able to end (?:my|their) turn$/) do |negation|
+  step "I should#{negation} see \"End turn\""
+end

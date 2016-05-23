@@ -33,3 +33,7 @@ Feature: Rolling dice
     Given It is my turn
     When I roll a double
     Then I should be able to roll the dice
+
+  Scenario: Can't end turn before rolling
+    Given It is my turn
+    Then I should not be able to end my turn
