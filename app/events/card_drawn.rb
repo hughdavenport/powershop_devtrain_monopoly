@@ -3,10 +3,9 @@ class CardDrawn < Event
 
   def apply(game_state)
     # TODO make this more reliable
-    self.card = game_state.cards.sample.name unless card.present?
+    self.card = game_state.cards.pop unless card.present?
     unless card == "No card"
-      # TODO get card, apply it
-      card_obj = game_state.cards.find_by_name(card)
+      card_obj = card.is_a?(String) ? game_state.cards.find { |card_obj| card_obj.name == card } : card
       card_obj.effect.apply(game_state) if card_obj.respond_to?(:effect)
     end
     game_state.expecting_card_draw = false
