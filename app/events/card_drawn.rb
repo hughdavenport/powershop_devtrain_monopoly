@@ -2,7 +2,6 @@ class CardDrawn < Event
   store_accessor :data, :card
 
   def apply(game_state)
-    # TODO make this more reliable
     self.card = game_state.cards.pop unless card.present?
     unless card == "No card"
       card_obj = card.is_a?(String) ? game_state.cards.find { |card_obj| card_obj.name == card } : card

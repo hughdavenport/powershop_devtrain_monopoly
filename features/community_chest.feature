@@ -35,7 +35,7 @@ Feature: Landing on community chest
     And I land on Community Chest
     And I know my location
     When I draw "Bank error in your favour"
-    Then I should gain $100
+    Then I should gain $200
     And I should not move along the board
 
   Scenario: Giving money
