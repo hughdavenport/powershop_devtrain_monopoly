@@ -16,9 +16,10 @@ Feature: Landing on chance
 
   Scenario: Checking other side gets the money for Pay each player cards
     # TODO fine specimen for having 3 players
-    Given It is another users turn
+    Given It is my turn
+    When It is another users turn
     And another user lands on Chance
-    When another user draws "You have been elected Chairman of the board"
+    And another user draws "You have been elected Chairman of the board"
     Then I should gain $50
 
   Scenario: House tax

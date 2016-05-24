@@ -16,9 +16,10 @@ Feature: Landing on community chest
 
   Scenario: Checking other side gets the money for Collect each player cards
     # TODO fine specimen for having 3 players
-    Given It is another users turn
+    Given It is my turn
+    When It is another users turn
     And another user lands on Community Chest
-    When another user draws "Grand Opera Night"
+    And another user draws "Grand Opera Night"
     Then I should lose $50
 
   Scenario: House tax
