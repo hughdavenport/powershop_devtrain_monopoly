@@ -8,11 +8,11 @@ class CommunityChestCardsShuffled < Event
     end
   end
 
-  def can_apply?(game_state = game.state)
+  def can_apply?(game_state = nil)
     true
   end
 
-  def errors(game_state = game.state)
+  def errors(game_state = nil)
     ActiveModel::Errors.new(self).tap do |errors|
     end
   end

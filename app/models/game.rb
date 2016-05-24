@@ -13,6 +13,20 @@ class Game < ActiveRecord::Base
   def create_game_state
     GameState.new(max_number_of_players: number_of_players).tap do |game_state|
       events.each { |event| event.apply(game_state) }
+      with_lock do
+        if !game_state.chance_cards.nil?
+          if game_state.chance_cards.empty?
+            event = ChanceCardsShuffled.create(game: self)
+            event.apply(game_state)
+          end
+        end
+        if !game_state.community_chest_cards.nil?
+          if game_state.community_chest_cards.empty?
+            event = CommunityChestCardsShuffled.create(game: self)
+            event.apply(game_state)
+          end
+        end
+      end
     end
   end
 
