@@ -78,7 +78,7 @@ RSpec.describe CardDrawn, type: :event do
 
       let(:cards) do
         double("Cards").tap do |cards|
-          expect(cards).to receive(:find_by_name).with(card).and_return(card_obj)
+          expect(cards).to receive(:find).with(no_args).and_return(card_obj)
         end
       end
 
