@@ -180,7 +180,7 @@ Given(/^(\d+) chance cards have been used$/) do |number|
     step "I land on Chance"
     step "I draw a card"
     puts "A chance card was drawn"
-    step "I end my turn"
+    step "I end my turn" unless page.has_selector?(IN_JAIL_SELECTOR)
   end
 end
 
@@ -258,7 +258,7 @@ end
 
 When(/^(?:I|another user) (?:end|ends) (?:my|their) turn$/) do
   step 'I draw "No card"' if page.has_selector?("#draw_card")
-  step 'I click on "End turn"' if !page.has_selector?(IN_JAIL_SELECTOR)
+  step 'I click on "End turn"'
 end
 
 When(/^(I|another user) (?:make|makes) a move$/) do |user|
