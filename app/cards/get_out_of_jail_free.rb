@@ -1,9 +1,9 @@
 class GetOutOfJailFree < Card
   after_initialize :set_name
 
-  def effect
-    # TODO make effect that adds this to players "inventory"
-  end
+#  def effect
+#    # TODO make effect that adds this to players "inventory"
+#  end
 
   private
 

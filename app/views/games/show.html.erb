@@ -31,7 +31,7 @@
       <%= buy_property_form %>
     <% end %>
     <% if @game_state.expecting_rolls > 0 || @game_state.expecting_card_draw %>
-      <% if @game_state.expecting_card_draw %>
+      <% if @game_state.expecting_card_draw && !@game_state.cards.empty? %>
         <div id="draw_card">
           <%= draw_card_form %>
         </div>

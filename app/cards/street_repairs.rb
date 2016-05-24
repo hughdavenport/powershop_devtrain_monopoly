@@ -7,7 +7,7 @@ class StreetRepairs < Card
   validates_presence_of :per_hotel
   validates :per_hotel, numericality: { only_integer: true, greater_than: 0 }
 
-  def effect
-    # TODO make effect for this
-  end
+#  def effect
+#    # TODO make effect for this
+#  end
 end

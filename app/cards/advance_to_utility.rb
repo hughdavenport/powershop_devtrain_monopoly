@@ -1,9 +1,9 @@
 class AdvanceToUtility < Card
   after_initialize :set_name
 
-  def effect
-    # TODO make an effect
-  end
+#  def effect
+#    # TODO make an effect
+#  end
 
   private
 

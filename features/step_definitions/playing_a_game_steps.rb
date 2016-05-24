@@ -170,6 +170,20 @@ Given(/^12 hotels are used$/) do
   step "I completely own the red set with a hotel each" # 3 + 9 == 12
 end
 
+Given(/^(\d+) chance cards have been used$/) do |number|
+  number.to_i.times do
+    step "It is my turn"
+    if page.has_selector?(IN_JAIL_SELECTOR)
+      step "I pay bond"
+      step "It is my turn"
+    end
+    step "I land on Chance"
+    step "I draw a card"
+    puts "A chance card was drawn"
+    step "I end my turn"
+  end
+end
+
 Given(/^I know my location$/) do
   @location = current_location
   puts "I know my location to be #{@location}"
@@ -244,7 +258,7 @@ end
 
 When(/^(?:I|another user) (?:end|ends) (?:my|their) turn$/) do
   step 'I draw "No card"' if page.has_selector?("#draw_card")
-  step 'I click on "End turn"'
+  step 'I click on "End turn"' if !page.has_selector?(IN_JAIL_SELECTOR)
 end
 
 When(/^(I|another user) (?:make|makes) a move$/) do |user|

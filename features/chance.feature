@@ -156,3 +156,10 @@ Feature: Landing on chance
     # I should be on chance before go
     When I draw "Go Back 3 Spaces"
     Then I should be on Community Chest
+
+  Scenario: Reshuffling the deck
+    Given 16 chance cards have been used
+    And It is my turn
+    When I land on Chance
+    And I know my location
+    Then I should be able to draw a card
