@@ -58,7 +58,7 @@ Pay.create!(card_type: :community_chest, name: "Doctor's fees - Pay $50", amount
 Collect.create!(card_type: :community_chest, name: "From sale of your stock you get $50", amount: 50)
 GetOutOfJailFree.create!(card_type: :community_chest)
 GoToJail.create!(card_type: :community_chest)
-CollectFromAll.create!(card_type: :community_chest, name: "Grand Opera Opera - Collect $50 from every player for opening night seats", amount: 50)
+CollectFromAll.create!(card_type: :community_chest, name: "Grand Opera Night - Collect $50 from every player for opening night seats", amount: 50)
 Collect.create!(card_type: :community_chest, name: "Holiday Fund Matures - Receive $100", amount: 100)
 Collect.create!(card_type: :community_chest, name: "Income tax refund - Collect $20", amount: 20)
 CollectFromAll.create!(card_type: :community_chest, name: "It is your birthday - Collect $10 from each player", amount: 10)
@@ -66,7 +66,7 @@ Collect.create!(card_type: :community_chest, name: "Life insurance matures - Col
 Pay.create!(card_type: :community_chest, name: "Pay hospital fees of $100", amount: 100)
 Pay.create!(card_type: :community_chest, name: "Pay school fees of $150", amount: 150)
 Collect.create!(card_type: :community_chest, name: "Receive $25 consultancy fee", amount: 25)
-StreetRepairs.create!(card_type: :community_chest, name: "You are accessed for street repairs - $40 per house - $115 per hotel", per_house: 40, per_hotel: 115)
+StreetRepairs.create!(card_type: :community_chest, name: "You are assessed for street repairs - $40 per house - $115 per hotel", per_house: 40, per_hotel: 115)
 Collect.create!(card_type: :community_chest, name: "You have won second prize in a beauty contest - Collect $10", amount: 10)
 Collect.create!(card_type: :community_chest, name: "You inherit $100", amount: 100)
 
