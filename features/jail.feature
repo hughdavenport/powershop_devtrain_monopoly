@@ -190,3 +190,5 @@ Feature: Jail
     Then I should be in jail
     And It should not be my turn
     And I should gain $0
+
+  # Get out of jail free cards
