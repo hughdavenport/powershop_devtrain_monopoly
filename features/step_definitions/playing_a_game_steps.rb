@@ -361,10 +361,14 @@ Then(/^(I|another user) should( not)? be on (.*)$/) do |user, negation, location
   end
 end
 
-Then(/^(I|another user) should have \$(\d+) balance$/) do |user, amount|
+Then(/^(I|another user) should( not)? have \$(\d+) balance$/) do |user, negation, amount|
   # First step will login as user
   step "#{user} goes to the game"
-  expect(balance).to eq amount
+  if negation
+    expect(balance).not_to eq amount
+  else
+    expect(balance).to eq amount
+  end
 end
 
 Then(/^I should (lose|gain) \$(\d+)$/) do |direction, amount|
@@ -457,4 +461,9 @@ end
 
 Then(/^(?:I|another user) should( not)? be able to end (?:my|their) turn$/) do |negation|
   step "I should#{negation} see \"End turn\""
+end
+
+Then(/^(I|another user) should( not)? be bankrupt$/) do |user, negation|
+  step "#{user} should#{negation} have $0 balance"
+  step "I should#{negation} see \"You are bankrupt\""
 end
