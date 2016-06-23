@@ -68,7 +68,7 @@ Feature: Mortgaging property
     And Pall Mall is mortgaged
     When It is my turn
     Then I should not be able to buy a house for Pall Mall
-    And I should be able to buy a house for Whitehall
+    And I should not be able to buy a house for Whitehall
 
   Scenario: Can't mortgage properties with houses on it
     Given I completely own the green set with 2 houses each
