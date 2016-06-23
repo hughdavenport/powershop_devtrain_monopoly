@@ -464,6 +464,5 @@ Then(/^(?:I|another user) should( not)? be able to end (?:my|their) turn$/) do |
 end
 
 Then(/^(I|another user) should( not)? be bankrupt$/) do |user, negation|
-  step "#{user} should#{negation} have $0 balance"
-  step "I should#{negation} see \"You are bankrupt\""
+  step "I should#{negation} see the content You are bankrupt"
 end

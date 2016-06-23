@@ -7,7 +7,11 @@ class BondPosted
 
   def apply(game_state)
     player = game_state.players[game_state.current_player]
-    player.pay!(amount)
+    if player.can_afford?(amount)
+      player.pay!(amount)
+    else
+      PlayerBankrupted.new.apply(game_state)
+    end
     game_state.break_out_of_jail!(player)
   end
 

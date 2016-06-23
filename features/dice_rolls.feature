@@ -32,6 +32,7 @@ Feature: Rolling dice
   Scenario: Rolling a double
     Given It is my turn
     When I roll a double
+    # TODO this can fail when we need to draw a card
     Then I should be able to roll the dice
 
   Scenario: Can't end turn before rolling

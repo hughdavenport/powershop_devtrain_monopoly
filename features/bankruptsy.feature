@@ -42,8 +42,19 @@ Feature: Bankruptsy
     When I draw "Doctor's fee"
     Then I should be bankrupt
 
+  Scenario: Paying bond money
+    Given I am in jail for 2 turns
+    And It is my turn
+    And I have $30
+    When I roll two dice (not doubles)
+    Then I should be bankrupt
+
 # TODO not yet implemented cards
 # general repairs
 # pay to all
 
 # TODO also add another file for requiring to sell houses/mortgage things to stay in the game
+
+# TODO also test whether all assets get transferred to the other player
+# TODO or get auctioned off if going to the bank
+# TODO unsure on rules when drawing a pay all card

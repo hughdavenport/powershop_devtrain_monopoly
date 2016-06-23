@@ -46,3 +46,11 @@ Feature: Almost Bankruptsy
     When I draw "Doctor's fee"
     Then I should not be bankrupt
     And I should have $1 balance
+
+  Scenario: Paying bond money
+    Given I am in jail for 2 turns
+    And It is my turn
+    And I have $55
+    When I roll two dice (not doubles)
+    Then I should not be bankrupt
+    And I should have $5 balance

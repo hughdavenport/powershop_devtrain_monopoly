@@ -5,13 +5,14 @@ class Player
               :location,
               :jail,
               :dice_rolls,
-              :properties,
               :houses,
-              :hotels
+              :hotels,
+              :bankrupted
 
   # TODO make just a reader and deal with this a diferent way
   attr_accessor :doubles_in_a_row,
-                :pairs_rolled_while_in_jail
+                :pairs_rolled_while_in_jail,
+                :properties
 
   def initialize(user:, piece:)
     self.user = user
@@ -25,6 +26,7 @@ class Player
     self.properties = []
     self.houses = {}
     self.hotels = {}
+    self.bankrupted = false
   end
 
   def roll_dice(amount)
@@ -116,6 +118,28 @@ class Player
     self.doubles_in_a_row = 0
   end
 
+  def transfer_assets!(to_player = nil)
+    if to_player
+      to_player.earn!(money)
+      to_player.properties += properties
+      to_player.houses.merge!(houses)
+      to_player.hotels.merge!(hotels)
+    end
+
+    self.money = 0
+    self.properties = []
+    self.houses = {}
+    self.hotels = {}
+  end
+
+  def bankrupt!
+    self.bankrupted = true
+  end
+
+  def bankrupted?
+    bankrupted
+  end
+
   def pay!(amount, to_player = nil)
     self.money -= amount
     to_player.earn!(amount) if to_player
@@ -157,7 +181,8 @@ class Player
 # TODO make these writers, and change how we do it, see accessor statement at top
 #              :doubles_in_a_row,
 #              :pairs_rolled_while_in_jail,
-              :properties,
+#              :properties,
               :houses,
-              :hotels
+              :hotels,
+              :bankrupted
 end

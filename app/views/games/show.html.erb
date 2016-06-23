@@ -26,44 +26,48 @@
   <% if current_game_player.jail? %>
     <p id="in_jail"><%= t('You are in jail') %></p>
   <% end %>
-  <% if @game_state.players[@game_state.current_player] == current_game_player %>
-    <% if @game_state.can_buy_property? && current_game_player.can_afford?(@game_state.board[current_game_player.location].price) %>
-      <%= buy_property_form %>
-    <% end %>
-    <% if @game_state.expecting_rolls > 0 || @game_state.expecting_card_draw %>
-      <% if @game_state.expecting_card_draw && !@game_state.cards.empty? %>
-        <div id="draw_card">
-          <%= draw_card_form %>
-        </div>
-      <% else %>
-        <% if @game_state.expecting_rolls == 2 %>
-          <% if @game_state.can_buy_house? && !current_game_player.possible_house_locations.empty? %>
-            <div id="buy_house">
-              <%= buy_houses_form %>
-            </div>
+  <% if current_game_player.bankrupted? %>
+    <p id="bankrupt">You are bankrupt</p>
+  <% else %>
+    <% if @game_state.players[@game_state.current_player] == current_game_player %>
+      <% if @game_state.can_buy_property? && current_game_player.can_afford?(@game_state.board[current_game_player.location].price) %>
+        <%= buy_property_form %>
+      <% end %>
+      <% if @game_state.expecting_rolls > 0 || @game_state.expecting_card_draw %>
+        <% if @game_state.expecting_card_draw && !@game_state.cards.empty? %>
+          <div id="draw_card">
+            <%= draw_card_form %>
+          </div>
+        <% else %>
+          <% if @game_state.expecting_rolls == 2 %>
+            <% if @game_state.can_buy_house? && !current_game_player.possible_house_locations.empty? %>
+              <div id="buy_house">
+                <%= buy_houses_form %>
+              </div>
+            <% end %>
+            <% if @game_state.can_buy_hotel? && !current_game_player.possible_hotel_locations.empty? %>
+              <div id="buy_hotel">
+                <%= buy_hotel_form %>
+              </div>
+            <% end %>
+            <% if current_game_player.jail? && current_game_player.can_afford?(50) %>
+              <div id="pay_bond">
+                <%= pay_bond_form %>
+              </div>
+            <% end %>
           <% end %>
-          <% if @game_state.can_buy_hotel? && !current_game_player.possible_hotel_locations.empty? %>
-            <div id="buy_hotel">
-              <%= buy_hotel_form %>
-            </div>
-          <% end %>
-          <% if current_game_player.jail? && current_game_player.can_afford?(50) %>
-            <div id="pay_bond">
-              <%= pay_bond_form %>
-            </div>
-          <% end %>
+          <div id="dice_roll">
+            <%= roll_dice_form %>
+          </div>
         <% end %>
-        <div id="dice_roll">
-          <%= roll_dice_form %>
+      <% else %>
+        <%= end_turn_form %>
+      <% end %>
+      <% if testing_mode? %>
+        <div id="set_balance">
+          <%= set_balance_form %>
         </div>
       <% end %>
-    <% else %>
-      <%= end_turn_form %>
-    <% end %>
-    <% if testing_mode? %>
-      <div id="set_balance">
-        <%= set_balance_form %>
-      </div>
     <% end %>
   <% end %>
 <% end %>

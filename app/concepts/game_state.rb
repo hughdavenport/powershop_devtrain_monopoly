@@ -139,7 +139,17 @@ class GameState
     player.end_turn!
     self.can_buy_property = false
     self.expecting_rolls = 2
-    self.current_player = (current_player + 1) % players.size if player == players[current_player]
+    next_player! if player == players[current_player]
+  end
+
+  def next_player!
+    self.current_player = (current_player + 1) % players.size
+    self.current_player = (current_player + 1) % players.size while players[current_player].bankrupted?
+  end
+
+  def bankrupt!(player, to_player = nil)
+    player.transfer_assets!(to_player)
+    player.bankrupt!
   end
 
   def board
