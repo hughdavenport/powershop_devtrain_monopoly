@@ -1,21 +1,24 @@
-DICE_ROLL_SELECTOR         = '#last_dice_roll'
-DICE_ROLL_REGEX            = /^You rolled a (?<dice_roll>\d+)$/i
+DICE_ROLL_SELECTOR           = '#last_dice_roll'
+DICE_ROLL_REGEX              = /^You rolled a (?<dice_roll>\d+)$/i
 
-CURRENT_LOCATION_SELECTOR  = "#current_location"
-CURRENT_LOCATION_REGEX     = /^You are at (?<location>.*)$/i
+CURRENT_LOCATION_SELECTOR    = "#current_location"
+CURRENT_LOCATION_REGEX       = /^You are at (?<location>.*)$/i
 
-BALANCE_SELECTOR           = "#balance"
-BALANCE_REGEX              = /^Your balance is \$(?<amount>\d+)$/i
+BALANCE_SELECTOR             = "#balance"
+BALANCE_REGEX                = /^Your balance is \$(?<amount>\d+)$/i
 
-CURRENT_PLAYER_SELECTOR    = "#current_player"
+CURRENT_PLAYER_SELECTOR      = "#current_player"
 
-OWNED_PROPERTIES_SELECTOR  = "#owned_properties"
-MY_PROPERTIES_SELECTOR     = "#my_properties"
+OWNED_PROPERTIES_SELECTOR    = "#owned_properties"
+MY_PROPERTIES_SELECTOR       = "#my_properties"
 
-BUY_HOUSE_SELECTOR         = "#buy_house"
-BUY_HOTEL_SELECTOR         = "#buy_hotel"
+BUY_HOUSE_SELECTOR           = "#buy_house"
+BUY_HOTEL_SELECTOR           = "#buy_hotel"
 
-IN_JAIL_SELECTOR           = "#in_jail"
+MORTGAGE_PROPERTY_SELECTOR   = "#mortgage_property"
+UNMORTGAGE_PROPERTY_SELECTOR = "#unmortgage_property"
+
+IN_JAIL_SELECTOR             = "#in_jail"
 
 def dice_roll
   find(DICE_ROLL_SELECTOR).text.gsub(DICE_ROLL_REGEX, '\\k<dice_roll>')
@@ -119,6 +122,10 @@ Given(/^(.*) has a hotel$/) do |property|
   step "I buy a hotel for #{property}"
 end
 
+Given(/^(.*) is mortgaged$/) do |property|
+  step "I mortgage #{property}"
+end
+
 Given(/^the (.*) set has (\d+)(?: more)? (?:house|houses) each$/) do |colour, number|
   number.to_i.times do
     (colour.capitalize + "Property").constantize.all.each do |property|
@@ -144,6 +151,11 @@ Given(/^(I|another user) completely (?:own|owns) the (.*) set with a hotel each$
   step "#{user} completely owns the #{colour} set"
   step "It is #{user == "I" ? "my" : "another users"} turn"
   step "the #{colour} set has a hotel each"
+end
+
+Given(/^(I|another user) (?:have|has) mortgaged (.*)$/) do |user, property|
+  step "#{user} owns #{property}"
+  step "#{property} is mortgaged"
 end
 
 Given(/^(I|another user) (?:have|has) \$(\d+)$/) do |user, balance|
@@ -306,6 +318,18 @@ When(/^(?:I|another user) (?:buy|buys) a hotel for (.*)$/) do |property|
   puts "a hotel was purchased for #{property}"
 end
 
+When(/^(?:I|another user) (?:mortgage|mortgages) (.*)$/) do |property|
+  within(MORTGAGE_PROPERTY_SELECTOR) { step "I select #{property} as property" }
+  step 'I click on "Mortgage property"'
+  puts "#{property} was mortgaged"
+end
+
+When(/^(?:I|another user) (?:unmortgage|unmortgages) (.*)$/) do |property|
+  within(UNMORTGAGE_PROPERTY_SELECTOR) { step "I select #{property} as property" }
+  step 'I click on "Unmortgage property"'
+  puts "#{property} was unmortgaged"
+end
+
 When(/^(?:I|another user) (?:pay| pays) bond$/) do
   step 'I click on "Pay bond"'
 end
@@ -449,6 +473,40 @@ end
 
 Then(/^(.*) should have a hotel$/) do |property|
   expect(find("##{property.downcase.gsub(" ", "_")}_hotel")).to have_content(/and a hotel/i)
+end
+
+Then(/^(.*) should be mortgaged$/) do |property|
+  expect(page).to have_selector("##{property.downcase.gsub(" ", "_")}_mortgaged")
+end
+
+Then(/^(.*) should be unmortgaged$/) do |property|
+  expect(page).not_to have_selector("##{property.downcase.gsub(" ", "_")}_mortgaged")
+end
+
+Then(/^I should( not)? be able to mortgage$/) do |negation|
+  step "I should#{negation} see \"Mortgage property\""
+end
+
+Then(/^I should( not)? be able to unmortgage$/) do |negation|
+  step "I should#{negation} see \"Unmortgage house\""
+end
+
+Then(/^I should( not)? be able to mortgage (.*)$/) do |negation, property|
+  if negation
+    # Either can't buy any, or can't buy that particular one
+    expect(find(MORTGAGE_PROPERTY_SELECTOR)).not_to have_content(property) if page.has_selector?(MORTGAGE_PROPERTY_SELECTOR)
+  else
+    expect(find(MORTGAGE_PROPERTY_SELECTOR)).to have_content(property)
+  end
+end
+
+Then(/^I should( not)? be able to unmortgage (.*)$/) do |negation, property|
+  if negation
+    # Either can't buy any, or can't buy that particular one
+    expect(find(UNMORTGAGE_PROPERTY_SELECTOR)).not_to have_content(property) if page.has_selector?(UNMORTGAGE_PROPERTY_SELECTOR)
+  else
+    expect(find(UNMORTGAGE_PROPERTY_SELECTOR)).to have_content(property)
+  end
 end
 
 Then(/^(?:I|another user) should( not)? be able to pay bond$/) do |negation|
